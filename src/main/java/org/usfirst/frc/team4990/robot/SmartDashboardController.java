@@ -102,39 +102,23 @@ public class SmartDashboardController {
 	public static void updateAutoDashboard() {
 		// Auto chooser
 		Robot.autoChooser = new SendableChooser<StartingPosition>();
-		// Robot.autoChooser.addObject("Left", StartingPosition.LEFT);
-		// Robot.autoChooser.addObject("Middle", StartingPosition.MID);
-		// Robot.autoChooser.addObject("Right", StartingPosition.RIGHT);
 		Robot.autoChooser.addDefault("Forward (cross line)", StartingPosition.FORWARD);
+		Robot.autoChooser.addObject("Left", StartingPosition.LEFT);
+		Robot.autoChooser.addObject("Center", StartingPosition.Center);
+		Robot.autoChooser.addObject("Right", StartingPosition.RIGHT);
 		Robot.autoChooser.addObject("Stay", StartingPosition.STAY);
-		Robot.autoChooser.addObject("Forward and outake, robot on LEFT", StartingPosition.FORWARD_AND_UP_LEFT);
-		Robot.autoChooser.addObject("Forward and outake, robot on RIGHT", StartingPosition.FORWARD_AND_UP_RIGHT);
-		Robot.autoChooser.addObject("Testing", StartingPosition.TEST);
+		Robot.autoChooser.addObject("Test", StartingPosition.TEST);
 
 		Robot.autoChooser.setName("AutonomusControl", "Auto Chooser");
 		Robot.startPos = Robot.autoChooser.getSelected();
 		SmartDashboard.putData("DriveTeam/Auto Chooser", Robot.autoChooser);
 		SmartDashboard.putString("Drive/Selected Starting Position", Robot.startPos.toString());
 
-		Robot.ejectBoxChooser = new SendableChooser<Boolean>();
-		Robot.ejectBoxChooser.addObject("TRUE", true);
-		Robot.ejectBoxChooser.addDefault("FALSE", false);
-		Robot.ejectBoxChooser.setName("AutonomusControl", "Eject Box Chooser");
-		SmartDashboard.putData("DriveTeam/Eject Box Chooser", Robot.ejectBoxChooser);
-		SmartDashboard.putString("Drive/Selected Eject Box", Robot.ejectBoxSelection.toString());
-
 		SmartDashboard.updateValues(); // always run at END of updateAutoDashboard
 
 	}
 
 	public static void smartDashboardInit() {
-		// Elevator
-		RobotMap.elevatorTalon.setName("Elevator", "Motor");
-
-		// Intake
-		RobotMap.intakeTalonA.setName("Intake", "LeftMotor");
-		RobotMap.intakeTalonB.setName("Intake", "RightMotor");
-		RobotMap.intakeDistanceAnalogInput.setName("Intake", "Infrared");
 
 		// DriveTrain
 		RobotMap.driveTrain.left.motorGroup.setName("DriveTrain", "LeftMotors");
@@ -143,48 +127,28 @@ public class SmartDashboardController {
 		RobotMap.driveTrain.right.encoder.setName("DriveTrain", "RightEncoder");
 		// RobotMap.differentialDrive.setName("DriveTrain", "DifferentialDrive");
 
-		// General
-		RobotMap.pdp.setName("General", "PDP");
-		//RobotMap.gyro.setName("General", "SPI Gyro");
-		RobotMap.ahrs.setName("General", "AHRS Gyro");
-		//RobotMap.ultrasonic.setName("General", "Ultrasonic");
+		// Base Sensors
+		RobotMap.pdp.setName("Sensors", "PDP");
+		RobotMap.ahrs.setName("Sensors", "AHRS Gyro");
+		RobotMap.ultrasonic.setName("Sensors", "Ultrasonic");
 	}
 
 	public void smartDashboardPeriodic() {
 
-		SmartDashboard.putData("Debug/PDP", RobotMap.pdp);
-
-		// SmartDashboard.putData("Debug/DifferentialDrive",
-		// RobotMap.differentialDrive);
+		SmartDashboard.putData("Sensors/PDP", RobotMap.pdp);
+		SmartDashboard.putData("Sensors/AHRS Gyro", RobotMap.ahrs);
 
 		SmartDashboard.putNumber("Debug/Left Encoder Distance", RobotMap.driveTrain.left.getDistanceTraveled());
 		SmartDashboard.putNumber("Debug/Right Encoder Distance", RobotMap.driveTrain.right.getDistanceTraveled());
-		SmartDashboard.putData("Debug/Left Drive Encoder", RobotMap.driveTrain.left.encoder);
-		SmartDashboard.putData("Debug/Right Drive Encoder", RobotMap.driveTrain.right.encoder);
 
 		SmartDashboard.putNumber("DriveSystem/teleop/turnSteepness", OI.turnSteepnessAnalogButton.getRawAxis());
 		SmartDashboard.putNumber("DriveSystem/teleop/throttle", OI.throttleAnalogButton.getRawAxis());
 
-		SmartDashboard.putBoolean("Debug/Box In", RobotMap.intake.isBoxPosition(Intake.BoxPosition.IN));
-		SmartDashboard.putBoolean("Debug/Box Out", RobotMap.intake.isBoxPosition(Intake.BoxPosition.OUT));
-		SmartDashboard.putBoolean("Debug/Box In and Out At The Same Time",
-				RobotMap.intake.isBoxPosition(Intake.BoxPosition.MOVING));
-		SmartDashboard.putNumber("Debug/Analog Infrared Voltage", RobotMap.intake.getAnalogInput());
-
-		SmartDashboard.putData("Debug/IntakeAMotorLEFT", RobotMap.intakeTalonA);
-		SmartDashboard.putData("Debug/IntakeBMotorRIGHT", RobotMap.intakeTalonB);
-
-		SmartDashboard.putBoolean("Debug/Elevator Top Limit Switch", RobotMap.elevator.isTopSwitched());
-		SmartDashboard.putBoolean("Debug/Elevator Bottom Limit Switch", RobotMap.elevator.isBottomSwitched());
-		SmartDashboard.putNumber("Debug/Elevator Motor", RobotMap.elevator.setSpeed);
-
-		SmartDashboard.putData("Debug/AHRS Gyro", RobotMap.ahrs);
-
-		SmartDashboard.putData("Debug/DriveTrainSubsystem", RobotMap.driveTrain);
-		SmartDashboard.putData("Debug/ElevatorSubsystem", RobotMap.elevator);
-		SmartDashboard.putData("Debug/IntakeSubsystem", RobotMap.intake);
+		SmartDashboard.putData("Subsystems/DriveTrainSubsystem", RobotMap.driveTrain);
+		SmartDashboard.putData("Subsystems/ElevatorSubsystem", RobotMap.elevator);
+		SmartDashboard.putData("Subsystems/IntakeSubsystem", RobotMap.intake);
 		if (Robot.autonomusCommand != null) {
-			SmartDashboard.putData("Debug/AutonomusCommand", Robot.autonomusCommand);
+			SmartDashboard.putData("Autonomus/AutonomusCommand", Robot.autonomusCommand);
 		}
 		SmartDashboard.updateValues();
 	}

@@ -86,9 +86,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
 
 	@Override
 	protected void initDefaultCommand() {
-		// if (DriverStation.getInstance().isOperatorControl()) {
 		this.setDefaultCommand(defaultCommand=new TeleopDriveTrainController());
-		// }
 	}
 
 	@Override
@@ -114,8 +112,8 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 * Returns right encoder value, in feet.
 	 */
 	public double pidGet() {
-		// return (left.encoder.getDistance() * right.encoder.getDistance())/2;
-		return right.encoder.getDistance();
+		//TODO: Make sure this returns feet.
+		return (left.encoder.getDistance() * right.encoder.getDistance())/2;
 	}
 
 }

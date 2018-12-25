@@ -46,11 +46,6 @@ public class RobotMap {
 	public static TalonMotorController rightFrontDriveTalon;
 	public static TalonMotorController rightRearDriveTalon;
 	
-	public static DigitalInput leftEncoderPortA;
-	public static DigitalInput leftEncoderPortB;
-	public static DigitalInput rightEncoderPortA;
-	public static DigitalInput rightEncoderPortB;
-	
 	public static Encoder leftEncoder;
 	public static Encoder rightEncoder;
 	
@@ -63,33 +58,10 @@ public class RobotMap {
 	
 	public static DriveTrain driveTrain;
 	
-	public static TalonMotorController intakeTalonA;
-	public static TalonMotorController intakeTalonB;
-	
-	public static AnalogInput intakeDistanceAnalogInput;
-	
-	public static Intake intake;
-	
-	public static TalonMotorController elevatorTalon;
-	
-	public static DigitalInput elevatorLimitSwitchTopInput;
-	public static DigitalInput elevatorLimitSwitchBottomInput;
-	
-	public static LimitSwitch elevatorLimitSwitchTop;
-	public static LimitSwitch elevatorLimitSwitchBottom;
-	
-	public static Elevator elevator;
-	
-	//public static TalonMotorController scalerTalon;
-	
-	public static Scaler scaler;
-	
 	public static DigitalOutput ultrasonicDigitalOutput;
 	public static DigitalInput ultrasonicEchoDigitalInput;
 	
 	public static Ultrasonic ultrasonic;
-	
-	public static ADXRS450_Gyro gyro;
 	
 	public static AHRS ahrs;
 	
@@ -105,11 +77,12 @@ public class RobotMap {
 		rightFrontDriveTalon = new TalonMotorController(3);
 		rightRearDriveTalon = new TalonMotorController(4);
 		
-		leftEncoderPortA = new DigitalInput(0);
-		leftEncoderPortB = new DigitalInput(1);
-		rightEncoderPortA = new DigitalInput(2);
-		rightEncoderPortB = new DigitalInput(3);
-		
+		/*TODO: Make a MagneticEncoder class that:
+		* - has constructor MagneticEncoder(TalonMotorControler parentController)
+		* - extends Encoder, implements PIDSource
+		* - has methods:
+		*   - get(), returns degrees
+		*/
 		leftEncoder = new Encoder(leftEncoderPortA, leftEncoderPortB);
 		rightEncoder = new Encoder(rightEncoderPortA, rightEncoderPortB);
 		
@@ -122,35 +95,11 @@ public class RobotMap {
 					
 		driveTrain = new DriveTrain(leftGearbox, rightGearbox);
 		
-		intakeTalonA = new TalonMotorController(8);
-		intakeTalonB = new TalonMotorController(7);
-		
-		intakeDistanceAnalogInput = new AnalogInput(0);
-		
-		intake = new Intake();
-		
-		elevatorTalon = new TalonMotorController(6);
-		
-		elevatorLimitSwitchTopInput = new DigitalInput(6);
-		elevatorLimitSwitchBottomInput = new DigitalInput(7);
-		
-		elevatorLimitSwitchTop = new LimitSwitch(elevatorLimitSwitchTopInput);
-		elevatorLimitSwitchBottom = new LimitSwitch(elevatorLimitSwitchBottomInput);
-		
-		elevator = new Elevator();
-		
-		//scalerTalon = new TalonMotorController(9);
-		
-		//scaler = new Scaler(scalerTalon);
-		
 		ultrasonicDigitalOutput = new DigitalOutput(4); //PING
 		ultrasonicEchoDigitalInput = new DigitalInput(5); //ECHO
 		
 		ultrasonic = new Ultrasonic(ultrasonicDigitalOutput, ultrasonicEchoDigitalInput, Ultrasonic.Unit.kInches); 
 	
-		gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-		//use gyro.getAngle() to return heading (returns number -n to n) and reset() to reset angle
-		//gyro details: http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/ADXRS450_Gyro.html
 		
 		ahrs = new AHRS(SPI.Port.kMXP); 
 		//navX-MXP RoboRIO extension and 9-axis gyro thingy
