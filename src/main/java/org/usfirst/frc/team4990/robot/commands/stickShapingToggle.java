@@ -25,6 +25,8 @@ public class stickShapingToggle extends InstantCommand {
 			case DifferentialDrive:
 				TeleopDriveTrainController.stickShapingMode = StickShapingMode.NextThrottle;
 				break;
+			default: 
+				break;
 		}
 
 		System.out.println("StickShaping Method:" + TeleopDriveTrainController.stickShapingMode.toString());
