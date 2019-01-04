@@ -192,7 +192,7 @@ public class OI{
 		 */
 		public JoystickButtonGroup(Button... buttons) {
 			if (buttons.length < 2) {
-				this.free();
+				throw new IllegalArgumentException("Must supply at least 2 buttons.");
 			} else {
 				this.buttons = (Button[]) buttons;
 			}
@@ -203,7 +203,7 @@ public class OI{
 		 */
 		public JoystickButtonGroup(JoystickAnalogButton... buttons) {
 			if (buttons.length < 2) {
-				this.free();
+				throw new IllegalArgumentException("Must supply at least 2 buttons.");
 			} else {
 				this.buttons = buttons;
 			}

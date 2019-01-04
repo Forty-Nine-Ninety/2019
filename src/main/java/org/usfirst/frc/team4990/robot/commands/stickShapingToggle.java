@@ -1,32 +1,34 @@
 package org.usfirst.frc.team4990.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team4990.robot.commands.TeleopDriveTrainController.StickShapingMode;
+
+import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
  * Ported from old TeleopDriveController
- * @author benjamin and Class of '21 (created in 2018 season)
+ * @author benjamin and Class of '21 (created in 2019 season)
  *
  */
 
-public class stickShapingToggle extends Command {
-	public stickShapingToggle() {
-	}
+public class stickShapingToggle extends InstantCommand {
+
+	public stickShapingToggle() {}
 	
 	public void initialize() {
-		TeleopDriveTrainController.oldStickShapingMethod = false;
-		System.out.println("StickShaping Method: NEW");
+		switch (TeleopDriveTrainController.stickShapingMode) {
+			case NextThrottle:
+				TeleopDriveTrainController.stickShapingMode = StickShapingMode.SquaredThrottle;
+				break;
+			case SquaredThrottle:
+				TeleopDriveTrainController.stickShapingMode = StickShapingMode.DifferentialDrive;
+				break;
+			case DifferentialDrive:
+				TeleopDriveTrainController.stickShapingMode = StickShapingMode.NextThrottle;
+				break;
+		}
+
+		System.out.println("StickShaping Method:" + TeleopDriveTrainController.stickShapingMode.toString());
+
 	}
 	
-	public void end() {
-		TeleopDriveTrainController.oldStickShapingMethod = true;
-		System.out.println("StickShaping Method: OLD");
-	}
-	
-	public void interrupted() {
-		end();
-	}
-	
-	public boolean isFinished() {
-		return false;
-	}
 }
