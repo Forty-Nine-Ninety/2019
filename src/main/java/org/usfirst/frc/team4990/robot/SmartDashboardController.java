@@ -100,12 +100,12 @@ public class SmartDashboardController {
 	public static void updateAutoDashboard() {
 		// Auto chooser
 		Robot.autoChooser = new SendableChooser<StartingPosition>();
-		Robot.autoChooser.addDefault("Forward (cross line)", StartingPosition.FORWARD);
-		Robot.autoChooser.addObject("Left", StartingPosition.LEFT);
-		Robot.autoChooser.addObject("Center", StartingPosition.CENTER);
-		Robot.autoChooser.addObject("Right", StartingPosition.RIGHT);
-		Robot.autoChooser.addObject("Stay", StartingPosition.STAY);
-		Robot.autoChooser.addObject("Test", StartingPosition.TEST);
+		Robot.autoChooser.setDefaultOption("Forward (cross line)", StartingPosition.FORWARD);
+		Robot.autoChooser.addOption("Left", StartingPosition.LEFT);
+		Robot.autoChooser.addOption("Center", StartingPosition.CENTER);
+		Robot.autoChooser.addOption("Right", StartingPosition.RIGHT);
+		Robot.autoChooser.addOption("Stay", StartingPosition.STAY);
+		Robot.autoChooser.addOption("Test", StartingPosition.TEST);
 
 		Robot.autoChooser.setName("AutonomusControl", "Auto Chooser");
 		Robot.startPos = Robot.autoChooser.getSelected();
