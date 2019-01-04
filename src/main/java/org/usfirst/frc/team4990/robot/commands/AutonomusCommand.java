@@ -3,7 +3,6 @@ package org.usfirst.frc.team4990.robot.commands;
 import org.usfirst.frc.team4990.robot.Robot;
 import org.usfirst.frc.team4990.robot.Robot.StartingPosition;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutonomusCommand extends CommandGroup {
@@ -19,17 +18,17 @@ public class AutonomusCommand extends CommandGroup {
 			addSequential(new RobotDriveStraight()); //forward 11 feet?
 		} 
 		
-		switch s {
-			case StartingPosition.LEFT:
+		switch (s) {
+			case LEFT:
 				//add left autonomus
-				return;
-			case StartingPosition.CENTER:
+				break;
+			case CENTER:
 				//add center autonomus
 				return;
-			case StartingPosition.RIGHT:
+			case RIGHT:
 				//add right autonomus
 				return;
-			case StartingPosition.TEST:
+			case TEST:
 				//add test autonomus
 				return;
 			default:

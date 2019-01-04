@@ -1,8 +1,6 @@
 package org.usfirst.frc.team4990.robot;
 
-import org.usfirst.frc.team4990.robot.Robot.StartingPosition;
-import org.usfirst.frc.team4990.robot.subsystems.Intake;
-
+import org.usfirst.frc.team4990.robot.Robot.*;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -104,7 +102,7 @@ public class SmartDashboardController {
 		Robot.autoChooser = new SendableChooser<StartingPosition>();
 		Robot.autoChooser.addDefault("Forward (cross line)", StartingPosition.FORWARD);
 		Robot.autoChooser.addObject("Left", StartingPosition.LEFT);
-		Robot.autoChooser.addObject("Center", StartingPosition.Center);
+		Robot.autoChooser.addObject("Center", StartingPosition.CENTER);
 		Robot.autoChooser.addObject("Right", StartingPosition.RIGHT);
 		Robot.autoChooser.addObject("Stay", StartingPosition.STAY);
 		Robot.autoChooser.addObject("Test", StartingPosition.TEST);
@@ -145,8 +143,6 @@ public class SmartDashboardController {
 		SmartDashboard.putNumber("DriveSystem/teleop/throttle", OI.throttleAnalogButton.getRawAxis());
 
 		SmartDashboard.putData("Subsystems/DriveTrainSubsystem", RobotMap.driveTrain);
-		SmartDashboard.putData("Subsystems/ElevatorSubsystem", RobotMap.elevator);
-		SmartDashboard.putData("Subsystems/IntakeSubsystem", RobotMap.intake);
 		if (Robot.autonomusCommand != null) {
 			SmartDashboard.putData("Autonomus/AutonomusCommand", Robot.autonomusCommand);
 		}

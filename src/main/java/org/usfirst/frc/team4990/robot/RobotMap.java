@@ -8,17 +8,10 @@
 package org.usfirst.frc.team4990.robot;
 
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team4990.robot.subsystems.Elevator;
 import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
 import org.usfirst.frc.team4990.robot.subsystems.Gearbox;
-import org.usfirst.frc.team4990.robot.subsystems.Intake;
-import org.usfirst.frc.team4990.robot.subsystems.LimitSwitch;
-import org.usfirst.frc.team4990.robot.subsystems.Scaler;
 import org.usfirst.frc.team4990.robot.subsystems.TalonMotorController;
 import com.kauailabs.navx.frc.AHRS;
-
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -77,14 +70,8 @@ public class RobotMap {
 		rightFrontDriveTalon = new TalonMotorController(3);
 		rightRearDriveTalon = new TalonMotorController(4);
 		
-		/*TODO: Make a MagneticEncoder class that:
-		* - has constructor MagneticEncoder(TalonMotorControler parentController)
-		* - extends Encoder, implements PIDSource
-		* - has methods:
-		*   - get(), returns degrees
-		*/
-		leftEncoder = new Encoder(leftEncoderPortA, leftEncoderPortB);
-		rightEncoder = new Encoder(rightEncoderPortA, rightEncoderPortB);
+		//leftEncoder = new MagneticEncoder(canBusID);
+		//rightEncoder = new MagneticEncoder(canBusID);
 		
 		leftGearbox = new Gearbox(leftFrontDriveTalon, leftRearDriveTalon, leftEncoder);
 		rightGearbox = new Gearbox(rightFrontDriveTalon, rightRearDriveTalon, rightEncoder);

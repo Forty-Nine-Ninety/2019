@@ -128,7 +128,6 @@ public class Robot extends TimedRobot {
 	public void resetSensors() {
 		System.out.println("[SensorReset] Starting gyro calibration. DON'T MOVE THE ROBOT...");
 		RobotMap.ahrs.reset();
-		//TODO: Add AHRS calibration here.
 		System.out.println("[SensorReset] Gyro calibration done. Resetting encoders...");
 		RobotMap.driveTrain.resetDistanceTraveled();
 		System.out.println("[SensorReset] complete.");

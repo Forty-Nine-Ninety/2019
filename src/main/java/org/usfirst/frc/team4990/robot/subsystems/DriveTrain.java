@@ -112,7 +112,6 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 * Returns right encoder value, in feet.
 	 */
 	public double pidGet() {
-		//TODO: Make sure this returns feet.
 		return (left.encoder.getDistance() * right.encoder.getDistance())/2;
 	}
 
