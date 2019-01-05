@@ -192,7 +192,7 @@ public class OI{
 		 */
 		public JoystickButtonGroup(Button... buttons) {
 			if (buttons.length < 2) {
-				this.free();
+				this.close();
 			} else {
 				this.buttons = (Button[]) buttons;
 			}
@@ -203,7 +203,7 @@ public class OI{
 		 */
 		public JoystickButtonGroup(JoystickAnalogButton... buttons) {
 			if (buttons.length < 2) {
-				this.free();
+				this.close();
 			} else {
 				this.buttons = buttons;
 			}

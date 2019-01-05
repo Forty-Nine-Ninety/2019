@@ -3,7 +3,7 @@ package org.usfirst.frc.team4990.robot;
 import org.usfirst.frc.team4990.robot.commands.AutonomusCommand;
 import org.usfirst.frc.team4990.robot.SmartDashboardController;
 
-import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.cameraserver.CameraServer;
 //This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that is the Freshmen Union
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
