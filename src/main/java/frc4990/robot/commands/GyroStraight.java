@@ -38,8 +38,7 @@ public class GyroStraight extends Command implements PIDOutput, PIDSource {
 		turnController.setName("DriveSystem", "turnController");
 		SmartDashboard.putData(turnController);
 	  
-		RobotMap.driveTrain.left.encoder.reset();
-		RobotMap.driveTrain.right.encoder.reset();
+		RobotMap.driveTrain.resetDistanceTraveled();
 		
 		turnController.setPercentTolerance(2);
 		turnController.setSetpoint(0);
@@ -70,9 +69,7 @@ public class GyroStraight extends Command implements PIDOutput, PIDSource {
 	}
 	
 	public void pidOutput(double turnOutput, double speed) {
-		RobotMap.driveTrain.left.setSpeed(speed + turnOutput);
-		RobotMap.driveTrain.right.setSpeed(speed - turnOutput);
-		RobotMap.driveTrain.periodic();
+		RobotMap.driveTrain.setSpeed(speed + turnOutput, speed - turnOutput);
 	}
 
 

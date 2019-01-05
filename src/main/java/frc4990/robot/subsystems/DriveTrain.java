@@ -2,45 +2,39 @@ package frc4990.robot.subsystems;
 
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc4990.robot.RobotMap;
 import frc4990.robot.SmartDashboardController;
 import frc4990.robot.commands.TeleopDriveTrainController;
 
 public class DriveTrain extends Subsystem implements PIDSource {
-	public Gearbox left, right;
-	public Command defaultCommand;
+
 	public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
+	public DifferentialDrive differentialDrive = new DifferentialDrive(RobotMap.leftMotorGroup, RobotMap.rightMotorGroup);
+
+	double rampDownTime = SmartDashboardController.getConst("DriveTrain/rampDownTime", 0.3);
+
+	private double leftSpeedAdjust = 1.0;
+	private double rightSpeedAdjust = 0.99;
 
 	/**
-	 * Includes 4 driving motors and 2 encoders. All passed as gearbox constructors!
+	 * Includes 4 driving motors and 2 encoders; all specified as static objects in RobotMap.
 	 * 
-	 * @param leftGearbox
-	 *            left gearbox
-	 * @param rightGearbox
-	 *            right gearbox
 	 * @author Class of '21 (created in 2018 season)
 	 */
-	public DriveTrain(Gearbox leftGearbox, Gearbox rightGearbox) {
-		this.left = leftGearbox;
-		this.right = rightGearbox;
+	public DriveTrain() {
+		RobotMap.leftFrontDriveTalon.configOpenloopRamp(rampDownTime, 0);
+		RobotMap.leftRearDriveTalon.configOpenloopRamp(rampDownTime, 0);
+		RobotMap.rightFrontDriveTalon.configOpenloopRamp(rampDownTime, 0);
+		RobotMap.rightRearDriveTalon.configOpenloopRamp(rampDownTime, 0);
+	}
 
-		// The right gearbox is backwards
-		this.right.fix_backwards = -1.0;
-		// the bot swerves to the left, so slow down right side
-		this.left.compensate = SmartDashboardController.getConst("leftGearbox/compensate", 1.0);
-		this.right.compensate = SmartDashboardController.getConst("rightGearbox/compensate", 0.99);
-
-		/**
-		 * ramp down time in seconds.
-		 */
-
-		double rampDownTime = SmartDashboardController.getConst("DriveTrain/rampDownTime", 0.3);
-
-		this.left.frontMotor.configOpenloopRamp(rampDownTime, 0);
-		this.left.rearMotor.configOpenloopRamp(rampDownTime, 0);
-		this.right.frontMotor.configOpenloopRamp(rampDownTime, 0);
-		this.right.rearMotor.configOpenloopRamp(rampDownTime, 0);
+	public void clearStickyFaults() {
+		RobotMap.leftFrontDriveTalon.clearStickyFaults(0);
+		RobotMap.leftRearDriveTalon.clearStickyFaults(0);
+		RobotMap.rightFrontDriveTalon.clearStickyFaults(0);
+		RobotMap.rightRearDriveTalon.clearStickyFaults(0);
 	}
 
 	/**
@@ -51,8 +45,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 */
 
 	public void setSpeed(double speed) {
-		left.setSpeed(speed);
-		right.setSpeed(speed);
+		this.setSpeed(speed, speed);
 	}
 
 	/**
@@ -65,14 +58,20 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 */
 
 	public void setSpeed(double leftSpeed, double rightSpeed) {
-		left.setSpeed(leftSpeed);
-		right.setSpeed(rightSpeed);
+		differentialDrive.tankDrive(leftSpeed * leftSpeedAdjust, rightSpeed * rightSpeedAdjust, false);
+	}
+
+	public void arcadeDrive(double xSpeed, double zRotation, Boolean squareInputs) {
+		differentialDrive.arcadeDrive(xSpeed, zRotation, squareInputs);
+	}
+
+	public void curvatureDrive(double xSpeed, double zRotation, Boolean squareInputs) {
+		differentialDrive.curvatureDrive(xSpeed, zRotation, squareInputs);
 	}
 
 	@Override
 	public void periodic() {
-		left.motorGroup.set(left.setSpeed * left.compensate * left.fix_backwards);
-		right.motorGroup.set(right.setSpeed * right.compensate * right.fix_backwards);
+
 	}
 
 	/**
@@ -80,13 +79,13 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 */
 
 	public void resetDistanceTraveled() {
-		left.encoder.reset();
-		right.encoder.reset();
+		RobotMap.leftEncoder.reset();
+		RobotMap.rightEncoder.reset();
 	}
 
 	@Override
 	protected void initDefaultCommand() {
-		this.setDefaultCommand(defaultCommand=new TeleopDriveTrainController());
+		this.setDefaultCommand(new TeleopDriveTrainController());
 	}
 
 	@Override
@@ -105,14 +104,27 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 */
 
 	public double getEncoderDistance() {
-		return (/* left.encoder.getDistance() * */right.encoder.getDistance()); /// 2;
+		return (RobotMap.leftEncoder.getDistance() * RobotMap.rightEncoder.getDistance()) / 2;
+	}
+	
+	/**
+	 * Returns raw average left/right encoder value, in unknown units. Use pidGet()
+	 * to return distance in feet.
+	 */
+
+	public double getEncoderRate() {
+		return (RobotMap.leftEncoder.getRate() * RobotMap.rightEncoder.getRate()) / 2;
 	}
 
 	/**
 	 * Returns right encoder value, in feet.
 	 */
 	public double pidGet() {
-		return (left.encoder.getDistance() * right.encoder.getDistance())/2;
+		if (pidSourceType == PIDSourceType.kDisplacement) {
+			return getEncoderDistance();
+		} else {
+			return getEncoderRate();
+		}
 	}
 
 }

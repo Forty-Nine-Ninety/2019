@@ -119,10 +119,10 @@ public class SmartDashboardController {
 	public static void smartDashboardInit() {
 
 		// DriveTrain
-		RobotMap.driveTrain.left.motorGroup.setName("DriveTrain", "LeftMotors");
-		RobotMap.driveTrain.right.motorGroup.setName("DriveTrain", "RightMotors");
-		RobotMap.driveTrain.left.encoder.setName("DriveTrain", "LeftEncoder");
-		RobotMap.driveTrain.right.encoder.setName("DriveTrain", "RightEncoder");
+		RobotMap.leftMotorGroup.setName("DriveTrain", "LeftMotors");
+		RobotMap.rightMotorGroup.setName("DriveTrain", "RightMotors");
+		RobotMap.leftEncoder.setName("DriveTrain", "LeftEncoder");
+		RobotMap.rightEncoder.setName("DriveTrain", "RightEncoder");
 		// RobotMap.differentialDrive.setName("DriveTrain", "DifferentialDrive");
 
 		// Base Sensors
@@ -136,8 +136,8 @@ public class SmartDashboardController {
 		SmartDashboard.putData("Sensors/PDP", RobotMap.pdp);
 		SmartDashboard.putData("Sensors/AHRS Gyro", RobotMap.ahrs);
 
-		SmartDashboard.putNumber("Debug/Left Encoder Distance", RobotMap.driveTrain.left.getDistanceTraveled());
-		SmartDashboard.putNumber("Debug/Right Encoder Distance", RobotMap.driveTrain.right.getDistanceTraveled());
+		SmartDashboard.putNumber("Debug/Left Encoder Distance", RobotMap.leftEncoder.getDistance());
+		SmartDashboard.putNumber("Debug/Right Encoder Distance", RobotMap.rightEncoder.getDistance());
 
 		SmartDashboard.putNumber("DriveSystem/teleop/turnSteepness", OI.turnSteepnessAnalogButton.getRawAxis());
 		SmartDashboard.putNumber("DriveSystem/teleop/throttle", OI.throttleAnalogButton.getRawAxis());
