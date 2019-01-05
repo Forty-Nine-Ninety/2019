@@ -11,7 +11,6 @@ import org.usfirst.frc.team4990.robot.commands.*;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -22,11 +21,6 @@ public class OI{
 	
 	public static JoystickAnalogButton throttleAnalogButton = RobotMap.driveGamepad.leftJoystickY;
 	public static JoystickAnalogButton turnSteepnessAnalogButton = RobotMap.driveGamepad.rightJoystickX;
-
-	public static JoystickAnalogButton elevatorThrottleAnalogButton = RobotMap.opGamepad.rightJoystickY;
-
-	public static JoystickAnalogButton intakeINAnalogButton = RobotMap.opGamepad.leftTrigger;
-	public static JoystickAnalogButton intakeOUTAnalogButton = RobotMap.opGamepad.rightTrigger;
 
 	public static Button driveSpeedToggle = RobotMap.driveGamepad.x;
 	public static Button turnSpeedToggle = RobotMap.driveGamepad.b;
@@ -67,46 +61,12 @@ public class OI{
 		    Joysticks 1 and 2: forward/backward and turn left/right
 		    X button: toggle slow mode
 		
-		Elevator: (OP controller)
-		    RIGHT Joystick up/down: elevator up/down
-		    Y button: Move elevator to preset height w/PID system
-		
-		Intake: (OP controller)
-		    LOWER back bumpers/triggers: Left (in/out?), Right (in/out?)
-		    X button: override sensor
-		
-		Scaler: (OP controller)
-		    UPPER back button triggers: Left (in/out?), Right (in/out?)
-		
 		Check which controller is which: (both)
 		    START key (RIGHT Middle): prints in console which controller it is being pressed on
 	 */
 	
 	public OI() {
 
-		intakeINAnalogButton.setThreshold(0.01);
-		intakeOUTAnalogButton.setThreshold(0.01);
-		
-		//intake
-		Command TeleopIntakeControllerOUT = new TeleopIntakeController(TeleopIntakeController.direction.OUT);
-		Command TeleopIntakeControllerIN = new TeleopIntakeController(TeleopIntakeController.direction.IN);
-		//JoystickButtonGroup intakeButtons = new JoystickButtonGroup(opTriggerLeft, opTriggerRight);
-		intakeINAnalogButton.whileHeld(TeleopIntakeControllerIN);
-		//opTriggerLeft.cancelWhenActive(TeleopIntakeControllerIN);
-		intakeOUTAnalogButton.whileHeld(TeleopIntakeControllerOUT);
-		//opTriggerRight.cancelWhenActive(TeleopIntakeControllerOUT);
-
-		//elevator
-		elevatorThrottleAnalogButton.whileHeld(new TeleopElevatorController());
-		//opY.whenPressed(new ElevatorPID());
-		
-		//scaler
-		/*JoystickButtonGroup scalerButtons = new JoystickButtonGroup(opBumperLeft, opBumperRight);
-		opBumperLeft.whileHeld(new TeleopScalerController(TeleopScalerController.direction.IN));
-		opBumperRight.whileHeld(new TeleopScalerController(TeleopScalerController.direction.OUT));
-		scalerButtons.cancelWhenActive(new TeleopScalerController());
-		*/
-		
 		//drivetrain
 		driveSpeedToggle.toggleWhenPressed(new DriveSpeedToggle());
 		//default command is (standard) joystick drive

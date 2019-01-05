@@ -26,18 +26,11 @@ public class Robot extends TimedRobot {
 	 *
 	 */
 	public enum StartingPosition {
-		// LEFT,
-		// MID,
-		// RIGHT,
-		// ERROR,
-		STAY, FORWARD, FORWARD_AND_UP_LEFT, FORWARD_AND_UP_RIGHT, TEST
+		STAY, FORWARD, LEFT, CENTER, RIGHT, TEST
 	};
 
 	public static SendableChooser<StartingPosition> autoChooser;
 	public static StartingPosition startPos = StartingPosition.FORWARD;
-
-	public static SendableChooser<Boolean> ejectBoxChooser;
-	public static Boolean ejectBoxSelection = false;
 
 	public static Command autonomusCommand;
 
@@ -83,7 +76,6 @@ public class Robot extends TimedRobot {
 		if (System.currentTimeMillis() % 200 > 0 && System.currentTimeMillis() % 500 < 50) { // runs around every 1
 																								// second
 			startPos = autoChooser.getSelected();
-			ejectBoxSelection = ejectBoxChooser.getSelected();
 			smartDashboardController.smartDashboardPeriodic();
 			SmartDashboardController.updateAutoDashboard();
 		}
@@ -130,14 +122,11 @@ public class Robot extends TimedRobot {
 
 	public void testPeriodic() {
 		Scheduler.getInstance().run(); // runs execute() of current commands and period() of subsystems.
-		// teleopPeriodic();
-		// System.out.println(ahrs.getAngle());
 		smartDashboardController.smartDashboardPeriodic();
 	}
 
 	public void resetSensors() {
 		System.out.println("[SensorReset] Starting gyro calibration. DON'T MOVE THE ROBOT...");
-		RobotMap.gyro.calibrate();
 		RobotMap.ahrs.reset();
 		System.out.println("[SensorReset] Gyro calibration done. Resetting encoders...");
 		RobotMap.driveTrain.resetDistanceTraveled();
@@ -146,6 +135,6 @@ public class Robot extends TimedRobot {
 
 	// ever heard of the tale of last minute code
 	// I thought not, it is not a tale the chairman will tell to you
-	// (Keep below last function of Robot.java)
+	// (Keep this comment below last function of Robot.java and don't delete it because it is part of team history)
 	
 }
