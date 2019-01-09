@@ -1,9 +1,0 @@
-com.ctre
-com.ctre.phoenix
-com.ctre.phoenix.motion
-com.ctre.phoenix.motorcontrol
-com.ctre.phoenix.motorcontrol.can
-com.ctre.phoenix.schedulers
-com.ctre.phoenix.sensors
-com.ctre.phoenix.signals
-com.ctre.phoenix.time
