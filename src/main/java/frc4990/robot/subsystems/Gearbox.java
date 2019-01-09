@@ -20,8 +20,7 @@ public class Gearbox {
 		this.compensate = 1.0;
 		this.fix_backwards = 1.0;
 		
-		this.encoder.setDistancePerPulse(
-				/* feetPerWheelRevolution */ (4.0 / 12.0 * Math.PI) / /* pulsesPerRevolution */ 250);
+		this.encoder.setDistancePerPulse(/* feetPerWheelRevolution */ (4.0 / 12.0 * Math.PI) / /* pulsesPerRevolution */ 250);
 		this.encoder.setMinRate(0);
 		this.encoder.setSamplesToAverage(/* gearboxEncoderSamplesToAvg */ 5);
 	}
