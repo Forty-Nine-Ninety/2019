@@ -21,8 +21,8 @@ Digital IO Ports (0-9)
 5: Ultrasonic Echo (output)
 6: 
 7: 
-8: 
-9: 
+8: Pneumatic Forward (I'm assuming that means extend)
+9: Pneumatic Reverse (Maybe this is retracted?)
 
 Analog IO (0-9)
 0: 

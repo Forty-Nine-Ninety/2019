@@ -27,6 +27,7 @@ public class OI{
 	public static Button turnSpeedToggle = RobotMap.driveGamepad.b;
 	public static Button driveControllerCheck = RobotMap.driveGamepad.start;
 	public static Button opControllerCheck = RobotMap.opGamepad.start;
+	public static Button pneumaticToggle = RobotMap.opGamepad.x;
 	
 	/* CREATING BUTTONS
 	One type of button is a joystick button which is any button on a
@@ -76,6 +77,9 @@ public class OI{
 		//controller check
 		driveControllerCheck.toggleWhenPressed(new ControllerCheck(RobotMap.driveGamepad));
 		opControllerCheck.toggleWhenPressed(new ControllerCheck(RobotMap.opGamepad));
+
+		//Pneumatics
+		pneumaticToggle.whenPressed(new TogglePneumatic());
 	}
 	
 	/**
