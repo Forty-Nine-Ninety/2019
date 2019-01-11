@@ -71,8 +71,8 @@ public class RobotMap {
 		rightFrontDriveTalon = new TalonMotorController(3);
 		rightRearDriveTalon = new TalonMotorController(4);
 		
-		//leftEncoder = new MagneticEncoder(canBusID);
-		//rightEncoder = new MagneticEncoder(canBusID);
+		leftEncoder = new Encoder(0, 1);
+		rightEncoder = new Encoder(2, 3);
 		
 		leftGearbox = new Gearbox(leftFrontDriveTalon, leftRearDriveTalon, leftEncoder);
 		rightGearbox = new Gearbox(rightFrontDriveTalon, rightRearDriveTalon, rightEncoder);

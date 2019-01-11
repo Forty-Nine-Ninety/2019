@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: frc.robot.Main
+Main-Class: frc4990.robot.Main
 
