@@ -119,7 +119,7 @@ public class TeleopDriveTrainController extends Command{
 		double newThrottle = throttleInput;
 		
 		if (accelerationTime != 0) {
-			double acceleration = (throttleInput - lastThrottle) / accelerationTime;
+			double acceleration = (throttleInput - lastThrottle) / accelerationTime;//Some sort of acceleration thing...? We didn't write this.
 			double deltaTime = currentUpdate.getTime() - lastUpdate.getTime();
 			
 			double deltaThrottle = deltaTime * acceleration;

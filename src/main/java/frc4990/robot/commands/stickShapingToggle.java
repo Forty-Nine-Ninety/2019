@@ -14,20 +14,7 @@ public class stickShapingToggle extends InstantCommand {
 	public stickShapingToggle() {}
 	
 	public void initialize() {
-		switch (TeleopDriveTrainController.stickShapingMode) {
-			case NextThrottle:
-				TeleopDriveTrainController.stickShapingMode = StickShapingMode.SquaredThrottle;
-				break;
-			case SquaredThrottle:
-				TeleopDriveTrainController.stickShapingMode = StickShapingMode.DifferentialDrive;
-				break;
-			case DifferentialDrive:
-				TeleopDriveTrainController.stickShapingMode = StickShapingMode.NextThrottle;
-				break;
-			default: 
-				break;
-		}
-
+		TeleopDriveTrainController.stickShapingMode = TeleopDriveTrainController.StickShapingMode.values()[(TeleopDriveTrainController.stickShapingMode.ordinal() + 1) % 3];
 		System.out.println("StickShaping Method:" + TeleopDriveTrainController.stickShapingMode.toString());
 
 	}
