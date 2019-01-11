@@ -4,7 +4,7 @@ import frc4990.robot.subsystems.Pneumatic;
 
 public class TogglePneumatic extends InstantCommand {
 
-	Pneumatic subsystem;
+	private Pneumatic subsystem;
 
 	public TogglePneumatic(Pneumatic subsystem) {
 		this.subsystem = subsystem;

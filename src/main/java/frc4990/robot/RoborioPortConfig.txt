@@ -9,9 +9,8 @@ CAN Bus IDs: (0-63) (Don't go above 20 if possible because errors can occur)
 7: 
 8: 
 9: 
-...
 
-PCM (Pneumatics Control Moduel) (0-7):
+PCM (Pneumatics Control Module) (0-7):
 0: Pneumatic Forward (I'm assuming that means extend)
 1: Pneumatic Reverse (Maybe this is retracted?)
 2: 

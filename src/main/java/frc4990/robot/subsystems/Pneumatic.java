@@ -5,33 +5,22 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Pneumatic extends Subsystem {
 
-	private Solenoid Solenoid;
+	private Solenoid solenoid;
 
 	/**
 	 * Should be self explanatory. Creates a double solenoid.
 	 * 
-	 * @param forward Port number for input
-	 * @param reverse Port number for output
+	 * @param pcm Port number PCM
+	 * @param channel Port number for solenoid
 	 * @author MajikalExplosions
 	 */
-	public Pneumatic(int channel) {
-		Solenoid = new Solenoid(0,channel);
-		Solenoid.set(false);
+	public Pneumatic(int pcm, int channel) {
+		solenoid = (new Solenoid(pcm, channel));
+		solenoid.set(false);
 	}
 
 	public void togglePneumatics() {
-		Solenoid.set(Solenoid.get() ? false : true);
-		/*switch(doubleSolenoid.get()) {
-			case kForward:
-				doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
-				break;
-			case kReverse:
-				doubleSolenoid.set(DoubleSolenoid.Value.kForward);
-				break;
-			case kOff:
-				doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
-				break;
-		}*/
+		solenoid.set(solenoid.get() ? false : true);
 	}
 
 	@Override
