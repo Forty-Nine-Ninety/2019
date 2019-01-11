@@ -1,11 +1,11 @@
 package frc4990.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Pneumatic extends Subsystem {
 
-	private DoubleSolenoid doubleSolenoid;
+	private Solenoid Solenoid;
 
 	/**
 	 * Should be self explanatory. Creates a double solenoid.
@@ -14,13 +14,14 @@ public class Pneumatic extends Subsystem {
 	 * @param reverse Port number for output
 	 * @author MajikalExplosions
 	 */
-	public Pneumatic(int forward, int reverse) {
-		doubleSolenoid = new DoubleSolenoid(forward, reverse);
-		doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
+	public Pneumatic(int channel) {
+		Solenoid = new Solenoid(0,channel);
+		Solenoid.set(false);
 	}
 
 	public void togglePneumatics() {
-		switch(doubleSolenoid.get()) {
+		Solenoid.set(Solenoid.get() ? false : true);
+		/*switch(doubleSolenoid.get()) {
 			case kForward:
 				doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
 				break;
@@ -30,7 +31,7 @@ public class Pneumatic extends Subsystem {
 			case kOff:
 				doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
 				break;
-		}
+		}*/
 	}
 
 	@Override

@@ -56,8 +56,8 @@ public class RobotMap {
 	
 	public static AHRS ahrs;
 
-	public static Pneumatic pneumatic;
-
+	public static Pneumatic pneumatic1;
+	public static Pneumatic pneumatic2;
 	
 	public RobotMap() {
 		
@@ -93,6 +93,7 @@ public class RobotMap {
 		//navX-MXP RoboRIO extension and 9-axis gyro thingy
 		//for simple gyro angles: use ahrs.getAngle() to get heading (returns number -n to n) and reset() to reset angle (and drift)
 
-		pneumatic = new Pneumatic(8, 9);
+		pneumatic1 = new Pneumatic(0);
+		pneumatic2 = new Pneumatic(1);
 	} 
 }
