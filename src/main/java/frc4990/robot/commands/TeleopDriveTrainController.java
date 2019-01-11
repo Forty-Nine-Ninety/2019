@@ -27,9 +27,9 @@ public class TeleopDriveTrainController extends Command{
 	private double throttle, turnSteepness;
 
 	//for older StickShapingMode (NextThrottle)
-	 private double lastThrottle, lastTurnSteepness;
-	 private Date currentUpdate, lastUpdate;
-	 private double accelerationTime = 250;
+	 private double nt_lastThrottle, nt_lastTurnSteepness;
+	 private Date nt_currentUpdate, nt_lastUpdate;
+	 private double nt_accelerationTime = 250;
 
 	/**
 	 * Constructor for TeleopDriveTrainController
@@ -46,37 +46,37 @@ public class TeleopDriveTrainController extends Command{
 	public void execute() {
 
 		switch (stickShapingMode) {
-			case NextThrottle:
-				currentUpdate = new Date();
-			
+			case NextThrottle://Old stick shaping mode
+				nt_currentUpdate = new Date();
+
 				throttle = getNextThrottle(
 					OI.throttleAnalogButton.getRawAxis() * currentThrottleMultiplier, 
-					this.lastThrottle, 
-					this.lastUpdate, 
-					currentUpdate, 
-					this.accelerationTime);
+					this.nt_lastThrottle, 
+					this.nt_lastUpdate, 
+					nt_currentUpdate, 
+					this.nt_accelerationTime);
 			
 				turnSteepness = getNextThrottle(
 					OI.turnSteepnessAnalogButton.getRawAxis() * currentThrottleMultiplier,
-					this.lastTurnSteepness,
-					this.lastUpdate,
-					currentUpdate,
-					this.accelerationTime);
+					this.nt_lastTurnSteepness,
+					this.nt_lastUpdate,
+					nt_currentUpdate,
+					this.nt_accelerationTime);
 				break;
-			
-			case SquaredThrottle:
+			case SquaredThrottle://Another one that we tried.
 				throttle = getSquaredThrottle(OI.throttleAnalogButton.getRawAxis() * currentThrottleMultiplier);
 				turnSteepness = getSquaredThrottle(OI.turnSteepnessAnalogButton.getRawAxis());
 				break;
-			
-			case DifferentialDrive:
+			case DifferentialDrive://New!  but there is no code.
 				break;
-			
-			default: 
-				break;
-
 		}
 		
+		/*
+		 *
+		 * The following code bits really need some clean-up.
+		 * 
+		 */
+
 		if (throttle != 0 && turnSteepness != 0) { //arc turn
 			driveMode = DriveMode.ARC;
 			if (stickShapingMode != StickShapingMode.DifferentialDrive) {
@@ -115,6 +115,15 @@ public class TeleopDriveTrainController extends Command{
 		return throttleInput * throttleInput * Math.signum(throttleInput);
 	}
 
+	/**
+	 * Does some weird acceleration thing.  It works surprisingly well though.
+	 * @param throttleInput
+	 * @param lastThrottle
+	 * @param lastUpdate
+	 * @param currentUpdate
+	 * @param accelerationTime
+	 * @return
+	 */
 	public double getNextThrottle(double throttleInput, double lastThrottle, Date lastUpdate, Date currentUpdate, double accelerationTime) {
 		double newThrottle = throttleInput;
 		
