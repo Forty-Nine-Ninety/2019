@@ -132,7 +132,7 @@ public class SmartDashboardController {
 	}
 
 	public void smartDashboardPeriodic() {
-		System.out.println("[DEBUG] Started dashboard update at" + System.nanoTime() + "us");
+		System.err.println("[DEBUG] Started dashboard update at" + (System.currentTimeMillis() % 100000) + "ms");
 
 		SmartDashboard.putData("Sensors/PDP", RobotMap.pdp);
 		SmartDashboard.putData("Sensors/AHRS Gyro", RobotMap.ahrs);
@@ -147,8 +147,11 @@ public class SmartDashboardController {
 		if (Robot.autonomusCommand != null) {
 			SmartDashboard.putData("Autonomus/AutonomusCommand", Robot.autonomusCommand);
 		}
+
+		System.err.println("[DEBUG] Actually updating dashboard at" + (System.currentTimeMillis() % 100000) + "ms");
+
 		SmartDashboard.updateValues();
 
-		System.out.println("[DEBUG] Finished dashboard update at" + System.nanoTime() + "us");
+		System.err.println("[DEBUG] Finished dashboard update at" + (System.currentTimeMillis() % 100000) + "ms");
 	}
 }
