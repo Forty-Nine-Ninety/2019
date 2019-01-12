@@ -129,11 +129,8 @@ public class SmartDashboardController {
 		RobotMap.pdp.setName("Sensors", "PDP");
 		RobotMap.ahrs.setName("Sensors", "AHRS Gyro");
 		RobotMap.ultrasonic.setName("Sensors", "Ultrasonic");
-	}
 
-	public void smartDashboardPeriodic() {
-		System.err.println("[DEBUG] Started dashboard update at" + (System.currentTimeMillis() % 100000) + "ms");
-
+		//Put data into smartdashboard
 		SmartDashboard.putData("Sensors/PDP", RobotMap.pdp);
 		SmartDashboard.putData("Sensors/AHRS Gyro", RobotMap.ahrs);
 
@@ -147,11 +144,10 @@ public class SmartDashboardController {
 		if (Robot.autonomusCommand != null) {
 			SmartDashboard.putData("Autonomus/AutonomusCommand", Robot.autonomusCommand);
 		}
+	}
 
-		System.err.println("[DEBUG] Actually updating dashboard at" + (System.currentTimeMillis() % 100000) + "ms");
+	public void smartDashboardPeriodic() {
 
-		SmartDashboard.updateValues();
-
-		System.err.println("[DEBUG] Finished dashboard update at" + (System.currentTimeMillis() % 100000) + "ms");
+		//SmartDashboard.updateValues();
 	}
 }
