@@ -1,6 +1,10 @@
 package frc4990.robot;
 
+import java.util.HashMap;
+
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc4990.robot.Robot.StartingPosition;
@@ -8,7 +12,18 @@ import frc4990.robot.Robot.StartingPosition;
 public class SmartDashboardController {
 
 	private static Preferences preferences = Preferences.getInstance();
-	public static Boolean debug = false;
+	private static ShuffleboardTab tab;
+	public static HashMap<String,Object> debugDashboard = new HashMap<>(), driveDashboard = new HashMap<>();
+	static
+    {
+        debugDashboard = new HashMap<String, Object>();
+        debugDashboard.put("a", "d");//Second one is a reference, first one is key
+		debugDashboard.put("c", "d");
+
+		driveDashboard = new HashMap<String, Object>();
+        driveDashboard.put("a", "b");
+		driveDashboard.put("c", "d");
+    }
 
 	/**
 	 * Retrieves a numerical constant from SmartDashbaord/Shuffleboard.
@@ -147,8 +162,19 @@ public class SmartDashboardController {
 		}
 	}
 
-	public void smartDashboardPeriodic() {
+	//New code below...?
 
-		//SmartDashboard.updateValues();
+	public static void updateDashboard() {
+		if (tab.getTitle().equals("Debug")) updateDashboard(debugDashboard); else updateDashboard(driveDashboard);
+	}
+
+	private static void updateDashboard(HashMap<String,Object> dashboardValues) {
+		for (String key : dashboardValues.keySet())
+			tab.add(key, dashboardValues.get(key)).getEntry().setValue(dashboardValues.get(key));
+	}
+
+	public static void setDashboardMode(boolean debug) {
+		if (debug) tab = Shuffleboard.getTab("Debug");
+		else tab = Shuffleboard.getTab("Drive");
 	}
 }

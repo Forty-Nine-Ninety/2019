@@ -77,7 +77,6 @@ public class Robot extends TimedRobot {
 		if (System.currentTimeMillis() % 200 > 0 && System.currentTimeMillis() % 500 < 50) { // runs around every 1
 																								// second
 			startPos = autoChooser.getSelected();
-			smartDashboardController.smartDashboardPeriodic();
 			SmartDashboardController.updateAutoDashboard();
 		}
 
@@ -93,7 +92,6 @@ public class Robot extends TimedRobot {
 
 	public void autonomousPeriodic() { // This function is called periodically during autonomous
 		Scheduler.getInstance().run(); // runs execute() of current commands and period() of subsystems.
-		smartDashboardController.smartDashboardPeriodic();
 	}
 
 	public void teleopInit() { // This function is called at the start of teleop
@@ -108,11 +106,9 @@ public class Robot extends TimedRobot {
 
 	public void teleopPeriodic() { // This function is called periodically during teleop
 		Scheduler.getInstance().run(); // runs execute() of current commands and periodic() of subsystems.
-		smartDashboardController.smartDashboardPeriodic();
 	}
 
 	public void testInit() {
-		smartDashboardController.smartDashboardPeriodic();
 		startPos = autoChooser.getSelected();
 		if (autonomusCommand != null) {
 			autonomusCommand = new AutonomusCommand();
@@ -123,7 +119,6 @@ public class Robot extends TimedRobot {
 
 	public void testPeriodic() {
 		Scheduler.getInstance().run(); // runs execute() of current commands and period() of subsystems.
-		smartDashboardController.smartDashboardPeriodic();
 	}
 
 	public static void resetSensors() {
