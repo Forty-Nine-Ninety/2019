@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 public class MagneticEncoder extends SensorCollection implements PIDSource, Sendable {
 
     private int timeoutMs = 25;
-    private BaseMotorController internalMotorController;
+    //private BaseMotorController internalMotorController;
 
     private PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
 
@@ -25,7 +25,7 @@ public class MagneticEncoder extends SensorCollection implements PIDSource, Send
          */
         public MagneticEncoder(int canID) {
             super(new TalonMotorController(canID));
-            internalMotorController = new TalonMotorController(canID);
+            //internalMotorController = new TalonMotorController(canID);
         }
         
         /**
@@ -36,7 +36,7 @@ public class MagneticEncoder extends SensorCollection implements PIDSource, Send
          */
         public MagneticEncoder(BaseMotorController motorController) {
             super(motorController);
-            internalMotorController = motorController;
+            //internalMotorController = motorController;
         }
       /**
        * Gets the current count. Returns the current count on the Encoder.
