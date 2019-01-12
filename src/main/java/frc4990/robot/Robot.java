@@ -105,7 +105,7 @@ public class Robot extends TimedRobot {
 	}
 
 	public void teleopPeriodic() { // This function is called periodically during teleop
-		Scheduler.getInstance().run(); // runs execute() of current commands and period() of subsystems.
+		Scheduler.getInstance().run(); // runs execute() of current commands and periodic() of subsystems.
 		smartDashboardController.smartDashboardPeriodic();
 	}
 
