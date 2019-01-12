@@ -11,7 +11,7 @@ import frc4990.robot.SmartDashboardController;
 
 public class GyroTurn extends Command implements PIDOutput {
 
-	public final double DRIVETRAIN_WIH = (23 + 7 / 8) / 12;//In feet; move to Constants.java at some point maybe.
+	public final double DRIVETRAIN_WIDTH = (23 + 7 / 8) / 12;//In feet; move to Constants.java at some point maybe.
 
     /* The following PID Controller coefficients will need to be tuned 
      to match the dynamics of your drive system.  Note that the      
@@ -72,8 +72,8 @@ public class GyroTurn extends Command implements PIDOutput {
 			double radius = SmartDashboardController.getConst("gyroTurn/turnRadius", 0);
 			double ratio;
 			if (radius < 0) {
-				radius += DRIVETRAIN_WIH / 2;
-				ratio = radius / (radius + DRIVETRAIN_WIH);
+				radius += DRIVETRAIN_WIDTH / 2;
+				ratio = radius / (radius + DRIVETRAIN_WIDTH);
 				if (Math.abs(ratio) < 1) {
 					RobotMap.driveTrain.setSpeed(maxSpeed, ratio * maxSpeed);
 				}
@@ -82,8 +82,8 @@ public class GyroTurn extends Command implements PIDOutput {
 				}
 			}
 			else if (radius > 0) {
-				radius -= DRIVETRAIN_WIH / 2;
-				ratio = radius / (radius + DRIVETRAIN_WIH);
+				radius -= DRIVETRAIN_WIDTH / 2;
+				ratio = radius / (radius + DRIVETRAIN_WIDTH);
 				if (Math.abs(ratio) < 1) {
 					RobotMap.driveTrain.setSpeed(ratio * maxSpeed, maxSpeed);
 				}
