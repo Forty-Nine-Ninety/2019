@@ -8,6 +8,7 @@ import frc4990.robot.Robot.StartingPosition;
 public class SmartDashboardController {
 
 	private static Preferences preferences = Preferences.getInstance();
+	enum DebugMode { GAME_TIME, DEBUG; } 
 
 	/**
 	 * Retrieves a numerical constant from SmartDashbaord/Shuffleboard.
