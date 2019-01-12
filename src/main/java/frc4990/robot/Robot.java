@@ -38,6 +38,8 @@ public class Robot extends TimedRobot {
 
 	public static SmartDashboardController smartDashboardController = new SmartDashboardController();
 
+	public static ProcessThread processThread;
+
 	/**
 	 * @author Team 4990
 	 */
@@ -56,8 +58,8 @@ public class Robot extends TimedRobot {
 
 		SmartDashboardController.smartDashboardInit();
 
-		resetSensors();
-
+		processThread = new ProcessThread(true, true);//Also resets sensors
+		processThread.start();
 	}
 
 	public void robotPeriodic() {
@@ -124,7 +126,7 @@ public class Robot extends TimedRobot {
 		smartDashboardController.smartDashboardPeriodic();
 	}
 
-	public void resetSensors() {
+	public static void resetSensors() {
 		System.out.println("[SensorReset] Starting gyro calibration. DON'T MOVE THE ROBOT...");
 		RobotMap.ahrs.reset();
 		System.out.println("[SensorReset] Gyro calibration done. Resetting encoders...");
