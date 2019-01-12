@@ -10,7 +10,7 @@ import frc4990.robot.RobotMap;
  * 
  * @author Class of '21 (created in 2018 season)
  */
-public class TeleopDriveTrainController extends Command{
+public class TeleopDriveTrainController extends Command {
 	
 	public enum DriveMode { STRAIGHT, ARC, TURN, NONE }
 	
@@ -35,17 +35,18 @@ public class TeleopDriveTrainController extends Command{
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public void execute() {
-		/*double throttle = getNextThrottle(
+		/*
+		double throttle = getNextThrottle(
 				RobotMap.driveGamepad.getLeftJoystickY(), 
 				this.lastThrottle);
 		
 		double turnSteepness = getNextThrottle(
 				RobotMap.driveGamepad.getRightJoystickX(),
 				this.lastTurnSteepness);
-				*/
-				double throttle = getSquaredThrottle(OI.throttleAnalogButton.getRawAxis() * currentThrottleMultiplier);
-		
-				double turnSteepness = getSquaredThrottle(OI.turnSteepnessAnalogButton.getRawAxis());
+		*/
+		double throttle = getSquaredThrottle(OI.throttleAnalogButton.getRawAxis() * currentThrottleMultiplier);
+
+		double turnSteepness = getSquaredThrottle(OI.turnSteepnessAnalogButton.getRawAxis());
 		
 		if (throttle != 0 && turnSteepness != 0) { //arc turn
 			driveMode = DriveMode.ARC;
