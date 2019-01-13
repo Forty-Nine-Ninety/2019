@@ -21,7 +21,9 @@ public class SmartDashboardController {
 		debugDashboard.put("c", "d");
 
 		driveDashboard = new HashMap<String, Object>();
-        driveDashboard.put("a", "b");
+        driveDashboard.put("AutoChooser/SelectedStartPosition", () -> {
+			return Robot.autoChooser.getSelected().toString();
+		});
 		driveDashboard.put("c", "d");
     }
 
