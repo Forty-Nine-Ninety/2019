@@ -21,9 +21,15 @@ public class SmartDashboardController {
 		debugDashboard.put("c", "d");
 
 		driveDashboard = new HashMap<String, Object>();
+		/*
         driveDashboard.put("AutoChooser/SelectedStartPosition", () -> {
 			return Robot.autoChooser.getSelected().toString();
-		});
+		});*/
+
+		IStartPosition isp = () -> {// *definitely* not a reference to iSorrowProductions
+			return Robot.autoChooser.getSelected();
+		};
+		driveDashboard.put("AutoChooser/SelectedStartPosition", isp);
 		driveDashboard.put("c", "d");
     }
 
@@ -179,4 +185,6 @@ public class SmartDashboardController {
 		if (debug) tab = Shuffleboard.getTab("Debug");
 		else tab = Shuffleboard.getTab("Drive");
 	}
+
+	interface IStartPosition { Robot.StartingPosition getPosition();}
 }
