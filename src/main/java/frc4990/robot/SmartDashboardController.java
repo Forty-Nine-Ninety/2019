@@ -26,7 +26,9 @@ public class SmartDashboardController {
 			return Robot.autoChooser.getSelected().toString();
 		});*/
 
-		IStartPosition isp = () -> { return Robot.autoChooser.getSelected(); };// *definitely* not a reference to iSorrowProductions
+		IStartPosition isp = () -> {// *definitely* not a reference to iSorrowProductions
+			return Robot.autoChooser.getSelected();
+		};
 		driveDashboard.put("AutoChooser/SelectedStartPosition", isp);
 		driveDashboard.put("c", "d");
     }
