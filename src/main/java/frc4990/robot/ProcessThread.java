@@ -32,6 +32,7 @@ public class ProcessThread extends Thread {
 			synchronized(this) { 
 				if (runDashboardUpdate) 
 					SmartDashboard.updateValues(); 
+					SmartDashboardController.updateDashboard();
 				}
 			synchronized(this) { 
 				if (runSensorReset) { 

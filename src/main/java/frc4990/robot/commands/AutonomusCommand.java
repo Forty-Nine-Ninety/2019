@@ -8,7 +8,7 @@ public class AutonomusCommand extends CommandGroup {
 
 	public AutonomusCommand() {
 		
-		StartingPosition s = Robot.startPos;
+		StartingPosition s = Robot.autoChooser.getSelected();
 		System.out.println("Auto Logic INIT, startPos = "+ s.toString());
 		
 		if ((s != StartingPosition.STAY) && (s != StartingPosition.TEST)) {

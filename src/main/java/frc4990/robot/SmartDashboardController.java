@@ -2,36 +2,48 @@ package frc4990.robot;
 
 import java.util.HashMap;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc4990.robot.Robot.StartingPosition;
 
 public class SmartDashboardController {
 
 	private static Preferences preferences = Preferences.getInstance();
 	private static ShuffleboardTab tab;
 	public static HashMap<String,Object> debugDashboard = new HashMap<>(), driveDashboard = new HashMap<>();
+	
+
+	interface FunctionalInterface { Object anything();}
+	
 	static
     {
-        debugDashboard = new HashMap<String, Object>();
-        debugDashboard.put("a", "d");//Second one is a reference, first one is key
-		debugDashboard.put("c", "d");
+        debugDashboard = new HashMap<String, Object>(); //Second one is a reference, first one is key
+		debugDashboard.put("Base/PDP", RobotMap.pdp);
+		debugDashboard.put("Base/Ultrasonic", RobotMap.ultrasonic);
+		debugDashboard.put("Base/NavX-MXP-AHRS", RobotMap.ahrs);
+
+		debugDashboard.put("DriveTrain/Left/Encoder", RobotMap.leftEncoder);
+		debugDashboard.put("DriveTrain/Right/Encoder", RobotMap.rightEncoder);
+		debugDashboard.put("DriveTrain/Left/motorGroup", RobotMap.driveTrain.left.motorGroup);
+		debugDashboard.put("DriveTrain/Right/motorGroup", RobotMap.driveTrain.right.motorGroup);
+		//debugDashboard.put("DriveTrain/DifferentialDrive", DriveTrain.differentialDrive);
+		
+		debugDashboard.put("DriveStationInput/turnSteepness", (FunctionalInterface) () -> { return OI.turnSteepnessAnalogButton.getRawAxis(); });
+		debugDashboard.put("DriveStationInput/throttle", (FunctionalInterface) () -> { return OI.throttleAnalogButton.getRawAxis(); });
+		
+		if (Robot.autonomusCommand != null) {
+			debugDashboard.put("Autonomus/AutonomusCommand", Robot.autonomusCommand);
+		}
 
 		driveDashboard = new HashMap<String, Object>();
-		/*
-        driveDashboard.put("AutoChooser/SelectedStartPosition", () -> {
-			return Robot.autoChooser.getSelected().toString();
-		});*/
 
-		IStartPosition isp = () -> {// *definitely* not a reference to iSorrowProductions
-			return Robot.autoChooser.getSelected();
-		};
-		driveDashboard.put("AutoChooser/SelectedStartPosition", isp);
-		driveDashboard.put("c", "d");
-    }
+		driveDashboard.put("AutoChooser/SelectedStartPosition", 
+			(FunctionalInterface) () -> { return Robot.autoChooser.getSelected().toString(); });
+		driveDashboard.put("AutoChooser/AutoChooser", Robot.autoChooser);
+		driveDashboard.put("FMS", DriverStation.getInstance());
+		
+	}
 
 	/**
 	 * Retrieves a numerical constant from SmartDashbaord/Shuffleboard.
@@ -115,65 +127,11 @@ public class SmartDashboardController {
 
 	}
 
-
-
-	/**
-	 * Adds SendableChooser to SmartDashboard for Auto route choosing.
-	 */
-
-	public static void updateAutoDashboard() {
-		// Auto chooser
-		Robot.autoChooser = new SendableChooser<StartingPosition>();
-		Robot.autoChooser.setDefaultOption("Forward (cross line)", StartingPosition.FORWARD);
-		Robot.autoChooser.addOption("Left", StartingPosition.LEFT);
-		Robot.autoChooser.addOption("Center", StartingPosition.CENTER);
-		Robot.autoChooser.addOption("Right", StartingPosition.RIGHT);
-		Robot.autoChooser.addOption("Stay", StartingPosition.STAY);
-		Robot.autoChooser.addOption("Test", StartingPosition.TEST);
-
-		Robot.autoChooser.setName("AutonomusControl", "Auto Chooser");
-		Robot.startPos = Robot.autoChooser.getSelected();
-		SmartDashboard.putData("DriveTeam/Auto Chooser", Robot.autoChooser);
-		SmartDashboard.putString("Drive/Selected Starting Position", Robot.startPos.toString());
-
-		SmartDashboard.updateValues(); // always run at END of updateAutoDashboard
-
-	}
-
-	public static void smartDashboardInit() {
-
-		// DriveTrain
-		RobotMap.driveTrain.left.motorGroup.setName("DriveTrain", "LeftMotors");
-		RobotMap.driveTrain.right.motorGroup.setName("DriveTrain", "RightMotors");
-		RobotMap.driveTrain.left.encoder.setName("DriveTrain", "LeftEncoder");
-		RobotMap.driveTrain.right.encoder.setName("DriveTrain", "RightEncoder");
-		// RobotMap.differentialDrive.setName("DriveTrain", "DifferentialDrive");
-
-		// Base Sensors
-		RobotMap.pdp.setName("Sensors", "PDP");
-		RobotMap.ahrs.setName("Sensors", "AHRS Gyro");
-		RobotMap.ultrasonic.setName("Sensors", "Ultrasonic");
-
-		//Put data into smartdashboard
-		SmartDashboard.putData("Sensors/PDP", RobotMap.pdp);
-		SmartDashboard.putData("Sensors/AHRS Gyro", RobotMap.ahrs);
-
-		SmartDashboard.putNumber("Debug/Left Encoder Distance", RobotMap.driveTrain.left.getDistanceTraveled());
-		SmartDashboard.putNumber("Debug/Right Encoder Distance", RobotMap.driveTrain.right.getDistanceTraveled());
-
-		SmartDashboard.putNumber("DriveSystem/teleop/turnSteepness", OI.turnSteepnessAnalogButton.getRawAxis());
-		SmartDashboard.putNumber("DriveSystem/teleop/throttle", OI.throttleAnalogButton.getRawAxis());
-
-		SmartDashboard.putData("Subsystems/DriveTrainSubsystem", RobotMap.driveTrain);
-		if (Robot.autonomusCommand != null) {
-			SmartDashboard.putData("Autonomus/AutonomusCommand", Robot.autonomusCommand);
-		}
-	}
-
-	//New code below...?
+	//New code below
 
 	public static void updateDashboard() {
-		if (tab.getTitle().equals("Debug")) updateDashboard(debugDashboard); else updateDashboard(driveDashboard);
+		if (tab.getTitle().equals("Debug")) updateDashboard(debugDashboard); 
+		else updateDashboard(driveDashboard);
 	}
 
 	private static void updateDashboard(HashMap<String,Object> dashboardValues) {
@@ -182,9 +140,12 @@ public class SmartDashboardController {
 	}
 
 	public static void setDashboardMode(boolean debug) {
-		if (debug) tab = Shuffleboard.getTab("Debug");
-		else tab = Shuffleboard.getTab("Drive");
-	}
+		if (debug) {
+			tab = Shuffleboard.getTab("Debug");
 
-	interface IStartPosition { Robot.StartingPosition getPosition();}
+		} else {
+			tab = Shuffleboard.getTab("Drive");
+
+		}
+	}
 }
