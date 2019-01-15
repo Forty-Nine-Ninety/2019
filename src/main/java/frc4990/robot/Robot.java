@@ -51,7 +51,8 @@ public class Robot extends TimedRobot {
 		oi = new OI();
 
 		CameraServer.getInstance().startAutomaticCapture();
-
+		
+		SmartDashboardController.initializeDashboard();
 		processThread = new ProcessThread(true, true);//Also resets sensors
 		processThread.start();
 

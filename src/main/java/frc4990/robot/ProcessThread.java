@@ -10,6 +10,7 @@ public class ProcessThread extends Thread {
 	 * 
 	 * @param dashboard Whether to update the dashboard
 	 * @param sensor Whether to reset the sensors *once*
+	 * @author MajikalExplosions
 	 */
 	public ProcessThread(boolean dashboard, boolean sensor) {
 		runDashboardUpdate = dashboard;
@@ -18,22 +19,25 @@ public class ProcessThread extends Thread {
 
 	/**
 	 * Resets sensors the next time it's run
+	 * @author MajikalExplosions
 	 */
 	public synchronized void resetSensors() {
 		runSensorReset = true;
 	}
-
+	/**
+	 * Toggles whether to update the dashboard or not
+	 * @author MajikalExplosions
+	 */
 	public synchronized void toggleDashboardUpdate() {
 		runDashboardUpdate = !runDashboardUpdate;
 	}
-
+	/**
+	 * Read javadocs for Thread class
+	 * @author MajikalExplosions
+	 */
 	public void run() {
 		while(true) {
-			synchronized(this) { 
-				if (runDashboardUpdate) 
-					SmartDashboard.updateValues(); 
-					SmartDashboardController.updateDashboard();
-				}
+			synchronized(this) { if (runDashboardUpdate) { SmartDashboard.updateValues(); SmartDashboardController.updateDashboard(); } }
 			synchronized(this) { if (runSensorReset) { Robot.resetSensors(); runSensorReset = false; } }
 		}
 	}

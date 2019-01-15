@@ -16,9 +16,12 @@ public class SmartDashboardController {
 
 	interface FunctionalInterface { Object anything();}
 	
-	static
-    {
-        debugDashboard = new HashMap<String, Object>(); //Second one is a reference, first one is key
+	/**
+	 * Initializes the dashboards(debug and drive modes) with values and things.
+	 * 
+	 */
+	public static void initializeDashboard() {
+		debugDashboard = new HashMap<String, Object>(); //Second one is a reference, first one is key
 		debugDashboard.put("Base/PDP", RobotMap.pdp);
 		debugDashboard.put("Base/Ultrasonic", RobotMap.ultrasonic);
 		debugDashboard.put("Base/NavX-MXP-AHRS", RobotMap.ahrs);
@@ -41,7 +44,6 @@ public class SmartDashboardController {
 			(FunctionalInterface) () -> { return Robot.autoChooser.getSelected().toString(); });
 		driveDashboard.put("AutoChooser/AutoChooser", Robot.autoChooser);
 		driveDashboard.put("FMS", DriverStation.getInstance());
-		
 	}
 
 	/**
