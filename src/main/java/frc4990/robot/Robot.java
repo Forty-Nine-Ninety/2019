@@ -1,6 +1,8 @@
 package frc4990.robot;
 
 
+import edu.wpi.cscore.VideoSource;
+
 //This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that was the Freshmen Union of 2018
 
 import edu.wpi.first.cameraserver.CameraServer;
@@ -40,6 +42,8 @@ public class Robot extends TimedRobot {
 
 	public static ProcessThread processThread;
 
+	public static VideoSource cameraSource;
+
 	/**
 	 * @author Team 4990
 	 */
@@ -50,6 +54,7 @@ public class Robot extends TimedRobot {
 		robotMap = new RobotMap();
 		oi = new OI();
 
+		cameraSource = CameraServer.getInstance().getServer().getSource();
 		CameraServer.getInstance().startAutomaticCapture();
 		
 		SmartDashboardController.initializeDashboard();
