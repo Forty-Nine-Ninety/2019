@@ -90,7 +90,7 @@ public class Robot extends TimedRobot {
 	}
 
 	public void autonomousPeriodic() { // This function is called periodically during autonomous
-		Scheduler.getInstance().run(); // runs execute() of current commands and period() of subsystems.
+		Scheduler.getInstance().run(); // runs execute() of current commands and periodic() of subsystems.
 	}
 
 	public void teleopInit() { // This function is called at the start of teleop
@@ -104,7 +104,9 @@ public class Robot extends TimedRobot {
 	}
 
 	public void teleopPeriodic() { // This function is called periodically during teleop
+		System.out.println("Running periodic at " + (System.currentTimeMillis() % 100000) + "ms");
 		Scheduler.getInstance().run(); // runs execute() of current commands and periodic() of subsystems.
+		//Apparently scheduler is still taking too long so I'll need to change that at some point...?
 	}
 
 	public void testInit() {

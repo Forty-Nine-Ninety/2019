@@ -14,7 +14,7 @@ public class SmartDashboardController {
 	public static HashMap<String,Object> debugDashboard = new HashMap<>(), driveDashboard = new HashMap<>();
 	
 
-	interface FunctionalInterface { Object anything();}
+	interface CFunctionalInterface { Object anything();}
 	
 	/**
 	 * Initializes the dashboards(debug and drive modes) with values and things.
@@ -32,8 +32,8 @@ public class SmartDashboardController {
 		debugDashboard.put("DriveTrain/Right/motorGroup", RobotMap.driveTrain.right.motorGroup);
 		//debugDashboard.put("DriveTrain/DifferentialDrive", DriveTrain.differentialDrive);
 		
-		debugDashboard.put("DriveStationInput/turnSteepness", (FunctionalInterface) () -> { return OI.turnSteepnessAnalogButton.getRawAxis(); });
-		debugDashboard.put("DriveStationInput/throttle", (FunctionalInterface) () -> { return OI.throttleAnalogButton.getRawAxis(); });
+		debugDashboard.put("DriveStationInput/turnSteepness", (CFunctionalInterface) () -> { return OI.turnSteepnessAnalogButton.getRawAxis(); });
+		debugDashboard.put("DriveStationInput/throttle", (CFunctionalInterface) () -> { return OI.throttleAnalogButton.getRawAxis(); });
 		
 		if (Robot.autonomusCommand != null) {
 			debugDashboard.put("Autonomus/AutonomusCommand", Robot.autonomusCommand);
@@ -41,7 +41,7 @@ public class SmartDashboardController {
 		
 		
 		driveDashboard.put("AutoChooser/SelectedStartPosition", 
-			(FunctionalInterface) () -> { return Robot.autoChooser.getSelected().toString(); });
+			(CFunctionalInterface) () -> { return Robot.autoChooser.getSelected().toString(); });
 		driveDashboard.put("AutoChooser/AutoChooser", Robot.autoChooser);
 		driveDashboard.put("FMS", DriverStation.getInstance());
 	}
