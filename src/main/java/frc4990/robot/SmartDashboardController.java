@@ -35,9 +35,8 @@ public class SmartDashboardController {
 		if (Robot.autonomusCommand != null) {
 			debugDashboard.put("Autonomus/AutonomusCommand", Robot.autonomusCommand);
 		}
-
-		driveDashboard = new HashMap<String, Object>();
-
+		
+		
 		driveDashboard.put("AutoChooser/SelectedStartPosition", 
 			(FunctionalInterface) () -> { return Robot.autoChooser.getSelected().toString(); });
 		driveDashboard.put("AutoChooser/AutoChooser", Robot.autoChooser);
