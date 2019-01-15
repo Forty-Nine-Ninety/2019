@@ -21,20 +21,17 @@ public class SendableObject extends SendableBase {
 		else throw new IllegalArgumentException("Value of type " + data.getClass().getName() + " cannot be put into a SendableObject");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initSendable(SendableBuilder builder) {
 		if (data instanceof BooleanSupplier) {
 			builder.addBooleanProperty("value", (BooleanSupplier) data, null);
 		  } else if (data instanceof Number) {
 			builder.addDoubleProperty("value", (DoubleSupplier) data, null);
-		  } else if (data instanceof String) {
+		  } else if (data.getClass().equals((new String()).getClass())) {
 			builder.addStringProperty("value", (Supplier<String>) data, null);
-		  } else if (data instanceof Boolean[])  {
-			builder.addBooleanArrayProperty("value", (Supplier<boolean[]>) data, null);
-		  } else if (data instanceof Number[])  {
-			builder.addDoubleArrayProperty("value", (Supplier<double[]>) data, null);
-		  } else if (data instanceof String[])  {
-			builder.addStringArrayProperty("value", (Supplier<String[]>) data, null);
+		  } else {
+			throw new IllegalArgumentException("Value of type " + data.getClass().getName() + " cannot be put into a SendableObject");
 		  }
 	}
 }
