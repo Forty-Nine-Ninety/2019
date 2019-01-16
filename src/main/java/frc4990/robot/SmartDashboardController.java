@@ -15,7 +15,7 @@ public class SmartDashboardController {
 	private static Preferences preferences = Preferences.getInstance();
 	private static ShuffleboardTab tab;
 	public static HashMap<String,Object> debugDashboard = new HashMap<>(), driveDashboard = new HashMap<>();
-	
+	interface FunctionalInterface { Object anything();}
 	/**
 	 * Initializes the dashboards(debug and drive modes) with values and things.
 	 * 
@@ -138,8 +138,7 @@ public class SmartDashboardController {
 			}
 		} else {
 			tab = Shuffleboard.getTab("Drive");
-			tab.add("AutoChooser/SelectedStartPosition", 
-				new SendableObject((Supplier<String>) () -> { return Robot.autoChooser.getSelected().toString(); }));
+			tab.add("AutoChooser/SelectedStartPosition", (FunctionalInterface) () -> { return Robot.autoChooser.getSelected().toString(); });
 			tab.add("AutoChooser/AutoChooser", Robot.autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(8, 1);
 		}
 	}

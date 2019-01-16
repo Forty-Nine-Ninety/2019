@@ -17,8 +17,11 @@ public class SendableObject extends SendableBase {
 	 * @author MajikalExplosions
 	 */
 	public SendableObject(Supplier<?> data) {
-		if (NetworkTableEntry.isValidDataType(data)) this.data = data;
-		else throw new IllegalArgumentException("Value of type " + data.getClass().getName() + " cannot be put into a SendableObject");
+		/*if (data.getClass().equals(new String().getClass()) ||
+		data.getClass().equals(new Double(0).getClass()) ||
+		data.getClass().equals(new String().getClass()) 
+		) */this.data = data;
+		//else throw new IllegalArgumentException("Value of type " + data.getClass().getName() + " cannot be put into a SendableObject");
 	}
 
 	@SuppressWarnings("unchecked")
