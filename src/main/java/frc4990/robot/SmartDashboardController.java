@@ -1,9 +1,12 @@
 package frc4990.robot;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
@@ -13,35 +16,19 @@ public class SmartDashboardController {
 	private static ShuffleboardTab tab;
 	public static HashMap<String,Object> debugDashboard = new HashMap<>(), driveDashboard = new HashMap<>();
 	
-
-	interface CFunctionalInterface { Object anything();}
-	
 	/**
 	 * Initializes the dashboards(debug and drive modes) with values and things.
 	 * 
 	 */
 	public static void initializeDashboard() {
 		debugDashboard = new HashMap<String, Object>(); //Second one is a reference, first one is key
-		debugDashboard.put("Base/PDP", RobotMap.pdp);
-		debugDashboard.put("Base/Ultrasonic", RobotMap.ultrasonic);
-		debugDashboard.put("Base/NavX-MXP-AHRS", RobotMap.ahrs);
-
-		debugDashboard.put("DriveTrain/Left/Encoder", RobotMap.leftEncoder);
-		debugDashboard.put("DriveTrain/Right/Encoder", RobotMap.rightEncoder);
-		debugDashboard.put("DriveTrain/Left/motorGroup", RobotMap.driveTrain.left.motorGroup);
-		debugDashboard.put("DriveTrain/Right/motorGroup", RobotMap.driveTrain.right.motorGroup);
-		//debugDashboard.put("DriveTrain/DifferentialDrive", DriveTrain.differentialDrive);
-		
-		debugDashboard.put("DriveStationInput/turnSteepness", (CFunctionalInterface) () -> { return OI.turnSteepnessAnalogButton.getRawAxis(); });
-		debugDashboard.put("DriveStationInput/throttle", (CFunctionalInterface) () -> { return OI.throttleAnalogButton.getRawAxis(); });
-		
-		if (Robot.autonomusCommand != null) {
-			debugDashboard.put("Autonomus/AutonomusCommand", Robot.autonomusCommand);
-		}
-		
+/*
+		debugDashboard.put("DriveStationInput/turnSteepness", (Supplier<Double>) () -> { return OI.turnSteepnessAnalogButton.getRawAxis(); });
+		debugDashboard.put("DriveStationInput/throttle", (Supplier<Double>) () -> { return OI.throttleAnalogButton.getRawAxis(); });
+		*/
 		
 		driveDashboard.put("AutoChooser/SelectedStartPosition", 
-			(CFunctionalInterface) () -> { return Robot.autoChooser.getSelected().toString(); });
+			(Supplier<String>) () -> { return Robot.autoChooser.getSelected().toString(); });
 		driveDashboard.put("AutoChooser/AutoChooser", Robot.autoChooser);
 		driveDashboard.put("FMS", DriverStation.getInstance());
 	}
@@ -143,7 +130,19 @@ public class SmartDashboardController {
 	public static void setDashboardMode(boolean debug) {
 		if (debug) {
 			tab = Shuffleboard.getTab("Debug");
-
+			tab.add("Base/PDP", RobotMap.pdp).withWidget(BuiltInWidgets.kPowerDistributionPanel).withSize(3, 2).withPosition(8, 3);
+			tab.add("Base/Ultrasonic", RobotMap.ultrasonic).withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("min","0","max","50")).withSize(1, 2).withPosition(5,0);
+			tab.add("Base/NavX-MXP-AHRS", RobotMap.ahrs).withWidget(BuiltInWidgets.kGyro).withSize(2, 2);
+	
+			debugDashboard.put("DriveTrain/Left/Encoder", RobotMap.leftEncoder);
+			debugDashboard.put("DriveTrain/Right/Encoder", RobotMap.rightEncoder);
+			debugDashboard.put("DriveTrain/Left/motorGroup", RobotMap.driveTrain.left.motorGroup);
+			debugDashboard.put("DriveTrain/Right/motorGroup", RobotMap.driveTrain.right.motorGroup);
+			//debugDashboard.put("DriveTrain/DifferentialDrive", DriveTrain.differentialDrive);
+			
+			if (Robot.autonomusCommand != null) {
+				debugDashboard.put("Autonomus/AutonomusCommand", Robot.autonomusCommand);
+			}
 		} else {
 			tab = Shuffleboard.getTab("Drive");
 
