@@ -22,15 +22,6 @@ public class SmartDashboardController {
 	 */
 	public static void initializeDashboard() {
 		debugDashboard = new HashMap<String, Object>(); //Second one is a reference, first one is key
-/*
-		debugDashboard.put("DriveStationInput/turnSteepness", (Supplier<Double>) () -> { return OI.turnSteepnessAnalogButton.getRawAxis(); });
-		debugDashboard.put("DriveStationInput/throttle", (Supplier<Double>) () -> { return OI.throttleAnalogButton.getRawAxis(); });
-		*/
-		
-		driveDashboard.put("AutoChooser/SelectedStartPosition", 
-			(Supplier<String>) () -> { return Robot.autoChooser.getSelected().toString(); });
-		driveDashboard.put("AutoChooser/AutoChooser", Robot.autoChooser);
-		driveDashboard.put("FMS", DriverStation.getInstance());
 	}
 
 	/**
@@ -133,19 +124,23 @@ public class SmartDashboardController {
 			tab.add("Base/PDP", RobotMap.pdp).withWidget(BuiltInWidgets.kPowerDistributionPanel).withSize(3, 2).withPosition(8, 3);
 			tab.add("Base/Ultrasonic", RobotMap.ultrasonic).withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("min","0","max","50")).withSize(1, 2).withPosition(5,0);
 			tab.add("Base/NavX-MXP-AHRS", RobotMap.ahrs).withWidget(BuiltInWidgets.kGyro).withSize(2, 2);
-	
-			debugDashboard.put("DriveTrain/Left/Encoder", RobotMap.leftEncoder);
-			debugDashboard.put("DriveTrain/Right/Encoder", RobotMap.rightEncoder);
-			debugDashboard.put("DriveTrain/Left/motorGroup", RobotMap.driveTrain.left.motorGroup);
-			debugDashboard.put("DriveTrain/Right/motorGroup", RobotMap.driveTrain.right.motorGroup);
-			//debugDashboard.put("DriveTrain/DifferentialDrive", DriveTrain.differentialDrive);
-			
+			tab.add("DriveTrain/Left/Encoder", RobotMap.leftEncoder).withWidget(BuiltInWidgets.kEncoder).withSize(2, 1).withPosition(11, 0);
+			tab.add("DriveTrain/Right/Encoder", RobotMap.rightEncoder).withWidget(BuiltInWidgets.kEncoder).withSize(2, 1).withPosition(11, 1);
+			tab.add("DriveTrain/Left/motorGroup", RobotMap.driveTrain.left.motorGroup).withWidget(BuiltInWidgets.kSpeedController).withSize(2, 1).withPosition(11, 2);
+			tab.add("DriveTrain/Right/motorGroup", RobotMap.driveTrain.right.motorGroup).withWidget(BuiltInWidgets.kSpeedController).withSize(2, 1).withPosition(11, 3);
+			//tab.add("DriveTrain/DifferentialDrive", DriveTrain.differentialDrive).withWidget(BuiltInWidgets.kDifferentialDrive).withSize(2, 2).withPosition(11, 4);
+			debugDashboard.put("DriveStationInput/turnSteepness", new SendableObject((Supplier<Double>) () -> { return OI.turnSteepnessAnalogButton.getRawAxis(); }));
+			debugDashboard.put("DriveStationInput/throttle", new SendableObject((Supplier<Double>) () -> { return OI.throttleAnalogButton.getRawAxis(); }));
+
+
 			if (Robot.autonomusCommand != null) {
-				debugDashboard.put("Autonomus/AutonomusCommand", Robot.autonomusCommand);
+				tab.add("Autonomus/AutonomusCommand", Robot.autonomusCommand).withWidget(BuiltInWidgets.kCommand).withPosition(11, 4);
 			}
 		} else {
 			tab = Shuffleboard.getTab("Drive");
-
+			tab.add("AutoChooser/SelectedStartPosition", 
+				new SendableObject((Supplier<String>) () -> { return Robot.autoChooser.getSelected().toString(); }));
+			tab.add("AutoChooser/AutoChooser", Robot.autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(8, 1);
 		}
 	}
 }
