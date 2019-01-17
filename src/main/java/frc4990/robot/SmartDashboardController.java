@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -21,7 +22,10 @@ public class SmartDashboardController {
 	 * 
 	 */
 	public static void initializeDashboard() {
-		debugDashboard = new HashMap<String, Object>(); //Second one is a reference, first one is key
+		debugDashboard = new HashMap<>();
+		driveDashboard = new HashMap<>();
+		Shuffleboard.getTab("Drive");
+		Shuffleboard.getTab("Debug");
 	}
 
 	/**
@@ -138,8 +142,9 @@ public class SmartDashboardController {
 			}
 		} else {
 			tab = Shuffleboard.getTab("Drive");
-			tab.add("AutoChooser/SelectedStartPosition", (FunctionalInterface) () -> { return Robot.autoChooser.getSelected().toString(); });
+			//tab.add("AutoChooser/SelectedStartPosition", (FunctionalInterface) () -> { return Robot.autoChooser.getSelected().toString(); });
 			tab.add("AutoChooser/AutoChooser", Robot.autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(8, 1);
+			tab.add("DebugDashboard", new InstantCommand((Runnable) () -> {setDashboardMode(true);}));
 		}
 	}
 }
