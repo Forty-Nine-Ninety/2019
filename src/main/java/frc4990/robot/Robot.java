@@ -54,8 +54,8 @@ public class Robot extends TimedRobot {
 		robotMap = new RobotMap();
 		oi = new OI();
 
-		//cameraSource = CameraServer.getInstance().getServer().getSource();
-		//CameraServer.getInstance().startAutomaticCapture();
+		cameraSource = CameraServer.getInstance().getServer().getSource();
+		CameraServer.getInstance().startAutomaticCapture();
 		
 		SmartDashboardController.initializeDashboard();
 		processThread = new ProcessThread(true, true);//Also resets sensors

@@ -56,8 +56,8 @@ public class RobotMap {
 	
 	public static AHRS ahrs;
 
-	//public static Pneumatic pneumatic1;
-	//public static Pneumatic pneumatic2;
+	public static Pneumatic pneumatic1;
+	public static Pneumatic pneumatic2;
 	
 	public RobotMap() {
 		
@@ -66,9 +66,9 @@ public class RobotMap {
 		driveGamepad = new F310Gamepad(0);
 		opGamepad = new F310Gamepad(1);
 		
-		leftFrontDriveTalon = new TalonMotorController(9);
+		leftFrontDriveTalon = new TalonMotorController(1);
 		leftRearDriveTalon = new TalonMotorController(2);
-		rightFrontDriveTalon = new TalonMotorController(21);
+		rightFrontDriveTalon = new TalonMotorController(3);
 		rightRearDriveTalon = new TalonMotorController(4);
 		
 		leftEncoder = new Encoder(0, 1);
@@ -93,7 +93,7 @@ public class RobotMap {
 		//navX-MXP RoboRIO extension and 9-axis gyro thingy
 		//for simple gyro angles: use ahrs.getAngle() to get heading (returns number -n to n) and reset() to reset angle (and drift)
 
-		//pneumatic1 = new Pneumatic(0, 0);
-		//pneumatic2 = new Pneumatic(0, 1);
+		pneumatic1 = new Pneumatic(0, 0);
+		pneumatic2 = new Pneumatic(0, 1);
 	} 
 }
