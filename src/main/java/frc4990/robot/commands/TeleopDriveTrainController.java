@@ -35,6 +35,8 @@ public class TeleopDriveTrainController extends Command {
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public void execute() {
+
+		RobotMap.driveTrain.setSpeed(OI.throttleAnalogButton.getRawAxis(), RobotMap.driveGamepad.getRawAxis(5));
 		/*
 		double throttle = getNextThrottle(
 				RobotMap.driveGamepad.getLeftJoystickY(), 
@@ -44,7 +46,7 @@ public class TeleopDriveTrainController extends Command {
 				RobotMap.driveGamepad.getRightJoystickX(),
 				this.lastTurnSteepness);
 		*/
-		double throttle = getSquaredThrottle(OI.throttleAnalogButton.getRawAxis() * currentThrottleMultiplier);
+		/*double throttle = getSquaredThrottle(OI.throttleAnalogButton.getRawAxis() * currentThrottleMultiplier);
 
 		double turnSteepness = getSquaredThrottle(OI.turnSteepnessAnalogButton.getRawAxis());
 		
@@ -60,9 +62,9 @@ public class TeleopDriveTrainController extends Command {
 			RobotMap.driveTrain.setSpeed(throttle, throttle);
 			
 		} else if (throttle == 0 && turnSteepness != 0) { //spin in place
-			/* the right motor's velocity has the opposite sign of the the left motor's
-			 * since the right motor will spin in the opposite direction from the left
-			 */
+			// the right motor's velocity has the opposite sign of the the left motor's
+			 // since the right motor will spin in the opposite direction from the left
+			 
 			driveMode = DriveMode.TURN;
 			RobotMap.driveTrain.setSpeed(turnSteepness * currentTurnSteepnessMultiplier, -turnSteepness * 
 			currentTurnSteepnessMultiplier);
@@ -70,7 +72,7 @@ public class TeleopDriveTrainController extends Command {
 		} else {
 			driveMode = DriveMode.NONE;
 			RobotMap.driveTrain.setSpeed(0, 0);
-		}
+		}*/
 	}
 	
 	/**
