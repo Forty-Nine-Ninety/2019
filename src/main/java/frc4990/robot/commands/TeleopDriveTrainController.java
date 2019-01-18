@@ -10,7 +10,7 @@ import frc4990.robot.RobotMap;
  * Class for controlling drivetrains.
  * @author Class of '21 (created in 2018 season)
  */
-public class TeleopDriveTrainController extends Command{
+public class TeleopDriveTrainController extends Command {
 	
 	public enum DriveMode { STRAIGHT, ARC, TURN, NONE }
 	

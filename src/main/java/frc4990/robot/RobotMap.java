@@ -17,10 +17,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Ultrasonic;
 //import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc4990.robot.subsystems.DriveTrain;
-import frc4990.robot.subsystems.F310Gamepad;
-import frc4990.robot.subsystems.Gearbox;
-import frc4990.robot.subsystems.TalonMotorController;
+import frc4990.robot.subsystems.*;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -58,6 +55,9 @@ public class RobotMap {
 	public static Ultrasonic ultrasonic;
 	
 	public static AHRS ahrs;
+
+	public static Pneumatic pneumatic1;
+	public static Pneumatic pneumatic2;
 	
 	public RobotMap() {
 		
@@ -71,8 +71,8 @@ public class RobotMap {
 		rightFrontDriveTalon = new TalonMotorController(3);
 		rightRearDriveTalon = new TalonMotorController(4);
 		
-		//leftEncoder = new MagneticEncoder(canBusID);
-		//rightEncoder = new MagneticEncoder(canBusID);
+		leftEncoder = new Encoder(0, 1);
+		rightEncoder = new Encoder(2, 3);
 		
 		leftGearbox = new Gearbox(leftFrontDriveTalon, leftRearDriveTalon, leftEncoder);
 		rightGearbox = new Gearbox(rightFrontDriveTalon, rightRearDriveTalon, rightEncoder);
@@ -87,10 +87,13 @@ public class RobotMap {
 		ultrasonicEchoDigitalInput = new DigitalInput(5); //ECHO
 		
 		ultrasonic = new Ultrasonic(ultrasonicDigitalOutput, ultrasonicEchoDigitalInput, Ultrasonic.Unit.kInches); 
-	
+		
 		
 		ahrs = new AHRS(SPI.Port.kMXP); 
 		//navX-MXP RoboRIO extension and 9-axis gyro thingy
 		//for simple gyro angles: use ahrs.getAngle() to get heading (returns number -n to n) and reset() to reset angle (and drift)
+
+		pneumatic1 = new Pneumatic(0, 0);
+		pneumatic2 = new Pneumatic(0, 1);
 	} 
 }
