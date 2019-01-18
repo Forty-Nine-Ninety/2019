@@ -69,6 +69,8 @@ public class TeleopDriveTrainController extends Command {
 				break;
 			case DifferentialDrive://New!  but there is no code.
 				break;
+			default:
+				break;
 		}
 		
 		/*
