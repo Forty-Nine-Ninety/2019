@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
-public class SendableObject<number, bool, string> extends SendableBase {
+public class SendableObject extends SendableBase {
 
 	private Supplier<?> supplier;
 	/**

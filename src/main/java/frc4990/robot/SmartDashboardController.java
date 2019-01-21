@@ -131,8 +131,8 @@ public class SmartDashboardController {
 			tab.add("DriveTrain/Left/motorGroup", RobotMap.driveTrain.left.motorGroup).withWidget(BuiltInWidgets.kSpeedController);//.withSize(2, 1).withPosition(11, 2);
 			tab.add("DriveTrain/Right/motorGroup", RobotMap.driveTrain.right.motorGroup).withWidget(BuiltInWidgets.kSpeedController);//.withSize(2, 1).withPosition(11, 3);
 			//tab.add("DriveTrain/DifferentialDrive", DriveTrain.differentialDrive).withWidget(BuiltInWidgets.kDifferentialDrive).withSize(2, 2).withPosition(11, 4);
-			//tab.add("DriveStationInput/turnSteepness", new SendableObject((Supplier<Double>) () -> { return OI.turnSteepnessAnalogButton.getRawAxis(); }));
-			//tab.add("DriveStationInput/throttle", new SendableObject((Supplier<Double>) () -> { return OI.throttleAnalogButton.getRawAxis(); }));
+			tab.add("DriveStationInput/turnSteepness", new SendableObject(() -> { return OI.turnSteepnessAnalogButton.getRawAxis(); }));
+			tab.add("DriveStationInput/throttle", new SendableObject(() -> { return OI.throttleAnalogButton.getRawAxis(); }));
 
 
 			if (Robot.autonomusCommand != null) {
@@ -141,7 +141,7 @@ public class SmartDashboardController {
 		} 
 			tab = driveTab;
 			tab.add(Scheduler.getInstance());
-			//tab.add("AutoChooser/SelectedStartPosition", (FunctionalInterface) () -> { return Robot.autoChooser.getSelected().toString(); });
+			tab.add("AutoChooser/SelectedStartPosition", new SendableObject(() -> { return Robot.autoChooser.getSelected().toString(); }));
 			tab.add("AutoChooser/AutoChooser", Robot.autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser);//.withSize(2, 1).withPosition(8, 1);
 			//tab.add("DebugDashboard", new InstantCommand((Runnable) () -> {setDashboardMode(true);}));
 		
