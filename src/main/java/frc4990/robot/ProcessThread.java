@@ -37,8 +37,18 @@ public class ProcessThread extends Thread {
 	 */
 	public void run() {
 		while(true) {
-			synchronized(this) { if (runDashboardUpdate) { SmartDashboard.updateValues(); SmartDashboardController.updateDashboard(); } }
-			synchronized(this) { if (runSensorReset) { Robot.resetSensors(); runSensorReset = false; } }
+			synchronized(this) { 
+				if (runDashboardUpdate) { 
+					SmartDashboard.updateValues(); 
+					SmartDashboardController.updateDashboard(); 
+				} 
+			}
+			synchronized(this) { 
+				if (runSensorReset) { 
+					Robot.resetSensors(); 
+					runSensorReset = false; 
+				}
+			}
 		}
 	}
 }
