@@ -3,6 +3,7 @@ package frc4990.robot;
 import java.util.HashMap;
 
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -139,6 +140,7 @@ public class SmartDashboardController {
 			}
 		} 
 			tab = driveTab;
+			tab.add(Scheduler.getInstance());
 			//tab.add("AutoChooser/SelectedStartPosition", (FunctionalInterface) () -> { return Robot.autoChooser.getSelected().toString(); });
 			tab.add("AutoChooser/AutoChooser", Robot.autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser);//.withSize(2, 1).withPosition(8, 1);
 			//tab.add("DebugDashboard", new InstantCommand((Runnable) () -> {setDashboardMode(true);}));
