@@ -1,12 +1,8 @@
 package frc4990.robot;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -17,6 +13,7 @@ public class SmartDashboardController {
 	private static ShuffleboardTab tab;
 	public static HashMap<String,Object> debugDashboard = new HashMap<>(), driveDashboard = new HashMap<>();
 	interface FunctionalInterface { Object anything();}
+	public static ShuffleboardTab driveTab, debugTab;
 	/**
 	 * Initializes the dashboards(debug and drive modes) with values and things.
 	 * 
@@ -24,8 +21,8 @@ public class SmartDashboardController {
 	public static void initializeDashboard() {
 		debugDashboard = new HashMap<>();
 		driveDashboard = new HashMap<>();
-		Shuffleboard.getTab("Drive");
-		Shuffleboard.getTab("Debug");
+		driveTab = Shuffleboard.getTab("Drive");
+		debugTab = Shuffleboard.getTab("Debug");
 	}
 
 	/**
@@ -124,27 +121,27 @@ public class SmartDashboardController {
 
 	public static void setDashboardMode(boolean debug) {
 		if (debug) {
-			tab = Shuffleboard.getTab("Debug");
-			tab.add("Base/PDP", RobotMap.pdp).withWidget(BuiltInWidgets.kPowerDistributionPanel).withSize(3, 2).withPosition(8, 3);
-			tab.add("Base/Ultrasonic", RobotMap.ultrasonic).withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("min","0","max","50")).withSize(1, 2).withPosition(5,0);
-			tab.add("Base/NavX-MXP-AHRS", RobotMap.ahrs).withWidget(BuiltInWidgets.kGyro).withSize(2, 2);
-			tab.add("DriveTrain/Left/Encoder", RobotMap.leftEncoder).withWidget(BuiltInWidgets.kEncoder).withSize(2, 1).withPosition(11, 0);
-			tab.add("DriveTrain/Right/Encoder", RobotMap.rightEncoder).withWidget(BuiltInWidgets.kEncoder).withSize(2, 1).withPosition(11, 1);
-			tab.add("DriveTrain/Left/motorGroup", RobotMap.driveTrain.left.motorGroup).withWidget(BuiltInWidgets.kSpeedController).withSize(2, 1).withPosition(11, 2);
-			tab.add("DriveTrain/Right/motorGroup", RobotMap.driveTrain.right.motorGroup).withWidget(BuiltInWidgets.kSpeedController).withSize(2, 1).withPosition(11, 3);
+			tab = debugTab;
+			tab.add("Base/PDP", RobotMap.pdp).withWidget(BuiltInWidgets.kPowerDistributionPanel);//.withSize(3, 2).withPosition(8, 3);
+			tab.add("Base/Ultrasonic", RobotMap.ultrasonic).withWidget(BuiltInWidgets.kNumberBar);//.withProperties(Map.of("min","0","max","50")).withSize(1, 2).withPosition(5,0);
+			tab.add("Base/NavX-MXP-AHRS", RobotMap.ahrs).withWidget(BuiltInWidgets.kGyro);//.withSize(2, 2);
+			tab.add("DriveTrain/Left/Encoder", RobotMap.leftEncoder).withWidget(BuiltInWidgets.kEncoder);//.withSize(2, 1).withPosition(11, 0);
+			tab.add("DriveTrain/Right/Encoder", RobotMap.rightEncoder).withWidget(BuiltInWidgets.kEncoder);//.withSize(2, 1).withPosition(11, 1);
+			tab.add("DriveTrain/Left/motorGroup", RobotMap.driveTrain.left.motorGroup).withWidget(BuiltInWidgets.kSpeedController);//.withSize(2, 1).withPosition(11, 2);
+			tab.add("DriveTrain/Right/motorGroup", RobotMap.driveTrain.right.motorGroup).withWidget(BuiltInWidgets.kSpeedController);//.withSize(2, 1).withPosition(11, 3);
 			//tab.add("DriveTrain/DifferentialDrive", DriveTrain.differentialDrive).withWidget(BuiltInWidgets.kDifferentialDrive).withSize(2, 2).withPosition(11, 4);
-			debugDashboard.put("DriveStationInput/turnSteepness", new SendableObject((Supplier<Double>) () -> { return OI.turnSteepnessAnalogButton.getRawAxis(); }));
-			debugDashboard.put("DriveStationInput/throttle", new SendableObject((Supplier<Double>) () -> { return OI.throttleAnalogButton.getRawAxis(); }));
+			//tab.add("DriveStationInput/turnSteepness", new SendableObject((Supplier<Double>) () -> { return OI.turnSteepnessAnalogButton.getRawAxis(); }));
+			//tab.add("DriveStationInput/throttle", new SendableObject((Supplier<Double>) () -> { return OI.throttleAnalogButton.getRawAxis(); }));
 
 
 			if (Robot.autonomusCommand != null) {
-				tab.add("Autonomus/AutonomusCommand", Robot.autonomusCommand).withWidget(BuiltInWidgets.kCommand).withPosition(11, 4);
+				tab.add("Autonomus/AutonomusCommand", Robot.autonomusCommand).withWidget(BuiltInWidgets.kCommand);//.withPosition(11, 4);
 			}
-		} else {
-			tab = Shuffleboard.getTab("Drive");
+		} 
+			tab = driveTab;
 			//tab.add("AutoChooser/SelectedStartPosition", (FunctionalInterface) () -> { return Robot.autoChooser.getSelected().toString(); });
-			tab.add("AutoChooser/AutoChooser", Robot.autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(8, 1);
-			tab.add("DebugDashboard", new InstantCommand((Runnable) () -> {setDashboardMode(true);}));
-		}
+			tab.add("AutoChooser/AutoChooser", Robot.autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser);//.withSize(2, 1).withPosition(8, 1);
+			//tab.add("DebugDashboard", new InstantCommand((Runnable) () -> {setDashboardMode(true);}));
+		
 	}
 }
