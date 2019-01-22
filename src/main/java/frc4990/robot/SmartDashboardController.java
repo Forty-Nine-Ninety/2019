@@ -3,6 +3,7 @@ package frc4990.robot;
 import java.util.HashMap;
 
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -116,8 +117,8 @@ public class SmartDashboardController {
 	}
 
 	private static void updateDashboard(HashMap<String,Object> dashboardValues) {
-		for (String key : dashboardValues.keySet())
-			tab.add(key, dashboardValues.get(key)).getEntry().setValue(dashboardValues.get(key));
+		//for (String key : dashboardValues.keySet())
+			//tab.add(key, dashboardValues.get(key)).getEntry().setValue(dashboardValues.get(key));
 	}
 
 	public static void setDashboardMode(boolean debug) {
@@ -131,19 +132,20 @@ public class SmartDashboardController {
 			tab.add("DriveTrain/Left/motorGroup", RobotMap.driveTrain.left.motorGroup).withWidget(BuiltInWidgets.kSpeedController);//.withSize(2, 1).withPosition(11, 2);
 			tab.add("DriveTrain/Right/motorGroup", RobotMap.driveTrain.right.motorGroup).withWidget(BuiltInWidgets.kSpeedController);//.withSize(2, 1).withPosition(11, 3);
 			//tab.add("DriveTrain/DifferentialDrive", DriveTrain.differentialDrive).withWidget(BuiltInWidgets.kDifferentialDrive).withSize(2, 2).withPosition(11, 4);
-			tab.add("DriveStationInput/turnSteepness", new SendableObject(() -> { return OI.turnSteepnessAnalogButton.getRawAxis(); }));
-			tab.add("DriveStationInput/throttle", new SendableObject(() -> { return OI.throttleAnalogButton.getRawAxis(); }));
+			//tab.add("DriveStationInput/turnSteepness", new SendableObject(() -> {return (Double) OI.turnSteepnessAnalogButton.getRawAxis(); }));
+			//tab.add("DriveStationInput/throttle", new SendableObject(() -> {return (Double) OI.throttleAnalogButton.getRawAxis(); }));
 
 
 			if (Robot.autonomusCommand != null) {
 				tab.add("Autonomus/AutonomusCommand", Robot.autonomusCommand).withWidget(BuiltInWidgets.kCommand);//.withPosition(11, 4);
 			}
-		} 
+		} else {
 			tab = driveTab;
-			tab.add(Scheduler.getInstance());
-			tab.add("AutoChooser/SelectedStartPosition", new SendableObject(() -> { return Robot.autoChooser.getSelected().toString(); }));
-			tab.add("AutoChooser/AutoChooser", Robot.autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser);//.withSize(2, 1).withPosition(8, 1);
-			//tab.add("DebugDashboard", new InstantCommand((Runnable) () -> {setDashboardMode(true);}));
-		
+			driveTab.add(Scheduler.getInstance());
+			driveTab.add("AutoChooser/SelectedStartPosition", new SendableObject(() -> { return Robot.autoChooser.getSelected().name(); }));
+			driveTab.add("AutoChooser/SendableChooser", Robot.autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser);//.withSize(2, 1).withPosition(8, 1);
+			//driveTab.add("Populate DebugDashboard", new InstantCommand((Runnable) () -> {setDashboardMode(true);}));
+			//driveTab.add("Stop DebugDashboard", new InstantCommand((Runnable) () -> {setDashboardMode(false);}));
+		}	
 	}
 }
