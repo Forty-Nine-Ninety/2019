@@ -1,16 +1,12 @@
 package frc4990.robot;
 
-
-import edu.wpi.cscore.VideoSource;
-
-//This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that was the Freshmen Union of 2018
-
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc4990.robot.commands.AutonomusCommand;
+
+//This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that was the Freshmen Union of 2018
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -42,8 +38,6 @@ public class Robot extends TimedRobot {
 
 	public static ProcessThread processThread;
 
-	public static VideoSource cameraSource;
-
 	/**
 	 * @author Team 4990
 	 */
@@ -53,14 +47,7 @@ public class Robot extends TimedRobot {
 
 		robotMap = new RobotMap();
 		oi = new OI();
-
-		cameraSource = CameraServer.getInstance().getServer().getSource();
-		CameraServer.getInstance().startAutomaticCapture();
 		
-		SmartDashboardController.initializeDashboard();
-		processThread = new ProcessThread(true, true);//Also resets sensors
-		processThread.start();
-
 		Robot.autoChooser = new SendableChooser<StartingPosition>(){{
 			setDefaultOption("Forward (cross line)", StartingPosition.FORWARD);
 			addOption("Left", StartingPosition.LEFT);
@@ -69,6 +56,10 @@ public class Robot extends TimedRobot {
 			addOption("Stay", StartingPosition.STAY);
 			addOption("Test", StartingPosition.TEST);
 		}};
+
+		SmartDashboardController.initializeDashboard();
+		processThread = new ProcessThread(true, true);//Also resets sensors
+		processThread.start();
 		SmartDashboardController.setDashboardMode(false);
 	}
 
@@ -109,7 +100,7 @@ public class Robot extends TimedRobot {
 	}
 
 	public void teleopPeriodic() { // This function is called periodically during teleop
-		System.out.println("Running periodic at " + (System.currentTimeMillis() % 100000) + "ms");
+		//System.out.println("Running periodic at " + (System.currentTimeMillis() % 100000) + "ms");
 		Scheduler.getInstance().run(); // runs execute() of current commands and periodic() of subsystems.
 		//Apparently scheduler is still taking too long so I'll need to change that at some point...?
 	}

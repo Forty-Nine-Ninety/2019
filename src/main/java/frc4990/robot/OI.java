@@ -80,8 +80,8 @@ public class OI{
 		opControllerCheck.toggleWhenPressed(new ControllerCheck(RobotMap.opGamepad));
 
 		//Pneumatics
-		pneumatic1Toggle.whenPressed(new TogglePneumatic(RobotMap.pneumatic1));
-		pneumatic2Toggle.whenPressed(new TogglePneumatic(RobotMap.pneumatic2));
+		//pneumatic1Toggle.whenPressed(new TogglePneumatic(RobotMap.pneumatic1));
+		//pneumatic2Toggle.whenPressed(new TogglePneumatic(RobotMap.pneumatic2));
 	}
 	
 	/**
