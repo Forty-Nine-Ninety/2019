@@ -1,6 +1,7 @@
 package frc4990.robot;
 
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -129,7 +130,7 @@ public class SmartDashboardController {
 			driveTab.add(Scheduler.getInstance());
 			driveTab.add("AutoChooser/SelectedStartPosition", new SendableObject(() -> { return Robot.autoChooser.getSelected().name(); }));
 			driveTab.add("AutoChooser/SendableChooser", Robot.autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser);//.withSize(2, 1).withPosition(8, 1);
-			//driveTab.add("Populate DebugDashboard", new InstantCommand((Runnable) () -> {setDashboardMode(true);}));
+			driveTab.add("Populate DebugDashboard", new InstantCommand((Runnable) () -> {setDashboardMode(true);}));
 			//driveTab.add("Stop DebugDashboard", new InstantCommand((Runnable) () -> {setDashboardMode(false);}));
 		}	
 	}
