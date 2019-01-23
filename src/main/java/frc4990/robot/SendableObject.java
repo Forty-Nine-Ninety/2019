@@ -39,19 +39,25 @@ public class SendableObject extends SendableBase {
 
 	@Override
 	public void initSendable(SendableBuilder builder) {
-		if (supplier.get().getClass() == boolean.class) {
-				builder.addBooleanProperty("value", this::getBoolean, null);
-		  } else if (supplier.get().getClass() == double.class) {
-				builder.addDoubleProperty("value", this::getDouble, null);
-		  } else if (supplier.get().getClass() == "".getClass()) {
-				builder.addStringProperty("value", this::getString, null);
-			} else if (supplier.get().getClass() == boolean[].class) {
-				builder.addBooleanArrayProperty("value", this::getBooleanArray, null);
-			} else if (supplier.get().getClass() == double[].class) {
-				builder.addDoubleArrayProperty("value", this::getDoubleArray, null);
-		  } else {
-				throw new IllegalArgumentException("Value of type " + supplier.getClass().getName() + " cannot be put into a SendableObject");
+		try {
+			if (supplier.get().getClass() == boolean.class) {
+					builder.addBooleanProperty("value", this::getBoolean, null);
+				} else if (supplier.get().getClass() == double.class) {
+					builder.addDoubleProperty("value", this::getDouble, null);
+				} else if (supplier.get().getClass() == "".getClass()) {
+					builder.addStringProperty("value", this::getString, null);
+				} else if (supplier.get().getClass() == boolean[].class) {
+					builder.addBooleanArrayProperty("value", this::getBooleanArray, null);
+				} else if (supplier.get().getClass() == double[].class) {
+					builder.addDoubleArrayProperty("value", this::getDoubleArray, null);
+				} else if (supplier.get().toString().getClass() == "".getClass()) {//catches most other things
+					builder.addStringProperty("value", this::getString, null);
+				} else {
+					throw new IllegalArgumentException("Value of type " + supplier.getClass().getName() + " cannot be put into a SendableObject");
+				}
+				builder.setSmartDashboardType("RobotPreferences");
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			builder.setSmartDashboardType("RobotPreferences");
 	}
 }
