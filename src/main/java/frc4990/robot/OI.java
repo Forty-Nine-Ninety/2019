@@ -172,7 +172,7 @@ public class OI{
 		 * Returns double value of axis.
 		 * @return double value of axis.
 		 */
-		public double getRawAxis() {
+		public Double getRawAxis() {
 			if (!m_inverted) { //not inverted
 				return Math.abs(m_gamepad.getRawAxis(m_axisNumber)) > m_threshold ? 
 				m_gamepad.getRawAxis(m_axisNumber) 

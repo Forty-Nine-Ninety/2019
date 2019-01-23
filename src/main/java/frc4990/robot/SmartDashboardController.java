@@ -132,8 +132,8 @@ public class SmartDashboardController {
 			tab.add("DriveTrain/Left/motorGroup", RobotMap.driveTrain.left.motorGroup).withWidget(BuiltInWidgets.kSpeedController);//.withSize(2, 1).withPosition(11, 2);
 			tab.add("DriveTrain/Right/motorGroup", RobotMap.driveTrain.right.motorGroup).withWidget(BuiltInWidgets.kSpeedController);//.withSize(2, 1).withPosition(11, 3);
 			//tab.add("DriveTrain/DifferentialDrive", DriveTrain.differentialDrive).withWidget(BuiltInWidgets.kDifferentialDrive).withSize(2, 2).withPosition(11, 4);
-			//tab.add("DriveStationInput/turnSteepness", new SendableObject(() -> {return (Double) OI.turnSteepnessAnalogButton.getRawAxis(); }));
-			//tab.add("DriveStationInput/throttle", new SendableObject(() -> {return (Double) OI.throttleAnalogButton.getRawAxis(); }));
+			tab.add("DriveStationInput/turnSteepness", new SendableObject(() -> {return OI.turnSteepnessAnalogButton.getRawAxis().toString(); }));
+			tab.add("DriveStationInput/throttle", new SendableObject(() -> {return OI.throttleAnalogButton.getRawAxis().toString(); }));
 
 
 			if (Robot.autonomusCommand != null) {
