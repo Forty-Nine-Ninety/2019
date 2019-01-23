@@ -51,6 +51,7 @@ public class SendableObject extends SendableBase {
 				builder.addDoubleArrayProperty("value", this::getDoubleArray, null);
 		  } else {
 				throw new IllegalArgumentException("Value of type " + supplier.getClass().getName() + " cannot be put into a SendableObject");
-		  }
+			}
+			builder.setSmartDashboardType("RobotPreferences");
 	}
 }
