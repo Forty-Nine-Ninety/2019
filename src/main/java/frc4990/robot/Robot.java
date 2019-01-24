@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
 
 	public void robotInit() { // This function is run when the robot is first started up and should be used
 								// for any initialization code.
-
+		System.out.println("Initializing Robot.");
 		robotMap = new RobotMap();
 		oi = new OI();
 		
@@ -57,10 +57,11 @@ public class Robot extends TimedRobot {
 			addOption("Test", StartingPosition.TEST);
 		}};
 
-		SmartDashboardController.initializeDashboard();
+		SmartDashboardController.initializeDashboard(false);
 		processThread = new ProcessThread(true, true);//Also resets sensors
 		processThread.start();
-		SmartDashboardController.setDashboardMode(false);
+
+		System.out.println("Robot Initialized.");
 	}
 
 	public void robotPeriodic() {

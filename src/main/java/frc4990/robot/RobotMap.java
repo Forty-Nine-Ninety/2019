@@ -63,14 +63,14 @@ public class RobotMap {
 	//public static Pneumatic pneumatic1;
 	//public static Pneumatic pneumatic2;
 
-	public static DigitalInput robotSelecter;
+	public static DigitalInput robotSelector;
 	
 	public RobotMap() {
 
-		robotSelecter = new DigitalInput(9); //true = practice bot, false = competition bot
+		robotSelector = new DigitalInput(9); //true = practice bot, false = competition bot
 
-		if (robotSelecter.get()) { //practice bot
-
+		//if (robotSelector.get()) { //practice bot
+		if (false) {//just for now apparently robotSelector isn't grounded
 			//camera = CameraServer.getInstance().startAutomaticCapture();
 		
 			pdp = new PowerDistributionPanel();
@@ -118,7 +118,7 @@ public class RobotMap {
 			opGamepad = new F310Gamepad(1);
 			
 			leftFrontDriveTalon = new TalonMotorController(1);
-			leftRearDriveTalon = new TalonMotorController(0);
+			leftRearDriveTalon = new TalonMotorController(2);
 			rightFrontDriveTalon = new TalonMotorController(3);
 			rightRearDriveTalon = new TalonMotorController(4);
 			
