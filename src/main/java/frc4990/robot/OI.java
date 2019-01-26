@@ -22,47 +22,12 @@ public class OI{
 	
 	public static JoystickAnalogButton throttleAnalogButton = RobotMap.driveGamepad.leftJoystickY;
 	public static JoystickAnalogButton turnSteepnessAnalogButton = RobotMap.driveGamepad.rightJoystickX;
-
-	public static Button driveSpeedToggle = RobotMap.driveGamepad.x;
-	public static Button turnSpeedToggle = RobotMap.driveGamepad.b;
-	public static Button driveControllerCheck = RobotMap.driveGamepad.start;
-	public static Button opControllerCheck = RobotMap.opGamepad.start;
-	public static Button pneumatic1Toggle = RobotMap.opGamepad.x;
-	public static Button pneumatic2Toggle = RobotMap.opGamepad.y;
 	
-	/* CREATING BUTTONS
-	One type of button is a joystick button which is any button on a
-	joystick.
-	You create one by telling it which joystick it's on and which button
-	number it is.
-	Joystick stick = new Joystick(port);
-	Button button = new JoystickButton(stick, buttonNumber);
-
-	There are a few additional built in buttons you can use. Additionally,
-	by subclassing Button you can create custom triggers and bind those to
-	commands the same as any other Button.
-
-	//TRIGGERING COMMANDS WITH BUTTONS
-	Once you have a button, it's trivial to bind it to a button in one of
-	three ways:
-
-	Start the command when the button is pressed and let it run the command
-	until it is finished as determined by it's isFinished method.
-	button.whenPressed(new ExampleCommand());
-
-	Run the command while the button is being held down and interrupt it once
-	the button is released.
-	button.whileHeld(new ExampleCommand());
-
-	Start the command when the button is released and let it run the command
-	until it is finished as determined by it's isFinished method.
-	button.whenReleased(new ExampleCommand());
-	*/
-	
-	/*
+	/* Controller Mapping:
 		Drive Train: (drive controller)
 		    Joysticks 1 and 2: forward/backward and turn left/right
-		    X button: toggle slow mode
+			X button: toggle slow throttle
+			B button: toggle slow turning
 		
 		Check which controller is which: (both)
 		    START key (RIGHT Middle): prints in console which controller it is being pressed on
@@ -71,17 +36,18 @@ public class OI{
 	public OI() {
 
 		//drivetrain
-		driveSpeedToggle.toggleWhenPressed(new DriveSpeedToggle());
-		//default command is (standard) joystick drive
-		turnSpeedToggle.toggleWhenPressed(new TurnSpeedToggle());
+		RobotMap.driveGamepad.x.toggleWhenPressed(new DriveSpeedToggle());
+		RobotMap.driveGamepad.b.toggleWhenPressed(new TurnSpeedToggle());
+		RobotMap.driveGamepad.y.whenPressed(new stickShapingToggle());
+
 		
 		//controller check
-		driveControllerCheck.toggleWhenPressed(new ControllerCheck(RobotMap.driveGamepad));
-		opControllerCheck.toggleWhenPressed(new ControllerCheck(RobotMap.opGamepad));
+		RobotMap.driveGamepad.start.toggleWhenPressed(new ControllerCheck(RobotMap.driveGamepad));
+		RobotMap.opGamepad.start.toggleWhenPressed(new ControllerCheck(RobotMap.opGamepad));
 
 		//Pneumatics
-		//pneumatic1Toggle.whenPressed(new TogglePneumatic(RobotMap.pneumatic1));
-		//pneumatic2Toggle.whenPressed(new TogglePneumatic(RobotMap.pneumatic2));
+		//RobotMap.opGamepad.x.whenPressed(new TogglePneumatic(RobotMap.pneumatic1));
+		//RobotMap.opGamepad.y.whenPressed(new TogglePneumatic(RobotMap.pneumatic2));
 	}
 	
 	/**
