@@ -1,32 +1,22 @@
 package frc4990.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
+import frc4990.robot.commands.TeleopDriveTrainController.StickShapingMode;
 
 /**
  * Ported from old TeleopDriveController
- * @author benjamin and Class of '21 (created in 2018 season)
+ * @author benjamin and Class of '21 (created in 2019 season)
  *
  */
 
-public class stickShapingToggle extends Command {
-	public stickShapingToggle() {
-	}
+public class stickShapingToggle extends InstantCommand {
+
+	public stickShapingToggle() {}
 	
 	public void initialize() {
-		TeleopDriveTrainController.oldStickShapingMethod = false;
-		System.out.println("StickShaping Method: NEW");
+		TeleopDriveTrainController.stickShapingMode = TeleopDriveTrainController.StickShapingMode.values()[(TeleopDriveTrainController.stickShapingMode.ordinal() + 1) % 3];
+		System.out.println("StickShaping Method:" + TeleopDriveTrainController.stickShapingMode.toString());
+
 	}
 	
-	public void end() {
-		TeleopDriveTrainController.oldStickShapingMethod = true;
-		System.out.println("StickShaping Method: OLD");
-	}
-	
-	public void interrupted() {
-		end();
-	}
-	
-	public boolean isFinished() {
-		return false;
-	}
 }

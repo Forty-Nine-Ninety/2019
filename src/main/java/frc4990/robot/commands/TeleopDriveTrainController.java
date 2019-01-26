@@ -1,13 +1,13 @@
 package frc4990.robot.commands;
 
+import java.util.Date;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import frc4990.robot.OI;
 import frc4990.robot.RobotMap;
-
 /**
  * Class for controlling drivetrains.
- * 
  * @author Class of '21 (created in 2018 season)
  */
 public class TeleopDriveTrainController extends Command {
@@ -16,12 +16,21 @@ public class TeleopDriveTrainController extends Command {
 	
 	public DriveMode driveMode;	
 	
+	public enum StickShapingMode { NextThrottle, SquaredThrottle, DifferentialDrive }
+	
+	public static StickShapingMode stickShapingMode = StickShapingMode.SquaredThrottle;	
+
 	public static double currentThrottleMultiplier = 1.0;
 
-	public static boolean oldStickShapingMethod = false;
-
 	public static double currentTurnSteepnessMultiplier = 1.0;
-	
+
+	private double throttle, turnSteepness;
+
+	//for older StickShapingMode (NextThrottle)
+	 private double nt_lastThrottle, nt_lastTurnSteepness;
+	 private Date nt_currentUpdate, nt_lastUpdate;
+	 private double nt_accelerationTime = 250;
+
 	/**
 	 * Constructor for TeleopDriveTrainController
 	 * @author Class of '21 (created in 2018 season)
@@ -35,22 +44,48 @@ public class TeleopDriveTrainController extends Command {
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public void execute() {
-		/*
-		double throttle = getNextThrottle(
-				RobotMap.driveGamepad.getLeftJoystickY(), 
-				this.lastThrottle);
-		
-		double turnSteepness = getNextThrottle(
-				RobotMap.driveGamepad.getRightJoystickX(),
-				this.lastTurnSteepness);
-		*/
-		double throttle = getSquaredThrottle(OI.throttleAnalogButton.getRawAxis() * currentThrottleMultiplier);
 
-		double turnSteepness = getSquaredThrottle(OI.turnSteepnessAnalogButton.getRawAxis());
+		switch (stickShapingMode) {
+			case NextThrottle://Old stick shaping mode
+				nt_currentUpdate = new Date();
+
+				throttle = getNextThrottle(
+					OI.throttleAnalogButton.getRawAxis() * currentThrottleMultiplier, 
+					this.nt_lastThrottle, 
+					this.nt_lastUpdate, 
+					nt_currentUpdate, 
+					this.nt_accelerationTime);
+			
+				turnSteepness = getNextThrottle(
+					OI.turnSteepnessAnalogButton.getRawAxis() * currentThrottleMultiplier,
+					this.nt_lastTurnSteepness,
+					this.nt_lastUpdate,
+					nt_currentUpdate,
+					this.nt_accelerationTime);
+				break;
+			case SquaredThrottle://Another one that we tried.
+				throttle = getSquaredThrottle(OI.throttleAnalogButton.getRawAxis() * currentThrottleMultiplier);
+				turnSteepness = getSquaredThrottle(OI.turnSteepnessAnalogButton.getRawAxis());
+				break;
+			case DifferentialDrive://New!  but there is no code.
+				break;
+			default:
+				break;
+		}
 		
+		/*
+		 *
+		 * The following code bits really need some clean-up.
+		 * 
+		 */
+
 		if (throttle != 0 && turnSteepness != 0) { //arc turn
 			driveMode = DriveMode.ARC;
-			setArcTrajectory(throttle, -turnSteepness);
+			if (stickShapingMode != StickShapingMode.DifferentialDrive) {
+				setArcTrajectory(throttle, -turnSteepness);
+			} else {
+				//differentialDrive arc turning
+			}
 			
 		} else if (throttle != 0 && turnSteepness == 0) { //go forward
 			if (driveMode != DriveMode.STRAIGHT) { //changed modes
@@ -64,8 +99,8 @@ public class TeleopDriveTrainController extends Command {
 			 * since the right motor will spin in the opposite direction from the left
 			 */
 			driveMode = DriveMode.TURN;
-			RobotMap.driveTrain.setSpeed(turnSteepness * currentTurnSteepnessMultiplier, -turnSteepness * 
-			currentTurnSteepnessMultiplier);
+			RobotMap.driveTrain.setSpeed(turnSteepness * currentTurnSteepnessMultiplier, 
+			-turnSteepness * currentTurnSteepnessMultiplier);
 			
 		} else {
 			driveMode = DriveMode.NONE;
@@ -80,6 +115,30 @@ public class TeleopDriveTrainController extends Command {
 	 */
 	public double getSquaredThrottle(double throttleInput) {
 		return throttleInput * throttleInput * Math.signum(throttleInput);
+	}
+
+	/**
+	 * Does some weird acceleration thing.  It works surprisingly well though.
+	 * @param throttleInput
+	 * @param lastThrottle
+	 * @param lastUpdate
+	 * @param currentUpdate
+	 * @param accelerationTime
+	 * @return
+	 */
+	public double getNextThrottle(double throttleInput, double lastThrottle, Date lastUpdate, Date currentUpdate, double accelerationTime) {
+		double newThrottle = throttleInput;
+		
+		if (accelerationTime != 0) {
+			double acceleration = (throttleInput - lastThrottle) / accelerationTime;//Some sort of acceleration thing...? We didn't write this.
+			double deltaTime = currentUpdate.getTime() - lastUpdate.getTime();
+			
+			double deltaThrottle = deltaTime * acceleration;
+			
+			newThrottle = lastThrottle + deltaThrottle;
+		}
+		
+		return Math.abs(newThrottle) < /*Constants.zeroThrottleThreshold*/0.01 ? 0.0 : newThrottle;
 	}
 	
 	/**
