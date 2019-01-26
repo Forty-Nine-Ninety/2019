@@ -69,9 +69,8 @@ public class RobotMap {
 
 		robotSelector = new DigitalInput(9); //true = practice bot, false = competition bot
 
-		//if (robotSelector.get()) { //practice bot
-		if (false) {//just for now apparently robotSelector isn't grounded
-			//camera = CameraServer.getInstance().startAutomaticCapture();
+		if (robotSelector.get()) { //practice bot
+			camera = CameraServer.getInstance().startAutomaticCapture();
 		
 			pdp = new PowerDistributionPanel();
 			
@@ -110,7 +109,7 @@ public class RobotMap {
 
 		} else { //competition bot
 
-			//camera = CameraServer.getInstance().startAutomaticCapture();
+			camera = CameraServer.getInstance().startAutomaticCapture();
 
 			pdp = new PowerDistributionPanel();
 			
