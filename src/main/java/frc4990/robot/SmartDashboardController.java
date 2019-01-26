@@ -16,7 +16,7 @@ public class SmartDashboardController {
 	public static ShuffleboardTab driveTab, debugTab;
 	/**
 	 * Initializes the dashboards(debug and drive modes) with values and things.
-	 * 
+	 *
 	 */
 	public static void initializeDashboard(boolean debug) {
 		driveTab = Shuffleboard.getTab("Drive");
@@ -28,7 +28,7 @@ public class SmartDashboardController {
 
 	/**
 	 * Retrieves a numerical constant from SmartDashbaord/Shuffleboard.
-	 * 
+	 *
 	 * @param key
 	 *            string key to identify value
 	 * @param def
@@ -50,7 +50,7 @@ public class SmartDashboardController {
 
 	/**
 	 * Retrieves a boolean from SmartDashbaord/Shuffleboard.
-	 * 
+	 *
 	 * @param key
 	 *            string key to identify value
 	 * @param def
@@ -72,7 +72,7 @@ public class SmartDashboardController {
 
 	/**
 	 * Adds a constant to SmartDashbaord/Shuffleboard.
-	 * 
+	 *
 	 * @param key
 	 *            string key to identify value
 	 * @param def
@@ -80,7 +80,7 @@ public class SmartDashboardController {
 	 * @author Deep Blue Robotics (Team 199)
 	 */
 
-	
+
 	public static void putConst(String key, double def) {
 		preferences.putDouble("Const/" + key, def);
 		if (preferences.getDouble("Const/ + key", def) != def) {
@@ -91,7 +91,7 @@ public class SmartDashboardController {
 
 	/**
 	 * Adds a boolean to SmartDashbaord/Shuffleboard.
-	 * 
+	 *
 	 * @param key
 	 *            string key to identify value
 	 * @param def
@@ -99,7 +99,7 @@ public class SmartDashboardController {
 	 * @author MajikalExplosions
 	 */
 
-	
+
 	public static void putConst(String key, boolean def) {
 		preferences.putBoolean("Const/" + key, def);
 		if (preferences.getBoolean("Const/ + key", def) != def) {
@@ -139,6 +139,6 @@ public class SmartDashboardController {
 			driveTab.add("SelectedStartPosition", new SendableObject(() -> { return Robot.autoChooser.getSelected().name(); })).withSize(2, 1).withPosition(3, 3);
 			driveTab.add("SendableChooser", Robot.autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(4, 3);
 			driveTab.add("Populate DebugDashboard", (new InstantCommand((Runnable) () -> {setDashboardMode(true); }))).withSize(2, 1).withPosition(5, 3);
-		}	
+		}
 	}
 }

@@ -3,10 +3,8 @@ package frc4990.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc4990.robot.RobotMap;
 import frc4990.robot.SmartDashboardController;
-import frc4990.robot.subsystems.DriveTrain;
 
 public class RobotDriveStraight extends Command {
-	DriveTrain dt = RobotMap.driveTrain;
 
 	public static double targetTime = SmartDashboardController.getConst("RobotDriveStraight/defaultTargetTime", 2.8);
 	double speed = SmartDashboardController.getConst("RobotDriveStraight/defaultSpeed", 0.3);
@@ -31,8 +29,8 @@ public class RobotDriveStraight extends Command {
 
 	public void initialize() {
 		System.out.println("Initalizing GyroStraight with time " + RobotDriveStraight.targetTime);
-		dt.right.encoder.reset();
-		dt.setSpeed(speed);
+		RobotMap.driveTrain.resetDistanceTraveled();
+		RobotMap.driveTrain.setSpeed(speed);
 	}
 
 	public void execute() {
@@ -40,7 +38,7 @@ public class RobotDriveStraight extends Command {
 	}
 	
 	public void end() {
-		dt.setSpeed(0);
+		RobotMap.driveTrain.setSpeed(0);
 	}
 	
 	public void interrupted() {
