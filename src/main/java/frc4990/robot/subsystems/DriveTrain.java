@@ -13,8 +13,6 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
 	public DifferentialDrive differentialDrive = new DifferentialDrive(RobotMap.leftMotorGroup, RobotMap.rightMotorGroup);
 
-	double rampDownTime = SmartDashboardController.getConst("DriveTrain/rampDownTime", 0.3);
-
 	private double leftSpeedAdjust = 1.0;
 	private double rightSpeedAdjust = 0.99;
 
@@ -24,11 +22,30 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public DriveTrain() {
-		RobotMap.leftFrontDriveTalon.configOpenloopRamp(rampDownTime, 0);
-		RobotMap.leftRearDriveTalon.configOpenloopRamp(rampDownTime, 0);
-		RobotMap.rightFrontDriveTalon.configOpenloopRamp(rampDownTime, 0);
-		RobotMap.rightRearDriveTalon.configOpenloopRamp(rampDownTime, 0);
+		configOpenloopRamp();
+		differentialDrive.setExpiration(0.3); //sets motor safety to 0.3 seconds. This is a band-aid for the larger issue of the main thread taking more than 20ms to execute.
 	}
+
+	/**
+	 * Configures the open-loop ramp rate of throttle output.
+	 * @param secondsFronNeutralToFull Minimum desired time to go from neutral to full throttle. A value of '0' will disable the ramp.
+	 * @see CTRE's Talon.configOpenloopRamp(double, double);
+	 */
+
+	public void configOpenloopRamp(double secondsFronNeutralToFull) {
+		RobotMap.leftFrontDriveTalon.configOpenloopRamp(secondsFronNeutralToFull, 0);
+		RobotMap.leftRearDriveTalon.configOpenloopRamp(secondsFronNeutralToFull, 0);
+		RobotMap.rightFrontDriveTalon.configOpenloopRamp(secondsFronNeutralToFull, 0);
+		RobotMap.rightRearDriveTalon.configOpenloopRamp(secondsFronNeutralToFull, 0);
+	} 
+
+	/**
+	 * Configures the open-loop ramp rate of throttle output to the default value. As of 1/25/19, it's 0.3.
+	 */
+
+	public void configOpenloopRamp() {
+		configOpenloopRamp(SmartDashboardController.getConst("DriveTrain/rampDownTime", 0.3));
+	} 
 
 	public void clearStickyFaults() {
 		RobotMap.leftFrontDriveTalon.clearStickyFaults(0);
