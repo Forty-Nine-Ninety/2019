@@ -9,6 +9,8 @@ package frc4990.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -56,44 +58,93 @@ public class RobotMap {
 	
 	public static AHRS ahrs;
 
-	public static Pneumatic pneumatic1;
-	public static Pneumatic pneumatic2;
+	public static UsbCamera camera;
+
+	//public static Pneumatic pneumatic1;
+	//public static Pneumatic pneumatic2;
+
+	public static DigitalInput robotSelector;
 	
 	public RobotMap() {
-		
-		pdp = new PowerDistributionPanel();
-		
-		driveGamepad = new F310Gamepad(0);
-		opGamepad = new F310Gamepad(1);
-		
-		leftFrontDriveTalon = new TalonMotorController(1);
-		leftRearDriveTalon = new TalonMotorController(2);
-		rightFrontDriveTalon = new TalonMotorController(3);
-		rightRearDriveTalon = new TalonMotorController(4);
-		
-		leftEncoder = new Encoder(0, 1);
-		rightEncoder = new Encoder(2, 3);
-		
-		leftGearbox = new Gearbox(leftFrontDriveTalon, leftRearDriveTalon, leftEncoder);
-		rightGearbox = new Gearbox(rightFrontDriveTalon, rightRearDriveTalon, rightEncoder);
-		
-		leftMotorGroup = new SpeedControllerGroup(leftFrontDriveTalon, leftRearDriveTalon);
-		rightMotorGroup = new SpeedControllerGroup(rightFrontDriveTalon, rightRearDriveTalon);
-		//differentialDrive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
-					
-		driveTrain = new DriveTrain(leftGearbox, rightGearbox);
-		
-		ultrasonicDigitalOutput = new DigitalOutput(4); //PING
-		ultrasonicEchoDigitalInput = new DigitalInput(5); //ECHO
-		
-		ultrasonic = new Ultrasonic(ultrasonicDigitalOutput, ultrasonicEchoDigitalInput, Ultrasonic.Unit.kInches); 
-		
-		
-		ahrs = new AHRS(SPI.Port.kMXP); 
-		//navX-MXP RoboRIO extension and 9-axis gyro thingy
-		//for simple gyro angles: use ahrs.getAngle() to get heading (returns number -n to n) and reset() to reset angle (and drift)
 
-		pneumatic1 = new Pneumatic(0, 0);
-		pneumatic2 = new Pneumatic(0, 1);
+		robotSelector = new DigitalInput(9); //true = practice bot, false = competition bot
+
+		if (robotSelector.get()) { //practice bot
+			camera = CameraServer.getInstance().startAutomaticCapture();
+		
+			pdp = new PowerDistributionPanel();
+			
+			driveGamepad = new F310Gamepad(0);
+			opGamepad = new F310Gamepad(1);
+			
+			leftFrontDriveTalon = new TalonMotorController(22);
+			leftRearDriveTalon = new TalonMotorController(9);
+			rightFrontDriveTalon = new TalonMotorController(6);
+			rightRearDriveTalon = new TalonMotorController(21);
+			
+			leftEncoder = new Encoder(0, 1);
+			rightEncoder = new Encoder(2, 3);
+			
+			leftGearbox = new Gearbox(leftFrontDriveTalon, leftRearDriveTalon, leftEncoder);
+			rightGearbox = new Gearbox(rightFrontDriveTalon, rightRearDriveTalon, rightEncoder);
+			
+			leftMotorGroup = new SpeedControllerGroup(leftFrontDriveTalon, leftRearDriveTalon);
+			rightMotorGroup = new SpeedControllerGroup(rightFrontDriveTalon, rightRearDriveTalon);
+			//differentialDrive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
+						
+			driveTrain = new DriveTrain(leftGearbox, rightGearbox);
+			
+			ultrasonicDigitalOutput = new DigitalOutput(4); //PING
+			ultrasonicEchoDigitalInput = new DigitalInput(5); //ECHO
+			
+			ultrasonic = new Ultrasonic(ultrasonicDigitalOutput, ultrasonicEchoDigitalInput, Ultrasonic.Unit.kInches); 
+			
+			
+			ahrs = new AHRS(SPI.Port.kMXP); 
+			//navX-MXP RoboRIO extension and 9-axis gyro thingy
+			//for simple gyro angles: use ahrs.getAngle() to get heading (returns number -n to n) and reset() to reset angle (and drift)
+
+			//pneumatic1 = new Pneumatic(0, 0);
+			//pneumatic2 = new Pneumatic(0, 1);
+
+		} else { //competition bot
+
+			camera = CameraServer.getInstance().startAutomaticCapture();
+
+			pdp = new PowerDistributionPanel();
+			
+			driveGamepad = new F310Gamepad(0);
+			opGamepad = new F310Gamepad(1);
+			
+			leftFrontDriveTalon = new TalonMotorController(1);
+			leftRearDriveTalon = new TalonMotorController(2);
+			rightFrontDriveTalon = new TalonMotorController(3);
+			rightRearDriveTalon = new TalonMotorController(4);
+			
+			leftEncoder = new Encoder(0, 1);
+			rightEncoder = new Encoder(2, 3);
+			
+			leftGearbox = new Gearbox(leftFrontDriveTalon, leftRearDriveTalon, leftEncoder);
+			rightGearbox = new Gearbox(rightFrontDriveTalon, rightRearDriveTalon, rightEncoder);
+			
+			leftMotorGroup = new SpeedControllerGroup(leftFrontDriveTalon, leftRearDriveTalon);
+			rightMotorGroup = new SpeedControllerGroup(rightFrontDriveTalon, rightRearDriveTalon);
+			//differentialDrive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
+						
+			driveTrain = new DriveTrain(leftGearbox, rightGearbox);
+			
+			ultrasonicDigitalOutput = new DigitalOutput(4); //PING
+			ultrasonicEchoDigitalInput = new DigitalInput(5); //ECHO
+			
+			ultrasonic = new Ultrasonic(ultrasonicDigitalOutput, ultrasonicEchoDigitalInput, Ultrasonic.Unit.kInches); 
+			
+			
+			ahrs = new AHRS(SPI.Port.kMXP); 
+			//navX-MXP RoboRIO extension and 9-axis gyro thingy
+			//for simple gyro angles: use ahrs.getAngle() to get heading (returns number -n to n) and reset() to reset angle (and drift)
+
+			//pneumatic1 = new Pneumatic(0, 0);
+			//pneumatic2 = new Pneumatic(0, 1);
+		}
 	} 
 }
