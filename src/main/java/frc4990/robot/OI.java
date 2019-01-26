@@ -80,8 +80,8 @@ public class OI{
 		opControllerCheck.toggleWhenPressed(new ControllerCheck(RobotMap.opGamepad));
 
 		//Pneumatics
-		pneumatic1Toggle.whenPressed(new TogglePneumatic(RobotMap.pneumatic1));
-		pneumatic2Toggle.whenPressed(new TogglePneumatic(RobotMap.pneumatic2));
+		//pneumatic1Toggle.whenPressed(new TogglePneumatic(RobotMap.pneumatic1));
+		//pneumatic2Toggle.whenPressed(new TogglePneumatic(RobotMap.pneumatic2));
 	}
 	
 	/**
@@ -172,7 +172,7 @@ public class OI{
 		 * Returns double value of axis.
 		 * @return double value of axis.
 		 */
-		public double getRawAxis() {
+		public Double getRawAxis() {
 			if (!m_inverted) { //not inverted
 				return Math.abs(m_gamepad.getRawAxis(m_axisNumber)) > m_threshold ? 
 				m_gamepad.getRawAxis(m_axisNumber) 

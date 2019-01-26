@@ -1,13 +1,30 @@
 package frc4990.robot;
 
+import java.util.Map;
+
 import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc4990.robot.Robot.StartingPosition;
+import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 public class SmartDashboardController {
 
 	private static Preferences preferences = Preferences.getInstance();
+	interface FunctionalInterface { Object anything();}
+	public static ShuffleboardTab driveTab, debugTab;
+	/**
+	 * Initializes the dashboards(debug and drive modes) with values and things.
+	 * 
+	 */
+	public static void initializeDashboard(boolean debug) {
+		driveTab = Shuffleboard.getTab("Drive");
+		debugTab = Shuffleboard.getTab("Debug");
+		System.out.println("Initializing Dashboard.");
+		setDashboardMode(! debug);
+		setDashboardMode(debug);
+	}
 
 	/**
 	 * Retrieves a numerical constant from SmartDashbaord/Shuffleboard.
@@ -91,67 +108,37 @@ public class SmartDashboardController {
 
 	}
 
+	//New code below
 
-
-	/**
-	 * Adds SendableChooser to SmartDashboard for Auto route choosing.
-	 */
-
-	public static void updateAutoDashboard() {
-		// Auto chooser
-		Robot.autoChooser = new SendableChooser<StartingPosition>();
-		Robot.autoChooser.setDefaultOption("Forward (cross line)", StartingPosition.FORWARD);
-		Robot.autoChooser.addOption("Left", StartingPosition.LEFT);
-		Robot.autoChooser.addOption("Center", StartingPosition.CENTER);
-		Robot.autoChooser.addOption("Right", StartingPosition.RIGHT);
-		Robot.autoChooser.addOption("Stay", StartingPosition.STAY);
-		Robot.autoChooser.addOption("Test", StartingPosition.TEST);
-
-		Robot.autoChooser.setName("AutonomusControl", "Auto Chooser");
-		Robot.startPos = Robot.autoChooser.getSelected();
-		SmartDashboard.putData("DriveTeam/Auto Chooser", Robot.autoChooser);
-		SmartDashboard.putString("Drive/Selected Starting Position", Robot.startPos.toString());
-
-		SmartDashboard.updateValues(); // always run at END of updateAutoDashboard
-
+	public static void updateDashboard() {
+		//Shuffleboard.update(); runs automatically.
 	}
 
-	public static void smartDashboardInit() {
+	public static void setDashboardMode(boolean debug) {
+		System.out.println("Debug tab component list length: " + debugTab.getComponents().size());
+		if (debug && debugTab.getComponents().size() == 0) {
+			System.out.println("Adding Debug Tab Components.");
+			debugTab.add("Base/PDP", RobotMap.pdp).withWidget(BuiltInWidgets.kPowerDistributionPanel)./*withSize(3, 2).*/withPosition(8, 3);
+			debugTab.add("Base/Ultrasonic", RobotMap.ultrasonic).withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("min","0","max","50"))./*withSize(1, 2).*/withPosition(5,0);
+			debugTab.add("Base/NavX-MXP-AHRS", RobotMap.ahrs).withWidget(BuiltInWidgets.kGyro)/*.withSize(2, 2)*/;
+			debugTab.add("DriveTrain/Left/Encoder", RobotMap.leftEncoder).withWidget(BuiltInWidgets.kEncoder)./*withSize(2, 1).*/withPosition(11, 0);
+			debugTab.add("DriveTrain/Right/Encoder", RobotMap.rightEncoder).withWidget(BuiltInWidgets.kEncoder)./*withSize(2, 1).*/withPosition(11, 1);
+			debugTab.add("DriveTrain/Left/motorGroup", RobotMap.driveTrain.left.motorGroup).withWidget(BuiltInWidgets.kSpeedController)./*withSize(2, 1).*/withPosition(11, 2);
+			debugTab.add("DriveTrain/Right/motorGroup", RobotMap.driveTrain.right.motorGroup).withWidget(BuiltInWidgets.kSpeedController)./*withSize(2, 1).*/withPosition(11, 3);
+			//debugTab.add("DriveTrain/DifferentialDrive", DriveTrain.differentialDrive).withWidget(BuiltInWidgets.kDifferentialDrive).withSize(2, 2).withPosition(11, 4);
+			debugTab.add("DriveStationInput/turnSteepness", new SendableObject(() -> {return OI.turnSteepnessAnalogButton.getRawAxis().toString(); }));
+			debugTab.add("DriveStationInput/throttle", new SendableObject(() -> {return OI.throttleAnalogButton.getRawAxis().toString(); }));
 
-		// DriveTrain
-		RobotMap.driveTrain.left.motorGroup.setName("DriveTrain", "LeftMotors");
-		RobotMap.driveTrain.right.motorGroup.setName("DriveTrain", "RightMotors");
-		RobotMap.driveTrain.left.encoder.setName("DriveTrain", "LeftEncoder");
-		RobotMap.driveTrain.right.encoder.setName("DriveTrain", "RightEncoder");
-		// RobotMap.differentialDrive.setName("DriveTrain", "DifferentialDrive");
 
-		// Base Sensors
-		RobotMap.pdp.setName("Sensors", "PDP");
-		RobotMap.ahrs.setName("Sensors", "AHRS Gyro");
-		RobotMap.ultrasonic.setName("Sensors", "Ultrasonic");
-	}
-
-	public void smartDashboardPeriodic() {
-		System.err.println("[DEBUG] Started dashboard update at" + (System.currentTimeMillis() % 100000) + "ms");
-
-		SmartDashboard.putData("Sensors/PDP", RobotMap.pdp);
-		SmartDashboard.putData("Sensors/AHRS Gyro", RobotMap.ahrs);
-
-		SmartDashboard.putNumber("Debug/Left Encoder Distance", RobotMap.driveTrain.left.getDistanceTraveled());
-		SmartDashboard.putNumber("Debug/Right Encoder Distance", RobotMap.driveTrain.right.getDistanceTraveled());
-
-		SmartDashboard.putNumber("DriveSystem/teleop/turnSteepness", OI.turnSteepnessAnalogButton.getRawAxis());
-		SmartDashboard.putNumber("DriveSystem/teleop/throttle", OI.throttleAnalogButton.getRawAxis());
-
-		SmartDashboard.putData("Subsystems/DriveTrainSubsystem", RobotMap.driveTrain);
-		if (Robot.autonomusCommand != null) {
-			SmartDashboard.putData("Autonomus/AutonomusCommand", Robot.autonomusCommand);
-		}
-
-		System.err.println("[DEBUG] Actually updating dashboard at" + (System.currentTimeMillis() % 100000) + "ms");
-
-		SmartDashboard.updateValues();
-
-		System.err.println("[DEBUG] Finished dashboard update at" + (System.currentTimeMillis() % 100000) + "ms");
+			if (Robot.autonomusCommand != null) {
+				debugTab.add("Autonomus/AutonomusCommand", Robot.autonomusCommand).withWidget(BuiltInWidgets.kCommand);//.withPosition(11, 4);
+			}
+		} else if (! debug) {
+			System.out.println("Adding Drive Tab Components.");
+			driveTab.add(Scheduler.getInstance()).withSize(2, 3).withPosition(0, 0);
+			driveTab.add("SelectedStartPosition", new SendableObject(() -> { return Robot.autoChooser.getSelected().name(); })).withSize(2, 1).withPosition(3, 3);
+			driveTab.add("SendableChooser", Robot.autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(4, 3);
+			driveTab.add("Populate DebugDashboard", (new InstantCommand((Runnable) () -> {setDashboardMode(true); }))).withSize(2, 1).withPosition(5, 3);
+		}	
 	}
 }
