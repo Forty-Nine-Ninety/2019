@@ -76,7 +76,6 @@ public class Robot extends TimedRobot {
 	}
 
 	public void disabledPeriodic() { // This function is run periodically when the robot is DISABLED. Be careful.
-
 	}
 
 	public void autonomousInit() { // This function is called at the start of autonomous
@@ -104,6 +103,7 @@ public class Robot extends TimedRobot {
 		//System.out.println("Running periodic at " + (System.currentTimeMillis() % 100000) + "ms");
 		Scheduler.getInstance().run(); // runs execute() of current commands and periodic() of subsystems.
 		//Apparently scheduler is still taking too long so I'll need to change that at some point...?
+		System.out.println("Using " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) + " / " + Runtime.getRuntime().totalMemory() + " bytes of RAM.");
 	}
 
 	public void testInit() {

@@ -22,6 +22,7 @@ public class SmartDashboardController {
 		driveTab = Shuffleboard.getTab("Drive");
 		debugTab = Shuffleboard.getTab("Debug");
 		System.out.println("Initializing Dashboard.");
+		setDashboardMode(! debug);
 		setDashboardMode(debug);
 	}
 
@@ -134,11 +135,10 @@ public class SmartDashboardController {
 			}
 		} else if (! debug) {
 			System.out.println("Adding Drive Tab Components.");
-			driveTab.add(Scheduler.getInstance()).withSize(2, 3).withPosition(1, 1);
+			driveTab.add(Scheduler.getInstance()).withSize(2, 3).withPosition(0, 0);
 			driveTab.add("SelectedStartPosition", new SendableObject(() -> { return Robot.autoChooser.getSelected().name(); })).withSize(2, 1).withPosition(3, 3);
 			driveTab.add("SendableChooser", Robot.autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(4, 3);
 			driveTab.add("Populate DebugDashboard", (new InstantCommand((Runnable) () -> {setDashboardMode(true); }))).withSize(2, 1).withPosition(5, 3);
-			//driveTab.add("Stop DebugDashboard", new InstantCommand((Runnable) () -> {setDashboardMode(false);}));
 		}	
 	}
 }
