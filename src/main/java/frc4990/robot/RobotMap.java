@@ -110,7 +110,7 @@ public class RobotMap {
 
 		} else { //competition bot
 
-			camera = CameraServer.getInstance().startAutomaticCapture();
+			//camera = CameraServer.getInstance().startAutomaticCapture();
 
 			pdp = new PowerDistributionPanel();
 			

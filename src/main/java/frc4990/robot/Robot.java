@@ -1,5 +1,7 @@
 package frc4990.robot;
 
+
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -38,6 +40,9 @@ public class Robot extends TimedRobot {
 
 	public static ProcessThread processThread;
 
+	private static long lastTimeMillis = System.nanoTime();
+	private static int totalOver100D = 0, totalOver100T = 0, tD = 0, tT = 0;
+
 	/**
 	 * @author Team 4990
 	 */
@@ -57,9 +62,9 @@ public class Robot extends TimedRobot {
 			addOption("Test", StartingPosition.TEST);
 		}};
 
-		SmartDashboardController.initializeDashboard(false);
+		//SmartDashboardController.initializeDashboard(false);
 		processThread = new ProcessThread(true, true);//Also resets sensors
-		processThread.start();
+		//processThread.start();
 
 		System.out.println("Robot Initialized.");
 	}
@@ -76,6 +81,11 @@ public class Robot extends TimedRobot {
 	}
 
 	public void disabledPeriodic() { // This function is run periodically when the robot is DISABLED. Be careful.
+		totalOver100D += ((System.nanoTime() - lastTimeMillis) / 1000);
+		tD++;
+		if (tD == 1000) System.out.println("[DEBUG] Total time " + totalOver100D / tD);
+		System.out.println("[Debug] Last loop took " + ((System.nanoTime() - lastTimeMillis) / 1000) + "us | CPU Usage: " + OperatingSystemMXBean.getSystemLoadAverage());
+		lastTimeMillis = System.nanoTime();
 	}
 
 	public void autonomousInit() { // This function is called at the start of autonomous
@@ -103,7 +113,8 @@ public class Robot extends TimedRobot {
 		//System.out.println("Running periodic at " + (System.currentTimeMillis() % 100000) + "ms");
 		Scheduler.getInstance().run(); // runs execute() of current commands and periodic() of subsystems.
 		//Apparently scheduler is still taking too long so I'll need to change that at some point...?
-		System.out.println("Using " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) + " / " + Runtime.getRuntime().totalMemory() + " bytes of RAM.");
+		System.out.println("Using " + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1000) + " / " + (Runtime.getRuntime().totalMemory() / 1000) + "KB; last loop took " + ((System.nanoTime() - lastTimeMillis) / 1000) + "us");
+		lastTimeMillis = System.nanoTime();
 	}
 
 	public void testInit() {
