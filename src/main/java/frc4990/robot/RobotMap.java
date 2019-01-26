@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Ultrasonic;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc4990.robot.subsystems.DriveTrain;
 import frc4990.robot.subsystems.F310Gamepad;
 import frc4990.robot.subsystems.TalonMotorController;
@@ -46,7 +45,6 @@ public class RobotMap {
 
 	public static SpeedControllerGroup leftMotorGroup;
 	public static SpeedControllerGroup rightMotorGroup;
-	public static DifferentialDrive differentialDrive;
 
 	public static DriveTrain driveTrain;
 
@@ -84,14 +82,10 @@ public class RobotMap {
 			leftEncoder = new Encoder(0, 1);
 			rightEncoder = new Encoder(2, 3);
 
-			leftGearbox = new Gearbox(leftFrontDriveTalon, leftRearDriveTalon, leftEncoder);
-			rightGearbox = new Gearbox(rightFrontDriveTalon, rightRearDriveTalon, rightEncoder);
-
 			leftMotorGroup = new SpeedControllerGroup(leftFrontDriveTalon, leftRearDriveTalon);
 			rightMotorGroup = new SpeedControllerGroup(rightFrontDriveTalon, rightRearDriveTalon);
-			//differentialDrive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
 
-			driveTrain = new DriveTrain(leftGearbox, rightGearbox);
+			driveTrain = new DriveTrain();
 
 			ultrasonicDigitalOutput = new DigitalOutput(4); //PING
 			ultrasonicEchoDigitalInput = new DigitalInput(5); //ECHO
@@ -123,14 +117,10 @@ public class RobotMap {
 			leftEncoder = new Encoder(0, 1);
 			rightEncoder = new Encoder(2, 3);
 
-			leftGearbox = new Gearbox(leftFrontDriveTalon, leftRearDriveTalon, leftEncoder);
-			rightGearbox = new Gearbox(rightFrontDriveTalon, rightRearDriveTalon, rightEncoder);
-
 			leftMotorGroup = new SpeedControllerGroup(leftFrontDriveTalon, leftRearDriveTalon);
 			rightMotorGroup = new SpeedControllerGroup(rightFrontDriveTalon, rightRearDriveTalon);
-			//differentialDrive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
-
-			driveTrain = new DriveTrain(leftGearbox, rightGearbox);
+			
+			driveTrain = new DriveTrain();
 
 			ultrasonicDigitalOutput = new DigitalOutput(4); //PING
 			ultrasonicEchoDigitalInput = new DigitalInput(5); //ECHO
