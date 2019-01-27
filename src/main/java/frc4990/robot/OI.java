@@ -46,8 +46,8 @@ public class OI{
 		RobotMap.opGamepad.start.toggleWhenPressed(new ControllerCheck(RobotMap.opGamepad));
 
 		//Pneumatics
-		//RobotMap.opGamepad.x.whenPressed(new TogglePneumatic(RobotMap.pneumatic1));
-		//RobotMap.opGamepad.y.whenPressed(new TogglePneumatic(RobotMap.pneumatic2));
+		RobotMap.opGamepad.x.whenPressed(RobotMap.frontSolenoid.toggle(RobotMap.frontSolenoid));
+		RobotMap.opGamepad.y.whenPressed(RobotMap.rearSolenoid.toggle(RobotMap.rearSolenoid));
 	}
 	
 	/**

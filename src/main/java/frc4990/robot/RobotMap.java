@@ -11,6 +11,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -18,9 +19,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Ultrasonic;
-import frc4990.robot.subsystems.DriveTrain;
-import frc4990.robot.subsystems.F310Gamepad;
-import frc4990.robot.subsystems.TalonMotorController;
+import frc4990.robot.subsystems.*;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -57,8 +56,10 @@ public class RobotMap {
 
 	public static UsbCamera camera;
 
-	//public static Pneumatic pneumatic1;
-	//public static Pneumatic pneumatic2;
+	public static Pneumatic frontSolenoid;
+	public static Pneumatic rearSolenoid;
+	public static Compressor compressor;
+	
 
 	public static DigitalInput robotSelector;
 
@@ -97,8 +98,9 @@ public class RobotMap {
 			//navX-MXP RoboRIO extension and 9-axis gyro thingy
 			//for simple gyro angles: use ahrs.getAngle() to get heading (returns number -n to n) and reset() to reset angle (and drift)
 
-			//pneumatic1 = new Pneumatic(0, 0);
-			//pneumatic2 = new Pneumatic(0, 1);
+			frontSolenoid = new Pneumatic(0, 0);
+			rearSolenoid = new Pneumatic(0, 1);
+			compressor = new Compressor(0);
 
 		} else { //competition bot
 
@@ -132,8 +134,9 @@ public class RobotMap {
 			//navX-MXP RoboRIO extension and 9-axis gyro thingy
 			//for simple gyro angles: use ahrs.getAngle() to get heading (returns number -n to n) and reset() to reset angle (and drift)
 
-			//pneumatic1 = new Pneumatic(0, 0);
-			//pneumatic2 = new Pneumatic(0, 1);
+			frontSolenoid = new Pneumatic(0, 0);
+			rearSolenoid = new Pneumatic(0, 1);
+			compressor = new Compressor(0);
 		}
 	}
 }
