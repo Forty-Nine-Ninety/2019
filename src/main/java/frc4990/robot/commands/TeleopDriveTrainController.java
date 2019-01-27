@@ -1,7 +1,5 @@
 package frc4990.robot.commands;
 
-import java.util.Date;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import frc4990.robot.OI;
@@ -16,7 +14,7 @@ public class TeleopDriveTrainController extends Command {
 	
 	public DriveMode driveMode;	
 	
-	public enum StickShapingMode { NextThrottle, SquaredThrottle, DifferentialDrive }
+	public enum StickShapingMode { SquaredThrottle, DifferentialDrive }
 	
 	public static StickShapingMode stickShapingMode = StickShapingMode.SquaredThrottle;	
 
@@ -25,11 +23,6 @@ public class TeleopDriveTrainController extends Command {
 	public static double currentTurnSteepnessMultiplier = 1.0;
 
 	private double throttle, turnSteepness;
-
-	//for older StickShapingMode (NextThrottle)
-	 private double nt_lastThrottle, nt_lastTurnSteepness;
-	 private Date nt_currentUpdate, nt_lastUpdate;
-	 private double nt_accelerationTime = 250;
 
 	/**
 	 * Constructor for TeleopDriveTrainController
@@ -46,31 +39,34 @@ public class TeleopDriveTrainController extends Command {
 	public void execute() {
 
 		switch (stickShapingMode) {
-			case NextThrottle://Old stick shaping mode
-				nt_currentUpdate = new Date();
-				if (nt_lastUpdate == null) {
-					nt_lastUpdate = new Date();
-					RobotMap.driveTrain.configOpenloopRamp(0);
-				}
-
-				throttle = getNextThrottle(
-					OI.throttleAnalogButton.getRawAxis() * currentThrottleMultiplier, 
-					this.nt_lastThrottle, 
-					this.nt_lastUpdate, 
-					nt_currentUpdate, 
-					this.nt_accelerationTime);
-			
-				turnSteepness = getNextThrottle(
-					OI.turnSteepnessAnalogButton.getRawAxis() * currentTurnSteepnessMultiplier,
-					this.nt_lastTurnSteepness,
-					this.nt_lastUpdate,
-					nt_currentUpdate,
-					this.nt_accelerationTime);
-				break;
 			case SquaredThrottle://Another one that we tried.
 				throttle = getSquaredThrottle(OI.throttleAnalogButton.getRawAxis() * currentThrottleMultiplier);
 				turnSteepness = getSquaredThrottle(OI.turnSteepnessAnalogButton.getRawAxis());
-				if (nt_lastUpdate != null) nt_lastUpdate = null;
+
+				if (throttle != 0 && turnSteepness != 0) { //arc turn
+					driveMode = DriveMode.ARC;
+					setArcTrajectory(throttle, -turnSteepness);
+	
+					
+				} else if (throttle != 0 && turnSteepness == 0) { //go forward
+					if (driveMode != DriveMode.STRAIGHT) { //changed modes
+						RobotMap.ahrs.reset();
+					}
+					driveMode = DriveMode.STRAIGHT;
+					RobotMap.driveTrain.setSpeed(throttle, throttle);
+					
+				} else if (throttle == 0 && turnSteepness != 0) { //spin in place
+					/* the right motor's velocity has the opposite sign of the the left motor's
+					* since the right motor will spin in the opposite direction from the left
+					*/
+					driveMode = DriveMode.TURN;
+					RobotMap.driveTrain.setSpeed(turnSteepness * currentTurnSteepnessMultiplier, 
+					-turnSteepness * currentTurnSteepnessMultiplier);
+					
+				} else {
+					driveMode = DriveMode.NONE;
+					RobotMap.driveTrain.setSpeed(0, 0);
+				}
 				break;
 			case DifferentialDrive://New!  but there is no code.
 				RobotMap.driveTrain.curvatureDrive(
@@ -79,42 +75,6 @@ public class TeleopDriveTrainController extends Command {
 				break;
 			default:
 				break;
-		}
-		
-		/*
-		 *
-		 * The following code bits really need some clean-up.
-		 * 
-		 */
-		if (stickShapingMode != StickShapingMode.DifferentialDrive) {
-			if (throttle != 0 && turnSteepness != 0) { //arc turn
-				driveMode = DriveMode.ARC;
-				setArcTrajectory(throttle, -turnSteepness);
-
-				
-			} else if (throttle != 0 && turnSteepness == 0) { //go forward
-				if (driveMode != DriveMode.STRAIGHT) { //changed modes
-					RobotMap.ahrs.reset();
-				}
-				driveMode = DriveMode.STRAIGHT;
-				RobotMap.driveTrain.setSpeed(throttle, throttle);
-				
-			} else if (throttle == 0 && turnSteepness != 0) { //spin in place
-				/* the right motor's velocity has the opposite sign of the the left motor's
-				* since the right motor will spin in the opposite direction from the left
-				*/
-				driveMode = DriveMode.TURN;
-				RobotMap.driveTrain.setSpeed(turnSteepness * currentTurnSteepnessMultiplier, 
-				-turnSteepness * currentTurnSteepnessMultiplier);
-				
-			} else {
-				driveMode = DriveMode.NONE;
-				RobotMap.driveTrain.setSpeed(0, 0);
-			}
-		}
-		if (stickShapingMode != StickShapingMode.NextThrottle && nt_lastUpdate != null) {
-			nt_lastUpdate = null;
-			RobotMap.driveTrain.configOpenloopRamp();
 		}
 	}
 	
@@ -127,30 +87,6 @@ public class TeleopDriveTrainController extends Command {
 		return throttleInput * throttleInput * Math.signum(throttleInput);
 	}
 
-	/**
-	 * Does some weird acceleration thing.  It works surprisingly well though.
-	 * @param throttleInput
-	 * @param lastThrottle
-	 * @param lastUpdate
-	 * @param currentUpdate
-	 * @param accelerationTime
-	 * @return
-	 */
-	public double getNextThrottle(double throttleInput, double lastThrottle, Date lastUpdate, Date currentUpdate, double accelerationTime) {
-		double newThrottle = throttleInput;
-		
-		if (accelerationTime != 0) {
-			double acceleration = (throttleInput - lastThrottle) / accelerationTime;//Some sort of acceleration thing...? We didn't write this.
-			double deltaTime = currentUpdate.getTime() - lastUpdate.getTime();
-			
-			double deltaThrottle = deltaTime * acceleration;
-			
-			newThrottle = lastThrottle + deltaThrottle;
-		}
-		
-		return Math.abs(newThrottle) < /*Constants.zeroThrottleThreshold*/0.01 ? 0.0 : newThrottle;
-	}
-	
 	/**
 	 * Sets motor for arc turns
 	 * @author Class of '21 (created in 2018 season)
