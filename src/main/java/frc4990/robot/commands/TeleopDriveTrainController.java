@@ -42,6 +42,31 @@ public class TeleopDriveTrainController extends Command {
 			case SquaredThrottle://Another one that we tried.
 				throttle = getSquaredThrottle(OI.throttleAnalogButton.getRawAxis() * currentThrottleMultiplier);
 				turnSteepness = getSquaredThrottle(OI.turnSteepnessAnalogButton.getRawAxis());
+
+				if (throttle != 0 && turnSteepness != 0) { //arc turn
+					driveMode = DriveMode.ARC;
+					setArcTrajectory(throttle, -turnSteepness);
+	
+					
+				} else if (throttle != 0 && turnSteepness == 0) { //go forward
+					if (driveMode != DriveMode.STRAIGHT) { //changed modes
+						RobotMap.ahrs.reset();
+					}
+					driveMode = DriveMode.STRAIGHT;
+					RobotMap.driveTrain.setSpeed(throttle, throttle);
+					
+				} else if (throttle == 0 && turnSteepness != 0) { //spin in place
+					/* the right motor's velocity has the opposite sign of the the left motor's
+					* since the right motor will spin in the opposite direction from the left
+					*/
+					driveMode = DriveMode.TURN;
+					RobotMap.driveTrain.setSpeed(turnSteepness * currentTurnSteepnessMultiplier, 
+					-turnSteepness * currentTurnSteepnessMultiplier);
+					
+				} else {
+					driveMode = DriveMode.NONE;
+					RobotMap.driveTrain.setSpeed(0, 0);
+				}
 				break;
 			case DifferentialDrive://New!  but there is no code.
 				RobotMap.driveTrain.curvatureDrive(
@@ -50,38 +75,6 @@ public class TeleopDriveTrainController extends Command {
 				break;
 			default:
 				break;
-		}
-		
-		/*
-		 *
-		 * The following code bits really need some clean-up.
-		 * 
-		 */
-		if (stickShapingMode != StickShapingMode.DifferentialDrive) {
-			if (throttle != 0 && turnSteepness != 0) { //arc turn
-				driveMode = DriveMode.ARC;
-				setArcTrajectory(throttle, -turnSteepness);
-
-				
-			} else if (throttle != 0 && turnSteepness == 0) { //go forward
-				if (driveMode != DriveMode.STRAIGHT) { //changed modes
-					RobotMap.ahrs.reset();
-				}
-				driveMode = DriveMode.STRAIGHT;
-				RobotMap.driveTrain.setSpeed(throttle, throttle);
-				
-			} else if (throttle == 0 && turnSteepness != 0) { //spin in place
-				/* the right motor's velocity has the opposite sign of the the left motor's
-				* since the right motor will spin in the opposite direction from the left
-				*/
-				driveMode = DriveMode.TURN;
-				RobotMap.driveTrain.setSpeed(turnSteepness * currentTurnSteepnessMultiplier, 
-				-turnSteepness * currentTurnSteepnessMultiplier);
-				
-			} else {
-				driveMode = DriveMode.NONE;
-				RobotMap.driveTrain.setSpeed(0, 0);
-			}
 		}
 	}
 	
