@@ -1,0 +1,70 @@
+package frc4990.robot;
+
+import edu.wpi.first.networktables.*;
+
+/**
+ * Wrapper class for Limelight
+ * 
+ * @author MajikalExplosions
+ */
+public class Limelight {
+
+    /**
+     * Creates a new Limelight object
+     * @deprecated
+     */
+    public Limelight() {
+        //empty for now I'm not sure what to put here yet. Most of the other functions *are* static.
+    }
+
+    /**
+     * Gets valid target
+     * @return True if a valid target is found; false if otherwise.
+     */
+    public static boolean hasValidTarget() {
+        return (getNetworkTableEntry("tv") == 1);
+    }
+
+    /**
+     * Gets the horizontal offset from the crosshair to the target
+     * @return The horizontal offset from the crosshair to the target
+     */
+    public static double getCrosshairHorizontalOffset() {
+        return getNetworkTableEntry("tx");
+    }
+
+    /**
+     * Gets the vertical offset from the crosshair to the target
+     * @return The vertical offset from the crosshair to the target
+     */
+    public static double getCrosshairVerticalOffset() {
+        return getNetworkTableEntry("ty");
+    }
+
+    /**
+     * Returns the target area
+     * Note: I'm not too sure what this does.  Update this with more description if you can figure out please.
+     * @return The target area (0% of image to 100% of image)
+     */
+    public static double getTargetArea() {
+        return getNetworkTableEntry("ta");
+    }
+
+    /**
+     * Returns the skew/rotation
+     * Note: I'm not too sure what this does.  Update this with more description if you can figure out please.
+     * @return The skew or rotation (-90 degrees to 0 degrees)
+     */
+    public static double getSkew() {
+        return getNetworkTableEntry("ts");
+    }
+
+    /**
+     * Queries the NetworkTable
+     * @param s The key to query for
+     * @return The value in the NetworkTable
+     */
+    private static double getNetworkTableEntry(String s) {
+        return NetworkTableInstance.getDefault().getTable("limelight").getEntry("s").getDouble(0);
+    }
+}
