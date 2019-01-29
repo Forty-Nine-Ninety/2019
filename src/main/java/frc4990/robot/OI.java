@@ -9,6 +9,7 @@ package frc4990.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc4990.robot.commands.ControllerCheck;
 import frc4990.robot.commands.*;
 
@@ -48,6 +49,13 @@ public class OI{
 		//Pneumatics
 		RobotMap.opGamepad.x.whenPressed(RobotMap.frontSolenoid.toggle(RobotMap.frontSolenoid));
 		RobotMap.opGamepad.y.whenPressed(RobotMap.rearSolenoid.toggle(RobotMap.rearSolenoid));
+		RobotMap.opGamepad.rightBumper.whenPressed(
+			new InstantCommand((Runnable) () -> {
+				if (RobotMap.compressor.getClosedLoopControl()) {RobotMap.compressor.setClosedLoopControl(false);} 
+				else {RobotMap.compressor.setClosedLoopControl(true);}
+				System.out.println(RobotMap.compressor.getClosedLoopControl() ? "Compressor off" : "Compressor holding pressure");
+			})
+		);
 	}
 	
 	/**
