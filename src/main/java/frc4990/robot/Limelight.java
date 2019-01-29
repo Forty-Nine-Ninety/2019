@@ -60,11 +60,27 @@ public class Limelight {
     }
 
     /**
+     * Returns the pipeline's latency contribution for non-image capture
+     * @return The pipeline’s latency contribution in milliseconds
+     */
+    public static int getLatency() {
+        return (int) Math.round(getNetworkTableEntry("ts"));
+    }
+
+    /**
+     * Returns the pipeline's minimum latency contribution for image capture
+     * @return The pipeline’s minimum latency contribution in milliseconds
+     */
+    public static int getImageCaptureLatency() {
+        return (int) Math.round(getNetworkTableEntry("ts")) + 11;//See http://docs.limelightvision.io/en/latest/networktables_api.html
+    }
+
+    /**
      * Queries the NetworkTable
      * @param s The key to query for
      * @return The value in the NetworkTable
      */
     private static double getNetworkTableEntry(String s) {
-        return NetworkTableInstance.getDefault().getTable("limelight").getEntry("s").getDouble(0);
+        return NetworkTableInstance.getDefault().getTable("limelight").getEntry(s).getDouble(0);
     }
 }
