@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
 	public static OI oi;
 	public static RobotMap robotMap;
 
-	public static SmartDashboardController smartDashboardController = new SmartDashboardController();
+	public static ShuffleboardController shuffleboardController = new ShuffleboardController();
 
 	public static Notifier processThread;
 
@@ -60,12 +60,12 @@ public class Robot extends TimedRobot {
 			addOption("Test", StartingPosition.TEST);
 		}};
 
-		SmartDashboardController.initializeDashboard(false);
+		ShuffleboardController.initializeDashboard(false);
 
 		processThread = new Notifier((Runnable) () -> {
 			Robot.resetSensors();
 		});
-		
+
 		processThread.startSingle(0);
 
 		System.out.println("Robot Initialized.");
