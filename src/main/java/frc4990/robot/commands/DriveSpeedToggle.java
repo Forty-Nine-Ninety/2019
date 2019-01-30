@@ -1,7 +1,7 @@
 package frc4990.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc4990.robot.SmartDashboardController;
+import frc4990.robot.ShuffleboardController;
 
 /**
  * Ported from old TeleopDriveController
@@ -14,13 +14,13 @@ public class DriveSpeedToggle extends Command {
 	}
 	
 	public void initialize() {
-		TeleopDriveTrainController.currentThrottleMultiplier = SmartDashboardController.getConst("DriveDpiToggle/lowThrottleMultiplier",
+		TeleopDriveTrainController.currentThrottleMultiplier = ShuffleboardController.getConst("DriveDpiToggle/lowThrottleMultiplier",
 				0.5);
 		System.out.println("Throttle Speed: " + TeleopDriveTrainController.currentThrottleMultiplier + "x");
 	}
 	
 	public void end() {
-		TeleopDriveTrainController.currentThrottleMultiplier = SmartDashboardController.getConst("DriveDpiToggle/defaultThrottleMultiplier",
+		TeleopDriveTrainController.currentThrottleMultiplier = ShuffleboardController.getConst("DriveDpiToggle/defaultThrottleMultiplier",
 				1.0);
 		System.out.println("Throttle Speed: " + TeleopDriveTrainController.currentThrottleMultiplier + "x");
 	}

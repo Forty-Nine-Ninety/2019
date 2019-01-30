@@ -2,6 +2,7 @@ package frc4990.robot;
 
 
 
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -36,9 +37,9 @@ public class Robot extends TimedRobot {
 	public static OI oi;
 	public static RobotMap robotMap;
 
-	public static SmartDashboardController smartDashboardController = new SmartDashboardController();
+	public static ShuffleboardController shuffleboardController = new ShuffleboardController();
 
-	public static ProcessThread processThread;
+	public static Notifier processThread;
 
 	/**
 	 * @author Team 4990
@@ -59,9 +60,13 @@ public class Robot extends TimedRobot {
 			addOption("Test", StartingPosition.TEST);
 		}};
 
-		SmartDashboardController.initializeDashboard(false);
-		processThread = new ProcessThread(true, true);//Also resets sensors
-		processThread.start();
+		ShuffleboardController.initializeDashboard(false);
+
+		processThread = new Notifier((Runnable) () -> {
+			Robot.resetSensors();
+		});
+
+		processThread.startSingle(0);
 
 		System.out.println("Robot Initialized.");
 	}
