@@ -42,8 +42,8 @@ public class Limelight {
     }
 
     /**
-     * Returns the target area
-     * Note: I'm not too sure what this does.  Update this with more description if you can figure out please.
+     * Returns the target area, a percentage of the screen filled by the target box
+     * See this part of the documentation: http://docs.limelightvision.io/en/latest/vision_pipeline_tuning.html#target-area
      * @return The target area (0% of image to 100% of image)
      */
     public static double getTargetArea() {
