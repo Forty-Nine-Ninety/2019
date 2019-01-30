@@ -51,8 +51,8 @@ public class Limelight {
     }
 
     /**
-     * Returns the skew/rotation
-     * Note: I'm not too sure what this does.  Update this with more description if you can figure out please.
+     * Returns the skew/rotation of a target. (basically direction filter)
+     * see here for direction filter example https://giant.gfycat.com/HalfUnselfishHarvestmen.gif
      * @return The skew or rotation (-90 degrees to 0 degrees)
      */
     public static double getSkew() {
