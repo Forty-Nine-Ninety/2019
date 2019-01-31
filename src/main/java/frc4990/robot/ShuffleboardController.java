@@ -55,6 +55,11 @@ public class ShuffleboardController {
 			debugTab.add("Subsystem/DriveTrain", RobotMap.driveTrain);
 			//debugTab.add("Subsystem/otherSubsystem", RobotMap.otherSubsystem;
 
+			//Pneumatics
+			debugTab.add("Pneumatics/Compressor", RobotMap.compressor);
+			debugTab.add("Pneumatics/FrontSolenoid", RobotMap.frontSolenoid);
+			debugTab.add("Pneumatics/RearSolenoid", RobotMap.rearSolenoid);
+
 		} else if (! debug) { //drive
 			System.out.println("Adding Drive Tab Components.");
 			driveTab.add("Scheduler", Scheduler.getInstance()).withSize(2, 3).withPosition(0, 0);
