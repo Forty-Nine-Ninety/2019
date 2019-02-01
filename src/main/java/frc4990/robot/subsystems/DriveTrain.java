@@ -96,8 +96,8 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 */
 
 	public void resetDistanceTraveled() {
-		RobotMap.leftEncoder.reset();
-		RobotMap.rightEncoder.reset();
+		RobotMap.leftFrontDriveTalon.resetEncoder();
+		RobotMap.rightFrontDriveTalon.resetEncoder();
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 */
 
 	public double getEncoderDistance() {
-		return (RobotMap.leftEncoder.getDistance() * RobotMap.rightEncoder.getDistance()) / 2;
+		return (RobotMap.leftFrontDriveTalon.getPosition() * RobotMap.rightFrontDriveTalon.getPosition()) / 2;
 	}
 	
 	/**
@@ -130,7 +130,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 */
 
 	public double getEncoderRate() {
-		return (RobotMap.leftEncoder.getRate() * RobotMap.rightEncoder.getRate()) / 2;
+		return (RobotMap.leftFrontDriveTalon.getRate() * RobotMap.rightFrontDriveTalon.getRate()) / 2;
 	}
 
 	/**
