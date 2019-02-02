@@ -3,6 +3,7 @@ package frc4990.robot.subsystems;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc4990.robot.Robot;
 import frc4990.robot.RobotMap;
@@ -31,6 +32,14 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	@Override
 	public PIDSourceType getPIDSourceType() {
 		return this.pidSourceType;
+    }
+    
+    public InstantCommand setTurretSpeed(Turret t, double speed) { 
+		return new InstantCommand("TogglePneumatic", this) {
+			public void initialize() {
+				t.setSpeed(speed);
+			}
+		};
     }
     
     /**

@@ -17,6 +17,7 @@ import frc4990.robot.subsystems.DriveTrain;
 import frc4990.robot.subsystems.F310Gamepad;
 import frc4990.robot.subsystems.TalonMotorController;
 import frc4990.robot.subsystems.TalonWithMagneticEncoder;
+import frc4990.robot.subsystems.Turret;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -46,6 +47,7 @@ public class RobotMap {
 	//public static Pneumatic pneumatic1;
 	//public static Pneumatic pneumatic2;
 
+	public static Turret turret;
 	public static TalonWithMagneticEncoder turretTalon;
 
 	public static DigitalInput robotSelector;
@@ -84,6 +86,7 @@ public class RobotMap {
 			//pneumatic2 = new Pneumatic(0, 1);
 
 			//TODO add Talon CANID
+			turret = new Turret();
 			turretTalon = new TalonWithMagneticEncoder(30);
 
 
