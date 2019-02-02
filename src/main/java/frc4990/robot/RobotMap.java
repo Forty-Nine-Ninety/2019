@@ -46,7 +46,13 @@ public class RobotMap {
 	//public static Pneumatic pneumatic1;
 	//public static Pneumatic pneumatic2;
 
+	public static TalonWithMagneticEncoder turretTalon;
+
 	public static DigitalInput robotSelector;
+
+	public static DigitalInput turretSensorLeft;
+	public static DigitalInput turretSensorMiddle;
+	public static DigitalInput turretSensorRight;
 
 	public RobotMap() {
 
@@ -70,11 +76,21 @@ public class RobotMap {
 			driveTrain = new DriveTrain();
 
 			ahrs = new AHRS(SPI.Port.kMXP);
+
 			//navX-MXP RoboRIO extension and 9-axis gyro thingy
 			//for simple gyro angles: use ahrs.getAngle() to get heading (returns number -n to n) and reset() to reset angle (and drift)
 
 			//pneumatic1 = new Pneumatic(0, 0);
 			//pneumatic2 = new Pneumatic(0, 1);
+
+			//TODO add Talon CANID
+			turretTalon = new TalonWithMagneticEncoder(30);
+
+
+			//TODO find real digital inputs
+			turretSensorLeft = new DigitalInput(0);
+			turretSensorMiddle = new DigitalInput(1);
+			turretSensorRight = new DigitalInput(2);
 
 		} else { //competition bot
 

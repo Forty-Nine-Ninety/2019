@@ -22,6 +22,9 @@ public class OI{
 	
 	public static JoystickAnalogButton throttleAnalogButton = RobotMap.driveGamepad.leftJoystickY;
 	public static JoystickAnalogButton turnSteepnessAnalogButton = RobotMap.driveGamepad.rightJoystickX;
+
+	public static JoystickAnalogButton turretLeftAnalogButton = RobotMap.opGamepad.leftTrigger;
+	public static JoystickAnalogButton turretRightAnalogButton = RobotMap.opGamepad.rightTrigger;
 	
 	/* Controller Mapping:
 		Drive Train: (drive controller)
@@ -44,6 +47,10 @@ public class OI{
 		//controller check
 		RobotMap.driveGamepad.start.toggleWhenPressed(new ControllerCheck(RobotMap.driveGamepad));
 		RobotMap.opGamepad.start.toggleWhenPressed(new ControllerCheck(RobotMap.opGamepad));
+
+
+		TurretTurn tt = new TurretTurn();
+		turretLeftAnalogButton.whileHeld(tt);
 
 		//Pneumatics
 		//RobotMap.opGamepad.x.whenPressed(new TogglePneumatic(RobotMap.pneumatic1));

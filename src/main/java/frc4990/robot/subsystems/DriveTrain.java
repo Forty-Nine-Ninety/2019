@@ -121,7 +121,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 */
 
 	public double getEncoderDistance() {
-		return (RobotMap.leftFrontDriveTalon.getPosition() * RobotMap.rightFrontDriveTalon.getPosition()) / 2;
+		return (RobotMap.leftFrontDriveTalon.getPosition() + RobotMap.rightFrontDriveTalon.getPosition()) / 2;
 	}
 	
 	/**
@@ -130,11 +130,11 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 */
 
 	public double getEncoderRate() {
-		return (RobotMap.leftFrontDriveTalon.getRate() * RobotMap.rightFrontDriveTalon.getRate()) / 2;
+		return (RobotMap.leftFrontDriveTalon.getRate() + RobotMap.rightFrontDriveTalon.getRate()) / 2;
 	}
 
 	/**
-	 * Returns right encoder value, in feet.
+	 * Returns averaged encoder value, in feet.
 	 */
 	public double pidGet() {
 		if (pidSourceType == PIDSourceType.kDisplacement) {
