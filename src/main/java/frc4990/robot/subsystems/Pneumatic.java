@@ -8,7 +8,7 @@ public class Pneumatic extends Subsystem {
 	private Solenoid solenoid;
 
 	/**
-	 * Should be self explanatory. Creates a double solenoid.
+	 * Should be self explanatory. Creates a solenoid.
 	 * 
 	 * @param pcm Port number PCM
 	 * @param channel Port number for solenoid
@@ -19,8 +19,8 @@ public class Pneumatic extends Subsystem {
 		solenoid.set(false);
 	}
 
-	public void togglePneumatics() {
-		solenoid.set(solenoid.get() ? false : true);
+	public void toggle() {
+		solenoid.set(! solenoid.get());
 	}
 
 	@Override

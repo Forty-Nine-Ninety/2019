@@ -1,5 +1,6 @@
 package frc4990.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
@@ -9,13 +10,27 @@ import frc4990.robot.Robot;
 import frc4990.robot.RobotMap;
 import frc4990.robot.ShuffleboardController;
 
-public class Turret extends Subsystem implements PIDSource, PIDOutput {
+public class Hatch extends Subsystem implements PIDSource, PIDOutput {
     
-    public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
+	public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
+	/*
+	private Pneumatic pneumatic;
+	private TalonMotorController talon;
+	*/
+	private int mPosition = 0;
+	private int mRate;
+	private Counter mCounter;
 
-    public Turret() {
-        super("Turret");
-    }
+    public Hatch(Counter counter) {
+		super("Hatch");
+		mCounter = counter;
+	}
+	
+	public void resetCounter() {
+		mPosition = 0;
+		mRate = 0;
+		mCounter.reset();
+	}
 
     /**
 	 * Configures the open-loop ramp rate of throttle output to the default value. As of 1/25/19, it's 0.3.
@@ -34,13 +49,14 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		return this.pidSourceType;
     }
     
-    public InstantCommand setTurretSpeed(Turret t, double speed) { 
-		return new InstantCommand("RotateTurret", this) {
+    public InstantCommand togglePneumatic(Pneumatic pneumatic) { 
+		return new InstantCommand("TogglePneumatic", this) {
 			public void initialize() {
-				t.setSpeed(speed);
+				pneumatic.toggle();
 			}
 		};
-    }
+	}
+	
     
     /**
 	 * Returns right encoder value, in feet.
@@ -59,9 +75,6 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
     }
 
     public void setSpeed(double value) {
-        if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorRight.get()) && value < 0) return;
-        if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorLeft.get()) && value > 0) return;
-        if (RobotMap.turretSensorLeft.get() || RobotMap.turretSensorRight.get()) value /= 2;
         RobotMap.turretTalon.set(value);
     }
     
@@ -71,7 +84,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	 */
 
 	public double getEncoderDistance() {
-		return RobotMap.turretTalon.getPosition();
+		return mPosition;
 	}
 	
 	/**
@@ -80,14 +93,17 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	 */
 
 	public double getEncoderRate() {
-		return RobotMap.turretTalon.getRate();
+		return mRate;
     }
 
 	@Override
 	protected void initDefaultCommand() {
 		
     }
-    
-    @Override
-    public void periodic() {}
+	
+	@Override
+    public void periodic() {
+		mPosition += (mRate = (RobotMap.hatchMotor.getPower() > 0) ? mCounter.get() : -1 * mCounter.get());
+		mCounter.reset();
+	 }
 }

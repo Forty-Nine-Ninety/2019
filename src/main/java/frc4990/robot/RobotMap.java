@@ -9,12 +9,15 @@ package frc4990.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import frc4990.robot.subsystems.DriveTrain;
 import frc4990.robot.subsystems.F310Gamepad;
+import frc4990.robot.subsystems.Hatch;
+import frc4990.robot.subsystems.Pneumatic;
 import frc4990.robot.subsystems.TalonMotorController;
 import frc4990.robot.subsystems.TalonWithMagneticEncoder;
 import frc4990.robot.subsystems.Turret;
@@ -49,6 +52,11 @@ public class RobotMap {
 
 	public static Turret turret;
 	public static TalonWithMagneticEncoder turretTalon;
+
+	public static Hatch hatch;
+	public static Pneumatic hatchPneumatic;
+	public static TalonMotorController hatchMotor;
+	public static Counter hatchCounter;
 
 	public static DigitalInput robotSelector;
 
@@ -89,11 +97,16 @@ public class RobotMap {
 			turret = new Turret();
 			turretTalon = new TalonWithMagneticEncoder(30);
 
+			//TODO add hatch PCM, talon, and counter ports
+			hatchPneumatic = new Pneumatic(0, -1);
+			hatchCounter = new Counter(-1);
+			hatch = new Hatch(hatchCounter);
+			hatchMotor = new TalonMotorController(-1);
 
 			//TODO find real digital inputs
-			turretSensorLeft = new DigitalInput(0);
-			turretSensorMiddle = new DigitalInput(1);
-			turretSensorRight = new DigitalInput(2);
+			turretSensorLeft = new DigitalInput(-1);
+			turretSensorMiddle = new DigitalInput(-1);
+			turretSensorRight = new DigitalInput(-1);
 
 		} else { //competition bot
 
