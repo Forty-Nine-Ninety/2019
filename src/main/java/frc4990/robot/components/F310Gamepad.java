@@ -1,4 +1,4 @@
-package frc4990.robot.subsystems;
+package frc4990.robot.components;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;

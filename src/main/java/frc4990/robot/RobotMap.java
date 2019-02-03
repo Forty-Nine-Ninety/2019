@@ -14,9 +14,10 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import frc4990.robot.components.F310Gamepad;
+import frc4990.robot.components.TalonWithMagneticEncoder;
+import frc4990.robot.subsystems.Dashboard;
 import frc4990.robot.subsystems.DriveTrain;
-import frc4990.robot.subsystems.F310Gamepad;
-import frc4990.robot.subsystems.TalonWithMagneticEncoder;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -48,7 +49,11 @@ public class RobotMap {
 
 	public static DigitalInput robotSelector;
 
+	public static Dashboard dashboard;
+
 	public RobotMap() {
+
+		dashboard = new Dashboard();
 
 		robotSelector = new DigitalInput(9); //true = practice bot, false = competition bot
 

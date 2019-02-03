@@ -2,7 +2,7 @@ package frc4990.robot.commands;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc4990.robot.RobotMap;
-import frc4990.robot.subsystems.F310Gamepad;
+import frc4990.robot.components.F310Gamepad;
 
 /**
  * Press 'START' button on Drive or OP controller to see which is which

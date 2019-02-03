@@ -1,26 +1,32 @@
-package frc4990.robot;
+package frc4990.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import frc4990.robot.OI;
+import frc4990.robot.Robot;
+import frc4990.robot.RobotMap;
+import frc4990.robot.components.SendableObject;
 
-public class ShuffleboardController {
+public class Dashboard extends Subsystem{
 
 	private static Preferences preferences = Preferences.getInstance();
 	@java.lang.FunctionalInterface
-	interface FunctionalInterface { Object anything();}
+	public interface FunctionalInterface { Object anything();}
+	
+	public static ShuffleboardTab driveTab = Shuffleboard.getTab("Drive");
+	public static ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
 
-	public static ShuffleboardTab driveTab, debugTab;
 	/**
 	 * Initializes the dashboards(debug and drive modes) with values and things.
 	 *
 	 */
 	public static void initializeDashboard(boolean debug) {
 		System.out.println("Starting Initializing Dashboard.");
-		driveTab = Shuffleboard.getTab("Drive");
-		debugTab = Shuffleboard.getTab("Debug");
 		setDashboardMode(! debug);
 		setDashboardMode(debug);
 		System.out.println("Done Initializing Dashboard.");
@@ -43,9 +49,9 @@ public class ShuffleboardController {
 			debugTab.add("DifferentialDrive", RobotMap.driveTrain.differentialDrive).withWidget(BuiltInWidgets.kDifferentialDrive).withSize(2, 2).withPosition(11, 4);
 			
 			//Drive Station Inputs
-			debugTab.add("DriveStationInput/turnSteepness", new SendableObject(() -> {return OI.turnSteepnessAnalogButton.getRawAxis().toString(); }));
-			debugTab.add("DriveStationInput/throttle", new SendableObject(() -> {return OI.throttleAnalogButton.getRawAxis().toString(); }));
-			
+			debugTab.add("DriveStationInput/turnSteepness", new SendableObject((FunctionalInterface) () -> OI.turnSteepnessAnalogButton.getRawAxis().toString()));
+			debugTab.add("DriveStationInput/throttle", new SendableObject((FunctionalInterface) () -> {return OI.throttleAnalogButton.getRawAxis().toString(); }));
+
 			//Autonomus
 			if (Robot.autonomusCommand != null) {
 				debugTab.add("Autonomus/AutonomusCommand", Robot.autonomusCommand).withWidget(BuiltInWidgets.kCommand);//.withPosition(11, 4);
@@ -58,8 +64,9 @@ public class ShuffleboardController {
 		} else if (! debug) { //drive
 			System.out.println("Adding Drive Tab Components.");
 			driveTab.add("Scheduler", Scheduler.getInstance()).withSize(2, 3).withPosition(0, 0);
-			driveTab.add("SelectedStartPosition", new SendableObject(() -> { return Robot.autoChooser.getSelected().name(); })).withSize(2, 1).withPosition(3, 3);
+			driveTab.add("SelectedStartPosition", new SendableObject((FunctionalInterface) () -> Robot.autoChooser.getSelected().name())).withSize(2, 1).withPosition(3, 3);
 			driveTab.add("AutoChooser", Robot.autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(4, 3);
+			driveTab.add("initDebugDashboard", RobotMap.dashboard.initDebugDashboard());
 		}
 	}
 
@@ -144,5 +151,17 @@ public class ShuffleboardController {
 		}
 
 	}
+
+	public InstantCommand initDebugDashboard() {
+		return new InstantCommand("initDebugDashboard") { 
+			public void initialize() {
+				setRunWhenDisabled(true);
+				Dashboard.setDashboardMode(true);
+			}
+		};
+	}
+
+	@Override
+	protected void initDefaultCommand() {}
 
 }

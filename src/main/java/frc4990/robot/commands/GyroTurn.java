@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc4990.robot.RobotMap;
-import frc4990.robot.ShuffleboardController;
+import frc4990.robot.subsystems.Dashboard;
 
 public class GyroTurn extends Command implements PIDOutput {
 
@@ -19,9 +19,9 @@ public class GyroTurn extends Command implements PIDOutput {
      controllers by displaying a form where you can enter new P, I,  
      and D constants and test the mechanism.                         */
 	
-	PIDController turnController = new PIDController(ShuffleboardController.getConst("gyroTurn/tP", 0.02), 
-	ShuffleboardController.getConst("gyroTurn/tI", 0.00002), 
-	ShuffleboardController.getConst("gyroTurn/tD", 0.06), (PIDSource) RobotMap.ahrs, this);
+	PIDController turnController = new PIDController(Dashboard.getConst("gyroTurn/tP", 0.02), 
+	Dashboard.getConst("gyroTurn/tI", 0.00002), 
+	Dashboard.getConst("gyroTurn/tD", 0.06), (PIDSource) RobotMap.ahrs, this);
 	double maxSpeed;
 
 	/**
@@ -30,9 +30,9 @@ public class GyroTurn extends Command implements PIDOutput {
 	 */
 	public GyroTurn(double target, double maxSpeed, double timeout, double turnRadius, boolean isInPlace) {
 		this.setTimeout(timeout);
-		this.maxSpeed = ShuffleboardController.getConst("gyroTurn/speed", maxSpeed);
-		ShuffleboardController.getConst("gyroTurn/turnRadius", turnRadius);
-		ShuffleboardController.getBoolean("gyroTurn/turnInPlace", isInPlace);
+		this.maxSpeed = Dashboard.getConst("gyroTurn/speed", maxSpeed);
+		Dashboard.getConst("gyroTurn/turnRadius", turnRadius);
+		Dashboard.getBoolean("gyroTurn/turnInPlace", isInPlace);
 		turnController.setSetpoint(target);
 	}
 
@@ -63,13 +63,13 @@ public class GyroTurn extends Command implements PIDOutput {
 
 	public void execute() {
 		System.out.println("maxSpeed = " + maxSpeed + ", turnOutput = " + this.turnController.get() + ", ahrs = " + RobotMap.ahrs.pidGet() + ", isEnabled = "+turnController.isEnabled());
-		if (ShuffleboardController.getBoolean("gyroTurn/turnInPlace", true)) {
+		if (Dashboard.getBoolean("gyroTurn/turnInPlace", true)) {
 			RobotMap.driveTrain.setSpeed(
 				this.turnController.get(), 
 				-this.turnController.get());
 		}
 		else {
-			double radius = ShuffleboardController.getConst("gyroTurn/turnRadius", 0);
+			double radius = Dashboard.getConst("gyroTurn/turnRadius", 0);
 			double ratio;
 			if (radius < 0) {
 				radius += DRIVETRAIN_WIDTH / 2;

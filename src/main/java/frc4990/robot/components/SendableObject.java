@@ -1,4 +1,4 @@
-package frc4990.robot;
+package frc4990.robot.components;
 
 import java.util.function.Supplier;
 
@@ -15,6 +15,10 @@ public class SendableObject extends SendableBase {
 	 */
 	public SendableObject(Supplier<?> data) {
 		this.supplier = data;
+	}
+
+	public SendableObject(frc4990.robot.subsystems.Dashboard.FunctionalInterface data) {
+		this.supplier = (Supplier<?>) data;
 	}
 
 	public double getDouble() {
