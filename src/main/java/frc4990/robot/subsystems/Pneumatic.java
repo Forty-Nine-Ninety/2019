@@ -1,14 +1,15 @@
 package frc4990.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Pneumatic extends Subsystem {
 
-	private Solenoid solenoid;
+	public Solenoid solenoid;
 
 	/**
-	 * Should be self explanatory. Creates a double solenoid.
+	 * Creates a single solenoid.
 	 * 
 	 * @param pcm Port number PCM
 	 * @param channel Port number for solenoid
@@ -21,6 +22,14 @@ public class Pneumatic extends Subsystem {
 
 	public void togglePneumatics() {
 		solenoid.set(solenoid.get() ? false : true);
+	}
+
+	public void clearStickyFaults() {
+		if (solenoid.isBlackListed()) solenoid.clearAllPCMStickyFaults();
+	}
+
+	public InstantCommand clearStickyFaults(Pneumatic subsystem) {
+		return new InstantCommand("clearStickyFaults", () -> subsystem.clearStickyFaults());
 	}
 
 	@Override
