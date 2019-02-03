@@ -4,13 +4,16 @@ import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.StartCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc4990.robot.Robot;
 import frc4990.robot.RobotMap;
 import frc4990.robot.ShuffleboardController;
+import frc4990.robot.commands.SetHatchPosition;
 
-public class Hatch extends Subsystem implements PIDSource, PIDOutput {
+public class HatchClaw extends Subsystem implements PIDSource, PIDOutput {
+
+	public static enum HatchPosition { Engaged, Relaxed }
+	public HatchPosition hatchPosition = HatchPosition.Relaxed;
     
 	public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
 	/*
@@ -19,12 +22,13 @@ public class Hatch extends Subsystem implements PIDSource, PIDOutput {
 	*/
 	private int mPosition = 0;
 	private int mRate;
-	private Counter mCounter;
+	private Counter mCounter = new Counter();
 
-    public Hatch(Counter counter) {
-		super("Hatch");
-		mCounter = counter;
-	}
+	@Override
+    public void periodic() {
+		mPosition += (mRate = (RobotMap.hatchMotor.getPower() > 0) ? mCounter.get() : -1 * mCounter.get());
+		mCounter.reset();
+	 }
 	
 	public void resetCounter() {
 		mPosition = 0;
@@ -36,7 +40,7 @@ public class Hatch extends Subsystem implements PIDSource, PIDOutput {
 	 * Configures the open-loop ramp rate of throttle output to the default value. As of 1/25/19, it's 0.3.
 	 */
 	public void configOpenloopRamp() {
-        RobotMap.turretTalon.configOpenloopRamp(ShuffleboardController.getConst("Turret/rampDownTime", 0.3), 0);
+        RobotMap.turretTalon.configOpenloopRamp(ShuffleboardController.getConst("Hatch/rampDownTime", 0), 0);
     }
     
     @Override
@@ -49,14 +53,9 @@ public class Hatch extends Subsystem implements PIDSource, PIDOutput {
 		return this.pidSourceType;
     }
     
-    public InstantCommand togglePneumatic(Pneumatic pneumatic) { 
-		return new InstantCommand("TogglePneumatic", this) {
-			public void initialize() {
-				pneumatic.toggle();
-			}
-		};
+    public StartCommand toggleMotor() { 
+		return new StartCommand(new SetHatchPosition());
 	}
-	
     
     /**
 	 * Returns right encoder value, in feet.
@@ -97,13 +96,5 @@ public class Hatch extends Subsystem implements PIDSource, PIDOutput {
     }
 
 	@Override
-	protected void initDefaultCommand() {
-		
-    }
-	
-	@Override
-    public void periodic() {
-		mPosition += (mRate = (RobotMap.hatchMotor.getPower() > 0) ? mCounter.get() : -1 * mCounter.get());
-		mCounter.reset();
-	 }
+	protected void initDefaultCommand() {}
 }

@@ -1,12 +1,11 @@
 package frc4990.robot.commands;
 
 import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc4990.robot.RobotMap;
-
-//TODO Fix the multiple issues in this class and maybe add PID?
+import frc4990.robot.ShuffleboardController;
+import frc4990.robot.subsystems.HatchClaw.HatchPosition;
 public class SetHatchPosition extends Command {
 	
 	private HatchPosition target;
@@ -14,21 +13,28 @@ public class SetHatchPosition extends Command {
 	private boolean isFinished;
 
 	public SetHatchPosition(HatchPosition position, double speed) {
+		requires(RobotMap.hatchClaw);
 		target = position;
 		this.speed = speed;
 	}
 
+	public SetHatchPosition() {
+		requires(RobotMap.hatchClaw);
+		target = RobotMap.hatchClaw.hatchPosition == HatchPosition.Engaged ? HatchPosition.Relaxed : HatchPosition.Engaged;
+		this.speed = ShuffleboardController.getConst("Hatch/defaultSpeed", 0.2);
+	}
+
 	public void initialize() {
-		RobotMap.hatch.setPIDSourceType(PIDSourceType.kDisplacement);
+		RobotMap.hatchClaw.setPIDSourceType(PIDSourceType.kDisplacement);
 	    this.setName("Hatch", "SetHatchPosition");    
 		SmartDashboard.putData(this);
 		isFinished = false;
-		RobotMap.hatch.resetCounter();
+		RobotMap.hatchClaw.resetCounter();
 	}
 
 	public void execute() {
-		if (target == HatchPosition.Engaged && RobotMap.hatch.getEncoderDistance() < -85) RobotMap.hatchMotor.set(speed);
-		else if (target == HatchPosition.Relaxed && RobotMap.hatch.getEncoderDistance() < 85) RobotMap.hatchMotor.set(-1 * speed);
+		if (target == HatchPosition.Engaged && RobotMap.hatchClaw.getEncoderDistance() < -85) RobotMap.hatchMotor.set(speed);
+		else if (target == HatchPosition.Relaxed && RobotMap.hatchClaw.getEncoderDistance() < 85) RobotMap.hatchMotor.set(-1 * speed);
 		else isFinished = true;
 	}
 	
@@ -41,9 +47,12 @@ public class SetHatchPosition extends Command {
 	}
 	
 	public boolean isFinished() {
-		if (isFinished) return true;
+		if (isFinished) {
+			target = RobotMap.hatchClaw.hatchPosition;
+			return true;
+		}
 		return this.isTimedOut();
 	}
 
-	public static enum HatchPosition { Engaged, Relaxed }
+
 }

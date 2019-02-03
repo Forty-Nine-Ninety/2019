@@ -25,8 +25,6 @@ public class OI{
 
 	public static JoystickAnalogButton turretLeftAnalogButton = RobotMap.opGamepad.leftTrigger;
 	public static JoystickAnalogButton turretRightAnalogButton = RobotMap.opGamepad.rightTrigger;
-
-	public static Button hatchPneumaticToggleButton = RobotMap.opGamepad.a;
 	
 	/* Controller Mapping:
 		Drive Train: (drive controller)
@@ -55,7 +53,9 @@ public class OI{
 		turretRightAnalogButton.whileHeld(RobotMap.turret.setTurretSpeed(RobotMap.turret, turretRightAnalogButton.getRawAxis()));
 
 		//Hatch
-		hatchPneumaticToggleButton.whenPressed(RobotMap.hatch.togglePneumatic(RobotMap.hatchPneumatic));
+		//RobotMap.opGamepad.a.whenPressed(RobotMap.hatchPneumatic.toggle(RobotMap.hatchPneumatic));
+		RobotMap.opGamepad.b.whenPressed(RobotMap.hatchClaw.toggleMotor());
+		
 
 		//Pneumatics
 		//RobotMap.opGamepad.x.whenPressed(new TogglePneumatic(RobotMap.pneumatic1));
