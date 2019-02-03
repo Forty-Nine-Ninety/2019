@@ -3,7 +3,6 @@ package frc4990.robot.components;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc4990.robot.OI.JoystickAnalogButton;
 public class F310Gamepad extends Joystick {
 
 	/*
