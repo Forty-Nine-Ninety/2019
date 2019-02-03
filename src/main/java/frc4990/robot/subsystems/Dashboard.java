@@ -25,15 +25,15 @@ public class Dashboard extends Subsystem{
 	 * Initializes the dashboards(debug and drive modes) with values and things.
 	 *
 	 */
-	public static void initializeDashboard(boolean debug) {
+	public Dashboard() {
 		System.out.println("Starting Initializing Dashboard.");
-		setDashboardMode(! debug);
-		setDashboardMode(debug);
+		addDashboardTab(false);
+		//addDashboardTab(true);
 		System.out.println("Done Initializing Dashboard.");
 	}
 
 
-	public static void setDashboardMode(boolean debug) {
+	public static void addDashboardTab(boolean debug) {
 		if (debug && debugTab.getComponents().size() == 0) {
 			System.out.println("Adding Debug Tab Components.");
 
@@ -156,7 +156,7 @@ public class Dashboard extends Subsystem{
 		return new InstantCommand("initDebugDashboard") { 
 			public void initialize() {
 				setRunWhenDisabled(true);
-				Dashboard.setDashboardMode(true);
+				Dashboard.addDashboardTab(true);
 			}
 		};
 	}
