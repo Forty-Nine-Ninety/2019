@@ -7,6 +7,7 @@
 
 package frc4990.robot;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -15,7 +16,6 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import frc4990.robot.subsystems.DriveTrain;
 import frc4990.robot.subsystems.F310Gamepad;
-import frc4990.robot.subsystems.TalonMotorController;
 import frc4990.robot.subsystems.TalonWithMagneticEncoder;
 
 /**
@@ -32,9 +32,9 @@ public class RobotMap {
 	public static F310Gamepad driveGamepad;
 	public static F310Gamepad opGamepad;
 	public static TalonWithMagneticEncoder leftFrontDriveTalon;
-	public static TalonMotorController leftRearDriveTalon;
+	public static WPI_TalonSRX leftRearDriveTalon;
 	public static TalonWithMagneticEncoder rightFrontDriveTalon;
-	public static TalonMotorController rightRearDriveTalon;
+	public static WPI_TalonSRX rightRearDriveTalon;
 
 	public static SpeedControllerGroup leftMotorGroup;
 	public static SpeedControllerGroup rightMotorGroup;
@@ -60,9 +60,9 @@ public class RobotMap {
 			opGamepad = new F310Gamepad(1);
 
 			leftFrontDriveTalon = new TalonWithMagneticEncoder(22);
-			leftRearDriveTalon = new TalonMotorController(9);
+			leftRearDriveTalon = new WPI_TalonSRX(9);
 			rightFrontDriveTalon = new TalonWithMagneticEncoder(6);
-			rightRearDriveTalon = new TalonMotorController(21);
+			rightRearDriveTalon = new WPI_TalonSRX(21);
 
 			leftMotorGroup = new SpeedControllerGroup(leftFrontDriveTalon, leftRearDriveTalon);
 			rightMotorGroup = new SpeedControllerGroup(rightFrontDriveTalon, rightRearDriveTalon);
@@ -84,9 +84,9 @@ public class RobotMap {
 			opGamepad = new F310Gamepad(1);
 
 			leftFrontDriveTalon = new TalonWithMagneticEncoder(1);
-			leftRearDriveTalon = new TalonMotorController(2);
+			leftRearDriveTalon = new WPI_TalonSRX(2);
 			rightFrontDriveTalon = new TalonWithMagneticEncoder(3);
-			rightRearDriveTalon = new TalonMotorController(4);
+			rightRearDriveTalon = new WPI_TalonSRX(4);
 
 			leftMotorGroup = new SpeedControllerGroup(leftFrontDriveTalon, leftRearDriveTalon);
 			rightMotorGroup = new SpeedControllerGroup(rightFrontDriveTalon, rightRearDriveTalon);
