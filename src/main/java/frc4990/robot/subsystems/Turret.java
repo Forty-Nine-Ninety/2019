@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc4990.robot.Robot;
 import frc4990.robot.RobotMap;
 import frc4990.robot.ShuffleboardController;
 
@@ -13,15 +12,11 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
     
     public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
 
-    public Turret() {
-        super("Turret");
-    }
-
     /**
 	 * Configures the open-loop ramp rate of throttle output to the default value. As of 1/25/19, it's 0.3.
 	 */
 	public void configOpenloopRamp() {
-        RobotMap.turretTalon.configOpenloopRamp(ShuffleboardController.getConst("Turret/rampDownTime", 0.3), 0);
+        RobotMap.turretTalon.configOpenloopRamp(ShuffleboardController.getConst("Turret/rampDownTime", 0), 0);
     }
     
     @Override
@@ -34,13 +29,9 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		return this.pidSourceType;
     }
     
-    public InstantCommand setTurretSpeed(Turret t, double speed) { 
-		return new InstantCommand("TogglePneumatic", this) {
-			public void initialize() {
-				t.setSpeed(speed);
-			}
-		};
-    }
+    public InstantCommand setTurretSpeed(double speed) { 
+		return new InstantCommand("SetTurretSpeed", this, () -> Turret.setSpeed(speed));
+	}
     
     /**
 	 * Returns right encoder value, in feet.
@@ -56,9 +47,14 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
     @Override
     public void pidWrite(double output) {
         setSpeed(output);
-    }
+	}
+	/**
+	 * Checks hall effect sensors (contactless limits) and if movement is allowed, it will be sent to motor during periodic()
+	 * If movement is not allowed, function returns.
+	 * @param value speed to set, [-1 to 1]
+	 */
 
-    public void setSpeed(double value) {
+    public static void setSpeed(double value) {
         if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorRight.get()) && value < 0) return;
         if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorLeft.get()) && value > 0) return;
         if (RobotMap.turretSensorLeft.get() || RobotMap.turretSensorRight.get()) value /= 2;
@@ -84,9 +80,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
     }
 
 	@Override
-	protected void initDefaultCommand() {
-		
-    }
+	protected void initDefaultCommand() {}
     
     @Override
     public void periodic() {}

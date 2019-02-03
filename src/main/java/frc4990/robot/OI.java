@@ -48,9 +48,9 @@ public class OI{
 		RobotMap.driveGamepad.start.toggleWhenPressed(new ControllerCheck(RobotMap.driveGamepad));
 		RobotMap.opGamepad.start.toggleWhenPressed(new ControllerCheck(RobotMap.opGamepad));
 
-
-		turretLeftAnalogButton.whileHeld(RobotMap.turret.setTurretSpeed(RobotMap.turret, -1 * turretLeftAnalogButton.getRawAxis()));
-		turretRightAnalogButton.whileHeld(RobotMap.turret.setTurretSpeed(RobotMap.turret, turretRightAnalogButton.getRawAxis()));
+		//turret
+		turretLeftAnalogButton.whileHeld(RobotMap.turret.setTurretSpeed(-1 * turretLeftAnalogButton.getRawAxis()));
+		turretRightAnalogButton.whileHeld(RobotMap.turret.setTurretSpeed(turretRightAnalogButton.getRawAxis()));
 
 		//Pneumatics
 		//RobotMap.opGamepad.x.whenPressed(new TogglePneumatic(RobotMap.pneumatic1));

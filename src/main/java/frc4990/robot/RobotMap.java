@@ -85,12 +85,9 @@ public class RobotMap {
 			//pneumatic1 = new Pneumatic(0, 0);
 			//pneumatic2 = new Pneumatic(0, 1);
 
-			//TODO add Talon CANID
 			turret = new Turret();
 			turretTalon = new TalonWithMagneticEncoder(30);
 
-
-			//TODO find real digital inputs
 			turretSensorLeft = new DigitalInput(0);
 			turretSensorMiddle = new DigitalInput(1);
 			turretSensorRight = new DigitalInput(2);
@@ -118,6 +115,13 @@ public class RobotMap {
 
 			//pneumatic1 = new Pneumatic(0, 0);
 			//pneumatic2 = new Pneumatic(0, 1);
+
+			turret = new Turret();
+			turretTalon = new TalonWithMagneticEncoder(30);
+
+			turretSensorLeft = new DigitalInput(0);
+			turretSensorMiddle = new DigitalInput(1);
+			turretSensorRight = new DigitalInput(2);
 		}
 	}
 }
