@@ -113,12 +113,8 @@ public class Robot extends TimedRobot {
 	}
 
 	public void testInit() {
-		startPos = autoChooser.getSelected();
-		if (autonomusCommand != null) {
-			autonomusCommand = new AutonomusCommand();
-			autonomusCommand.start();
-		}
-		// teleopInit();
+		RobotMap.compressor.setClosedLoopControl(true);
+		RobotMap.compressor.start();
 	}
 
 	public void testPeriodic() {
