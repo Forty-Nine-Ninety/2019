@@ -2,7 +2,6 @@ package frc4990.robot.commands;
 
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc4990.robot.RobotMap;
 import frc4990.robot.ShuffleboardController;
 import frc4990.robot.subsystems.HatchClaw.HatchPosition;
@@ -10,7 +9,7 @@ public class SetHatchPosition extends Command {
 	
 	private HatchPosition target;
 	private double speed;
-	private boolean isFinished;
+	private boolean isFinished = false;
 
 	public SetHatchPosition(HatchPosition position, double speed) {
 		requires(RobotMap.hatchClaw);
@@ -27,8 +26,7 @@ public class SetHatchPosition extends Command {
 	public void initialize() {
 		RobotMap.hatchClaw.setPIDSourceType(PIDSourceType.kDisplacement);
 	    this.setName("Hatch", "SetHatchPosition");    
-		SmartDashboard.putData(this);
-		isFinished = false;
+		ShuffleboardController.debugTab.add(this);
 		RobotMap.hatchClaw.resetCounter();
 	}
 

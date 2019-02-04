@@ -16,10 +16,7 @@ public class HatchClaw extends Subsystem implements PIDSource, PIDOutput {
 	public HatchPosition hatchPosition = HatchPosition.Relaxed;
     
 	public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
-	/*
-	private Pneumatic pneumatic;
-	private TalonMotorController talon;
-	*/
+
 	private int mPosition = 0;
 	private int mRate;
 	private Counter mCounter = new Counter();
@@ -61,11 +58,8 @@ public class HatchClaw extends Subsystem implements PIDSource, PIDOutput {
 	 * Returns right encoder value, in feet.
 	 */
 	public double pidGet() {
-		if (pidSourceType == PIDSourceType.kDisplacement) {
-			return getEncoderDistance();
-		} else {
-			return getEncoderRate();
-		}
+		if (pidSourceType == PIDSourceType.kDisplacement) return getEncoderDistance();
+		else return getEncoderRate();
     }
 
     @Override
@@ -78,8 +72,7 @@ public class HatchClaw extends Subsystem implements PIDSource, PIDOutput {
     }
     
     /**
-	 * Returns raw average left/right encoder value, in unknown units. Use pidGet()
-	 * to return distance in feet.
+	 * Returns encoder value, in unknown units. 
 	 */
 
 	public double getEncoderDistance() {
@@ -87,8 +80,7 @@ public class HatchClaw extends Subsystem implements PIDSource, PIDOutput {
 	}
 	
 	/**
-	 * Returns raw average left/right encoder value, in unknown units. Use pidGet()
-	 * to return distance in feet.
+	 * Returns encoder rate, in unknown units.
 	 */
 
 	public double getEncoderRate() {
