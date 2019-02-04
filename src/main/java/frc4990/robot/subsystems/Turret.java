@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc4990.robot.Robot;
 import frc4990.robot.RobotMap;
 import frc4990.robot.ShuffleboardController;
 

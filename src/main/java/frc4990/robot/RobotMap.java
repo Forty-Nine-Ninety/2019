@@ -48,8 +48,6 @@ public class RobotMap {
 
 	public static AHRS ahrs;
 
-	public static UsbCamera camera;
-
 	public static Turret turret;
 	public static TalonWithMagneticEncoder turretTalon;
 
@@ -133,7 +131,7 @@ public class RobotMap {
 			rearSolenoid = new Pneumatic(0, 1);
 			compressor = new Compressor(0);
       
-      turret = new Turret();
+      		turret = new Turret();
 			turretTalon = new TalonWithMagneticEncoder(30);
 
 			hatchPneumatic = new Pneumatic(0, 3);
