@@ -9,7 +9,7 @@ package frc4990.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.Counter;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
@@ -21,6 +21,7 @@ import frc4990.robot.subsystems.Pneumatic;
 import frc4990.robot.subsystems.TalonMotorController;
 import frc4990.robot.subsystems.TalonWithMagneticEncoder;
 import frc4990.robot.subsystems.Turret;
+
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -47,8 +48,7 @@ public class RobotMap {
 
 	public static AHRS ahrs;
 
-	//public static Pneumatic pneumatic1;
-	//public static Pneumatic pneumatic2;
+	public static UsbCamera camera;
 
 	public static Turret turret;
 	public static TalonWithMagneticEncoder turretTalon;
@@ -56,8 +56,11 @@ public class RobotMap {
 	public static HatchClaw hatchClaw;
 	public static Pneumatic hatchPneumatic;
 	public static TalonMotorController hatchMotor;
-	public static Counter hatchCounter;
 
+	public static Pneumatic frontSolenoid;
+	public static Pneumatic rearSolenoid;
+	public static Compressor compressor;
+	
 	public static DigitalInput robotSelector;
 
 	public static DigitalInput turretSensorLeft;
@@ -90,8 +93,9 @@ public class RobotMap {
 			//navX-MXP RoboRIO extension and 9-axis gyro thingy
 			//for simple gyro angles: use ahrs.getAngle() to get heading (returns number -n to n) and reset() to reset angle (and drift)
 
-			//pneumatic1 = new Pneumatic(0, 0);
-			//pneumatic2 = new Pneumatic(0, 1);
+			frontSolenoid = new Pneumatic(0, 0);
+			rearSolenoid = new Pneumatic(0, 1);
+			compressor = new Compressor(0);
 
 			turret = new Turret();
 			turretTalon = new TalonWithMagneticEncoder(30);
@@ -125,8 +129,20 @@ public class RobotMap {
 			//navX-MXP RoboRIO extension and 9-axis gyro thingy
 			//for simple gyro angles: use ahrs.getAngle() to get heading (returns number -n to n) and reset() to reset angle (and drift)
 
-			//pneumatic1 = new Pneumatic(0, 0);
-			//pneumatic2 = new Pneumatic(0, 1);
+			frontSolenoid = new Pneumatic(0, 0);
+			rearSolenoid = new Pneumatic(0, 1);
+			compressor = new Compressor(0);
+      
+      turret = new Turret();
+			turretTalon = new TalonWithMagneticEncoder(30);
+
+			hatchPneumatic = new Pneumatic(0, 3);
+			hatchClaw = new HatchClaw();
+			hatchMotor = new TalonMotorController(31);
+
+			turretSensorLeft = new DigitalInput(0);
+			turretSensorMiddle = new DigitalInput(1);
+			turretSensorRight = new DigitalInput(2);
 		}
 	}
 }
