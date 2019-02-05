@@ -2,12 +2,12 @@ package frc4990.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc4990.robot.RobotMap;
-import frc4990.robot.ShuffleboardController;
+import frc4990.robot.subsystems.Dashboard;
 
 public class RobotDriveStraight extends Command {
 
-	public static double targetTime = ShuffleboardController.getConst("RobotDriveStraight/defaultTargetTime", 2.8);
-	double speed = ShuffleboardController.getConst("RobotDriveStraight/defaultSpeed", 0.3);
+	public static double targetTime = Dashboard.getConst("RobotDriveStraight/defaultTargetTime", 2.8);
+	double speed = Dashboard.getConst("RobotDriveStraight/defaultSpeed", 0.3);
 	
 	public RobotDriveStraight(double time) {
 		requires(RobotMap.driveTrain);
