@@ -1,4 +1,4 @@
-package frc4990.robot;
+package frc4990.robot.components;
 
 import edu.wpi.first.networktables.*;
 
@@ -8,14 +8,6 @@ import edu.wpi.first.networktables.*;
  * @author MajikalExplosions
  */
 public class Limelight {
-
-    /**
-     * Creates a new Limelight object
-     * @deprecated
-     */
-    public Limelight() {
-        //empty for now I'm not sure what to put here yet. Most of the other functions *are* static.
-    }
 
     /**
      * Gets valid target
