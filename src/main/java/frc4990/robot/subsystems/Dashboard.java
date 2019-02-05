@@ -16,10 +16,18 @@ public class Dashboard extends Subsystem{
 
 	private static Preferences preferences = Preferences.getInstance();
 	@java.lang.FunctionalInterface
-	public interface FunctionalInterface { Object anything();}
+	public interface FunctionalInterface { Object get();}
 	
 	public static ShuffleboardTab driveTab = Shuffleboard.getTab("Drive");
 	public static ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
+
+	public static InstantCommand initDebugDashboard =
+		new InstantCommand("initDebugDashboard") { 
+			public void initialize() {
+				setRunWhenDisabled(true);
+				Dashboard.addDashboardTab(true);
+			}
+		};
 
 	/**
 	 * Initializes the dashboards(debug and drive modes) with values and things.
@@ -71,7 +79,7 @@ public class Dashboard extends Subsystem{
 			driveTab.add("Scheduler", Scheduler.getInstance()).withSize(2, 3).withPosition(0, 0);
 			driveTab.add("SelectedStartPosition", new SendableObject((FunctionalInterface) () -> Robot.autoChooser.getSelected().name())).withSize(2, 1).withPosition(3, 3);
 			driveTab.add("AutoChooser", Robot.autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(4, 3);
-			driveTab.add("initDebugDashboard", RobotMap.dashboard.initDebugDashboard());
+			driveTab.add("initDebugDashboard", initDebugDashboard);
 		}
 	}
 
@@ -155,15 +163,6 @@ public class Dashboard extends Subsystem{
 			System.err.println("pref Key" + "Const/" + key + "already taken by a different type");
 		}
 
-	}
-
-	public InstantCommand initDebugDashboard() {
-		return new InstantCommand("initDebugDashboard") { 
-			public void initialize() {
-				setRunWhenDisabled(true);
-				Dashboard.addDashboardTab(true);
-			}
-		};
 	}
 
 	@Override

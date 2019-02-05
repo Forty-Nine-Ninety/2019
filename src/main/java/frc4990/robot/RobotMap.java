@@ -46,11 +46,11 @@ public class RobotMap {
 
 	public static SpeedControllerGroup leftMotorGroup;
 	public static SpeedControllerGroup rightMotorGroup;
+	public static DriveTrain driveTrain;
+	public static Dashboard dashboard;
 
 	public static Pneumatic frontSolenoid = new Pneumatic(0, 0);
 	public static Pneumatic rearSolenoid = new Pneumatic(0, 1);
-	public static DriveTrain driveTrain = new DriveTrain();
-	public static Dashboard dashboard = new Dashboard();
 
 	public static DigitalInput robotSelector = new DigitalInput(9); //true = practice bot, false = competition bot
 
@@ -74,5 +74,9 @@ public class RobotMap {
 
 		leftMotorGroup = new SpeedControllerGroup(leftFrontDriveTalon, leftRearDriveTalon);
 		rightMotorGroup = new SpeedControllerGroup(rightFrontDriveTalon, rightRearDriveTalon);
+		
+		driveTrain = new DriveTrain();
+		dashboard = new Dashboard();
+	
 	}
 }

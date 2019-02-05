@@ -1,7 +1,5 @@
 package frc4990.robot.components;
 
-import java.util.function.Supplier;
-
 import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
@@ -9,18 +7,15 @@ import frc4990.robot.subsystems.Dashboard.FunctionalInterface;
 
 public class SendableObject extends SendableBase {
 
-	private Supplier<?> supplier;
+	private FunctionalInterface supplier;
 	/**
 	 * 
 	 * @param data The Supplier<?> you want to store
 	 * @author MajikalExplosions
 	 */
-	public SendableObject(Supplier<?> data) {
-		this.supplier = data;
-	}
 
 	public SendableObject(FunctionalInterface data) {
-		this.supplier = (Supplier<?>) data;
+		this.supplier = data;
 	}
 
 	public double getDouble() {
