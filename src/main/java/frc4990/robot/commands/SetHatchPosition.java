@@ -3,7 +3,7 @@ package frc4990.robot.commands;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
 import frc4990.robot.RobotMap;
-import frc4990.robot.ShuffleboardController;
+import frc4990.robot.subsystems.Dashboard;
 import frc4990.robot.subsystems.HatchClaw.HatchPosition;
 public class SetHatchPosition extends Command {
 	
@@ -20,13 +20,13 @@ public class SetHatchPosition extends Command {
 	public SetHatchPosition() {
 		requires(RobotMap.hatchClaw);
 		target = RobotMap.hatchClaw.hatchPosition == HatchPosition.Engaged ? HatchPosition.Relaxed : HatchPosition.Engaged;
-		this.speed = ShuffleboardController.getConst("Hatch/defaultSpeed", 0.2);
+		this.speed = Dashboard.getConst("Hatch/defaultSpeed", 0.2);
 	}
 
 	public void initialize() {
 		RobotMap.hatchClaw.setPIDSourceType(PIDSourceType.kDisplacement);
 	    this.setName("Hatch", "SetHatchPosition");    
-		ShuffleboardController.debugTab.add(this);
+		Dashboard.debugTab.add(this);
 		RobotMap.hatchClaw.resetCounter();
 	}
 

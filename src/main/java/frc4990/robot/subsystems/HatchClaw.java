@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.StartCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc4990.robot.RobotMap;
-import frc4990.robot.ShuffleboardController;
 import frc4990.robot.commands.SetHatchPosition;
 
 public class HatchClaw extends Subsystem implements PIDSource, PIDOutput {
@@ -23,7 +22,7 @@ public class HatchClaw extends Subsystem implements PIDSource, PIDOutput {
 
 	@Override
     public void periodic() {
-		mPosition += (mRate = (RobotMap.hatchMotor.getPower() > 0) ? mCounter.get() : -1 * mCounter.get());
+		mPosition += (mRate = (RobotMap.hatchMotor.get() > 0) ? mCounter.get() : -1 * mCounter.get());
 		mCounter.reset();
 	 }
 	
@@ -37,7 +36,7 @@ public class HatchClaw extends Subsystem implements PIDSource, PIDOutput {
 	 * Configures the open-loop ramp rate of throttle output to the default value. As of 1/25/19, it's 0.3.
 	 */
 	public void configOpenloopRamp() {
-        RobotMap.turretTalon.configOpenloopRamp(ShuffleboardController.getConst("Hatch/rampDownTime", 0), 0);
+        RobotMap.turretTalon.configOpenloopRamp(Dashboard.getConst("Hatch/rampDownTime", 0), 0);
     }
     
     @Override

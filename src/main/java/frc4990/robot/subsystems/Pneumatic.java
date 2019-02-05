@@ -6,10 +6,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Pneumatic extends Subsystem {
 
-	private Solenoid solenoid;
+	public Solenoid solenoid;
 
 	/**
-	 * Should be self explanatory. Creates a solenoid.
+	 * Creates a single solenoid.
 	 * 
 	 * @param pcm Port number PCM
 	 * @param channel Port number for solenoid
@@ -25,11 +25,15 @@ public class Pneumatic extends Subsystem {
 	}
 
 	public InstantCommand toggle(Pneumatic subsystem) { 
-		return new InstantCommand("TogglePneumatic", this) {
-			public void initialize() {
-				subsystem.toggle();
-			}
-		};
+		return new InstantCommand("TogglePneumatic", this, () -> subsystem.toggle());
+	}
+
+	public void clearStickyFaults() {
+		if (solenoid.isBlackListed()) solenoid.clearAllPCMStickyFaults();
+	}
+
+	public InstantCommand clearStickyFaults(Pneumatic subsystem) {
+		return new InstantCommand("clearStickyFaults", () -> subsystem.clearStickyFaults());
 	}
 
 	@Override

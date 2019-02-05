@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc4990.robot.RobotMap;
-import frc4990.robot.ShuffleboardController;
 
 public class Turret extends Subsystem implements PIDSource, PIDOutput {
     
@@ -20,7 +19,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	 * Configures the open-loop ramp rate of throttle output to the default value. As of 1/25/19, it's 0.3.
 	 */
 	public void configOpenloopRamp() {
-        RobotMap.turretTalon.configOpenloopRamp(ShuffleboardController.getConst("Turret/rampDownTime", 0.3), 0);
+        RobotMap.turretTalon.configOpenloopRamp(Dashboard.getConst("Turret/rampDownTime", 0.3), 0);
     }
     
     @Override
