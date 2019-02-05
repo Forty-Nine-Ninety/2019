@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc4990.robot.RobotMap;
-import frc4990.robot.subsystems.Dashboard;
+import frc4990.robot.ShuffleboardController;
 
 public class GyroStraight extends Command implements PIDOutput, PIDSource {
 
@@ -17,13 +17,13 @@ public class GyroStraight extends Command implements PIDOutput, PIDSource {
      controllers by displaying a form where you can enter new P, I,  
      and D constants and test the mechanism.                         */
 	
-	PIDController turnController = new PIDController(Dashboard.getConst("tP", 0.2), 
-	Dashboard.getConst("tI", 0), 
-	Dashboard.getConst("tD", 0), (PIDSource) RobotMap.ahrs, this);
+	PIDController turnController = new PIDController(ShuffleboardController.getConst("tP", 0.2), 
+	ShuffleboardController.getConst("tI", 0), 
+	ShuffleboardController.getConst("tD", 0), (PIDSource) RobotMap.ahrs, this);
 	double speed;
 
 	public GyroStraight(double speed, double distance) {
-		this.speed = Dashboard.getConst("GyroStraight-speed", speed);
+		this.speed = ShuffleboardController.getConst("GyroStraight-speed", speed);
 	}
 
 	public void initialize() {

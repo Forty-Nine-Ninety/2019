@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc4990.robot.RobotMap;
+import frc4990.robot.ShuffleboardController;
 import frc4990.robot.commands.TeleopDriveTrainController;
 
 public class DriveTrain extends Subsystem implements PIDSource {
@@ -43,7 +44,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 */
 
 	public void configOpenloopRamp() {
-		configOpenloopRamp(Dashboard.getConst("DriveTrain/rampDownTime", 0.3));
+		configOpenloopRamp(ShuffleboardController.getConst("DriveTrain/rampDownTime", 0.3));
 	} 
 
 	public void clearStickyFaults() {

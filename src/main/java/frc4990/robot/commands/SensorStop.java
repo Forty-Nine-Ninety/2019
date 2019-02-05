@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Command;
+import frc4990.robot.subsystems.LimitSwitch;
 
 public class SensorStop extends Command {
 	Command command;
@@ -32,6 +33,7 @@ public class SensorStop extends Command {
 				put(Encoder.class, Encoder.class.getMethod("getDistance"));
 				put(AHRS.class, AHRS.class.getMethod("getAngle"));
 				put(ADXRS450_Gyro.class, ADXRS450_Gyro.class.getMethod("getAngle"));
+				put(LimitSwitch.class, LimitSwitch.class.getMethod("getValue"));
 				put(AnalogInput.class, AnalogInput.class.getMethod("getValue"));
 				put(DigitalInput.class, DigitalInput.class.getMethod("get"));
 			}};
