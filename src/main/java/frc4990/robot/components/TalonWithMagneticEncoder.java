@@ -1,4 +1,4 @@
-package frc4990.robot.subsystems;
+package frc4990.robot.components;
 
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
