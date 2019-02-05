@@ -36,8 +36,8 @@ public class ShuffleboardController {
 			debugTab.add("Base/NavX-MXP-AHRS", RobotMap.ahrs).withWidget(BuiltInWidgets.kGyro)/*.withSize(2, 2)*/;
 
 			//Drive Train Components
-			debugTab.add("DriveTrain/Left/Encoder", RobotMap.leftEncoder).withWidget(BuiltInWidgets.kEncoder)./*withSize(2, 1).*/withPosition(11, 0);
-			debugTab.add("DriveTrain/Right/Encoder", RobotMap.rightEncoder).withWidget(BuiltInWidgets.kEncoder)./*withSize(2, 1).*/withPosition(11, 1);
+			debugTab.add("DriveTrain/Left/Encoder", RobotMap.leftFrontDriveTalon).withWidget(BuiltInWidgets.kEncoder)./*withSize(2, 1).*/withPosition(11, 0);
+			debugTab.add("DriveTrain/Right/Encoder", RobotMap.rightFrontDriveTalon).withWidget(BuiltInWidgets.kEncoder)./*withSize(2, 1).*/withPosition(11, 1);
 			debugTab.add("DriveTrain/Left/motorGroup", RobotMap.leftMotorGroup).withWidget(BuiltInWidgets.kSpeedController)./*withSize(2, 1).*/withPosition(11, 2);
 			debugTab.add("DriveTrain/Right/motorGroup", RobotMap.rightMotorGroup).withWidget(BuiltInWidgets.kSpeedController)./*withSize(2, 1).*/withPosition(11, 3);
 			debugTab.add("DifferentialDrive", RobotMap.driveTrain.differentialDrive).withWidget(BuiltInWidgets.kDifferentialDrive).withSize(2, 2).withPosition(11, 4);
@@ -54,6 +54,11 @@ public class ShuffleboardController {
 			//Subsystems
 			debugTab.add("Subsystem/DriveTrain", RobotMap.driveTrain);
 			//debugTab.add("Subsystem/otherSubsystem", RobotMap.otherSubsystem;
+
+			//Pneumatics
+			debugTab.add("Pneumatics/Compressor", RobotMap.compressor);
+			debugTab.add("Pneumatics/FrontSolenoid", RobotMap.frontSolenoid);
+			debugTab.add("Pneumatics/RearSolenoid", RobotMap.rearSolenoid);
 
 		} else if (! debug) { //drive
 			System.out.println("Adding Drive Tab Components.");
