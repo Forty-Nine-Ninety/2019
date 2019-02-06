@@ -48,10 +48,6 @@ public class Robot extends TimedRobot {
 	public void robotInit() { 
 		System.out.println("Initializing Robot.");
 
-		robotMap = new RobotMap();
-		
-		oi = new OI();
-		
 		Robot.autoChooser = new SendableChooser<StartingPosition>(){{
 			setDefaultOption("Forward (cross line)", StartingPosition.FORWARD);
 			addOption("Left", StartingPosition.LEFT);
@@ -60,6 +56,12 @@ public class Robot extends TimedRobot {
 			addOption("Stay", StartingPosition.STAY);
 			addOption("Test", StartingPosition.TEST);
 		}};
+
+		robotMap = new RobotMap();
+
+		oi = new OI();
+		
+
 
 		processThread = new Notifier((Runnable) () -> {
 			Robot.resetSensors();
