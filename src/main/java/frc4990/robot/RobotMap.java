@@ -32,12 +32,12 @@ import frc4990.robot.subsystems.Pneumatic;
 
 public class RobotMap {
 	
-	public static PowerDistributionPanel pdp = new PowerDistributionPanel();
-	public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
-	public static Compressor compressor = new Compressor(0);
+	public static PowerDistributionPanel pdp;
+	public static AHRS ahrs;
+	public static Compressor compressor;
 
-	public static F310Gamepad driveGamepad = new F310Gamepad(0);
-	public static F310Gamepad opGamepad = new F310Gamepad(1);
+	public static F310Gamepad driveGamepad;
+	public static F310Gamepad opGamepad;
 
 	public static TalonWithMagneticEncoder leftFrontDriveTalon;
 	public static WPI_TalonSRX leftRearDriveTalon;
@@ -49,12 +49,24 @@ public class RobotMap {
 	public static DriveTrain driveTrain;
 	public static Dashboard dashboard;
 
-	public static Pneumatic frontSolenoid = new Pneumatic(0, 0);
-	public static Pneumatic rearSolenoid = new Pneumatic(0, 1);
+	public static Pneumatic frontSolenoid;
+	public static Pneumatic rearSolenoid;
 
-	public static DigitalInput robotSelector = new DigitalInput(9); //true = practice bot, false = competition bot
+	public static DigitalInput robotSelector; //true = practice bot, false = competition bot
 
 	public RobotMap() {
+
+		pdp = new PowerDistributionPanel();
+		ahrs = new AHRS(SPI.Port.kMXP);
+		compressor = new Compressor(0);
+
+		driveGamepad = new F310Gamepad(0);
+		opGamepad = new F310Gamepad(1);
+
+		frontSolenoid = new Pneumatic(0, 0);
+		rearSolenoid = new Pneumatic(0, 1);
+		
+		robotSelector = new DigitalInput(9);
 
 		if (robotSelector.get()) { //practice bot
 

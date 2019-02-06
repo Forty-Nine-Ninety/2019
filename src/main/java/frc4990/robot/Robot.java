@@ -1,7 +1,5 @@
 package frc4990.robot;
 
-
-
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -26,6 +24,8 @@ public class Robot extends TimedRobot {
 	 * @author Class of '21 (created in 2018 season)
 	 *
 	 */
+	public static RobotMap robotMap;
+	
 	public enum StartingPosition { STAY, FORWARD, LEFT, CENTER, RIGHT, TEST };
 
 	public static SendableChooser<StartingPosition> autoChooser;
@@ -34,19 +34,22 @@ public class Robot extends TimedRobot {
 
 	public static Command autonomusCommand;
 
-	public static RobotMap robotMap;
 	public static OI oi;
+
 
 	public static Notifier processThread;
 
 	/**
+	 * This function is run when the robot is first started up and 
+	 * should be used for any initialization code.
 	 * @author Team 4990
 	 */
 
-	public void robotInit() { // This function is run when the robot is first started up and should be used
-								// for any initialization code.
+	public void robotInit() { 
 		System.out.println("Initializing Robot.");
+
 		robotMap = new RobotMap();
+		
 		oi = new OI();
 		
 		Robot.autoChooser = new SendableChooser<StartingPosition>(){{
