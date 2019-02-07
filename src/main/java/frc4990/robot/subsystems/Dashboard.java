@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc4990.robot.OI;
 import frc4990.robot.Robot;
 import frc4990.robot.RobotMap;
@@ -28,6 +29,20 @@ public class Dashboard extends Subsystem{
 				Dashboard.addDashboardTab(true);
 			}
 		};
+
+		public enum StartingPosition { STAY, FORWARD, LEFT, CENTER, RIGHT, TEST };
+
+		public static StartingPosition startPos = StartingPosition.FORWARD;
+
+		public static SendableChooser<StartingPosition> autoChooser	= 
+			new SendableChooser<StartingPosition>(){{
+				setDefaultOption("Forward (cross line)", StartingPosition.FORWARD);
+				addOption("Left", StartingPosition.LEFT);
+				addOption("Center", StartingPosition.CENTER);
+				addOption("Right", StartingPosition.RIGHT);
+				addOption("Stay", StartingPosition.STAY);
+				addOption("Test", StartingPosition.TEST);
+		}};
 
 	/**
 	 * Initializes the dashboards(debug and drive modes) with values and things.
@@ -77,8 +92,8 @@ public class Dashboard extends Subsystem{
 		} else if (! debug) { //drive
 			System.out.println("Adding Drive Tab Components.");
 			driveTab.add("Scheduler", Scheduler.getInstance()).withSize(2, 3).withPosition(0, 0);
-			driveTab.add("SelectedStartPosition", new SendableObject((FunctionalInterface) () -> Robot.autoChooser.getSelected().name())).withSize(2, 1).withPosition(3, 3);
-			driveTab.add("AutoChooser", Robot.autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(4, 3);
+			driveTab.add("SelectedStartPosition", new SendableObject((FunctionalInterface) () -> autoChooser.getSelected().name())).withSize(2, 1).withPosition(3, 3);
+			driveTab.add("AutoChooser", autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(4, 3);
 			driveTab.add("initDebugDashboard", initDebugDashboard);
 		}
 	}

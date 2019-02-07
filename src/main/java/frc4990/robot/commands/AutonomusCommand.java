@@ -1,14 +1,14 @@
 package frc4990.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc4990.robot.Robot;
-import frc4990.robot.Robot.StartingPosition;
+import frc4990.robot.subsystems.Dashboard;
+import frc4990.robot.subsystems.Dashboard.StartingPosition;
 
 public class AutonomusCommand extends CommandGroup {
 
 	public AutonomusCommand() {
 		
-		StartingPosition s = Robot.autoChooser.getSelected();
+		StartingPosition s = Dashboard.autoChooser.getSelected();
 		System.out.println("Auto Logic INIT, startPos = "+ s.toString());
 		
 		if ((s != StartingPosition.STAY) && (s != StartingPosition.TEST)) {

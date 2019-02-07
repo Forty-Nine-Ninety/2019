@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc4990.robot.commands.AutonomusCommand;
 
 //This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that was the Freshmen Union of 2018
@@ -25,19 +24,12 @@ public class Robot extends TimedRobot {
 	 *
 	 */
 	public static RobotMap robotMap;
-	
-	public enum StartingPosition { STAY, FORWARD, LEFT, CENTER, RIGHT, TEST };
-
-	public static SendableChooser<StartingPosition> autoChooser;
-
-	public static StartingPosition startPos = StartingPosition.FORWARD;
 
 	public static Command autonomusCommand;
 
 	public static OI oi;
 
-
-	public static Notifier processThread;
+	public static Notifier processThread = new Notifier(() -> Robot.resetSensors());;
 
 	/**
 	 * This function is run when the robot is first started up and 
@@ -48,24 +40,9 @@ public class Robot extends TimedRobot {
 	public void robotInit() { 
 		System.out.println("Initializing Robot.");
 
-		Robot.autoChooser = new SendableChooser<StartingPosition>(){{
-			setDefaultOption("Forward (cross line)", StartingPosition.FORWARD);
-			addOption("Left", StartingPosition.LEFT);
-			addOption("Center", StartingPosition.CENTER);
-			addOption("Right", StartingPosition.RIGHT);
-			addOption("Stay", StartingPosition.STAY);
-			addOption("Test", StartingPosition.TEST);
-		}};
-
 		robotMap = new RobotMap();
 
 		oi = new OI();
-		
-
-
-		processThread = new Notifier((Runnable) () -> {
-			Robot.resetSensors();
-		});
 
 		processThread.startSingle(0);
 
