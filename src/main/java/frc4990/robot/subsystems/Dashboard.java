@@ -28,21 +28,21 @@ public class Dashboard extends Subsystem{
 				setRunWhenDisabled(true);
 				Dashboard.addDashboardTab(true);
 			}
-		};
+	};
 
-		public enum StartingPosition { STAY, FORWARD, LEFT, CENTER, RIGHT, TEST };
+	public enum StartingPosition { STAY, FORWARD, LEFT, CENTER, RIGHT, TEST };
 
-		public static StartingPosition startPos = StartingPosition.FORWARD;
+	public static StartingPosition startPos = StartingPosition.FORWARD;
 
-		public static SendableChooser<StartingPosition> autoChooser	= 
-			new SendableChooser<StartingPosition>(){{
-				setDefaultOption("Forward (cross line)", StartingPosition.FORWARD);
-				addOption("Left", StartingPosition.LEFT);
-				addOption("Center", StartingPosition.CENTER);
-				addOption("Right", StartingPosition.RIGHT);
-				addOption("Stay", StartingPosition.STAY);
-				addOption("Test", StartingPosition.TEST);
-		}};
+	public static SendableChooser<StartingPosition> autoChooser	= 
+		new SendableChooser<StartingPosition>(){{
+			setDefaultOption("Forward (cross line)", StartingPosition.FORWARD);
+			addOption("Left", StartingPosition.LEFT);
+			addOption("Center", StartingPosition.CENTER);
+			addOption("Right", StartingPosition.RIGHT);
+			addOption("Stay", StartingPosition.STAY);
+			addOption("Test", StartingPosition.TEST);
+	}};
 
 	/**
 	 * Initializes the dashboards(debug and drive modes) with values and things.
