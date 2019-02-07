@@ -29,7 +29,7 @@ public class Robot extends TimedRobot {
 
 	public static OI oi;
 
-	public static Notifier processThread = new Notifier(() -> Robot.resetSensors());;
+	public static Notifier processThread = new Notifier(() -> Robot.resetSensors());
 
 	/**
 	 * This function is run when the robot is first started up and 
