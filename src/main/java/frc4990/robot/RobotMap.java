@@ -49,6 +49,8 @@ public class RobotMap {
 	public static DriveTrain driveTrain;
 	public static Dashboard dashboard;
 
+	public static int pcmCANID;
+
 	public static Pneumatic frontSolenoid;
 	public static Pneumatic rearSolenoid;
 
@@ -56,33 +58,37 @@ public class RobotMap {
 
 	public RobotMap() {
 
-		pdp = new PowerDistributionPanel();
 		ahrs = new AHRS(SPI.Port.kMXP);
-		compressor = new Compressor(0);
 
 		driveGamepad = new F310Gamepad(0);
 		opGamepad = new F310Gamepad(1);
-
-		frontSolenoid = new Pneumatic(0, 0);
-		rearSolenoid = new Pneumatic(0, 1);
 		
 		robotSelector = new DigitalInput(9);
 
 		if (robotSelector.get()) { //practice bot
 
-			leftFrontDriveTalon = new TalonWithMagneticEncoder(22);
-			leftRearDriveTalon = new WPI_TalonSRX(9);
-			rightFrontDriveTalon = new TalonWithMagneticEncoder(6);
-			rightRearDriveTalon = new WPI_TalonSRX(21);
+			pcmCANID = 12;
+			pdp = new PowerDistributionPanel(2);
+			leftFrontDriveTalon = new TalonWithMagneticEncoder(31);
+			leftRearDriveTalon = new WPI_TalonSRX(32);
+			rightFrontDriveTalon = new TalonWithMagneticEncoder(33);
+			rightRearDriveTalon = new WPI_TalonSRX(34);
 
 		} else { //competition bot
 
+			pcmCANID = 0;
+			pdp = new PowerDistributionPanel(0);
 			leftFrontDriveTalon = new TalonWithMagneticEncoder(1);
 			leftRearDriveTalon = new WPI_TalonSRX(2);
 			rightFrontDriveTalon = new TalonWithMagneticEncoder(3);
 			rightRearDriveTalon = new WPI_TalonSRX(4);
 
 		}
+
+		
+		frontSolenoid = new Pneumatic(pcmCANID, 0);
+		rearSolenoid = new Pneumatic(pcmCANID, 1);
+		compressor = new Compressor(pcmCANID);
 
 		leftMotorGroup = new SpeedControllerGroup(leftFrontDriveTalon, leftRearDriveTalon);
 		rightMotorGroup = new SpeedControllerGroup(rightFrontDriveTalon, rightRearDriveTalon);
