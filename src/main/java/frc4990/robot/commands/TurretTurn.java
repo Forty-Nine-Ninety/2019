@@ -22,15 +22,22 @@ public class TurretTurn extends Command {
 
 		switch(point) {
 			case Forward:
-			target = 0;
+				target = 0;
+				break;
 			case Left:
-			target = 270d * 4096d / 180d;
+				target = 270d * 4096d / 180d;
+				break;
 			case Right:
-			target = 90d * 4096d / 180d;
+				target = 90d * 4096d / 180d;
+				break;
 			case Back:
-			target = 180d * 4096d / 180d;
+				target = 180d * 4096d / 180d;
+				break;
 			case Safe:
-			target = 45d * 4096d / 180d;
+				target = 45d * 4096d / 180d;
+				break;
+			default:
+				break;
 		}
 	}
 
