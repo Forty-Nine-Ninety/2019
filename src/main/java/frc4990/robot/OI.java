@@ -7,9 +7,12 @@
 
 package frc4990.robot;
 
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc4990.robot.commands.TeleopDriveTrainController;
+import frc4990.robot.commands.TurretTurn;
 import frc4990.robot.commands.TeleopDriveTrainController.StickShapingMode;
+import frc4990.robot.commands.TurretTurn.TurretPoint;
 import frc4990.robot.components.JoystickAnalogButton;
 import frc4990.robot.subsystems.Dashboard;
 
@@ -26,6 +29,11 @@ public class OI{
 
 	public static JoystickAnalogButton turretLeftAnalogButton = RobotMap.opGamepad.leftTrigger;
 	public static JoystickAnalogButton turretRightAnalogButton = RobotMap.opGamepad.rightTrigger;
+	public static Button turretForwardButton = RobotMap.opGamepad.getPOVButton(0);
+	public static Button turretLeftButton = RobotMap.opGamepad.getPOVButton(1);
+	public static Button turretRightButton = RobotMap.opGamepad.getPOVButton(2);
+	public static Button turretBackButton = RobotMap.opGamepad.getPOVButton(3);
+	public static Button turretSafeButton = RobotMap.opGamepad.a;
 	
 	/* Controller Mapping:
 		Drive Train: (drive controller)
@@ -52,6 +60,11 @@ public class OI{
 		//turret
 		turretLeftAnalogButton.whileHeld(RobotMap.turret.setTurretSpeed(-1 * turretLeftAnalogButton.getRawAxis()));
 		turretRightAnalogButton.whileHeld(RobotMap.turret.setTurretSpeed(turretRightAnalogButton.getRawAxis()));
+		turretForwardButton.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Forward));
+		turretLeftButton.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Left));
+		turretRightButton.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Right));
+		turretBackButton.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Back));
+		turretSafeButton.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Safe));
 
 		//Pneumatics
 		RobotMap.opGamepad.x.whenPressed(RobotMap.frontSolenoid.toggle(RobotMap.frontSolenoid));

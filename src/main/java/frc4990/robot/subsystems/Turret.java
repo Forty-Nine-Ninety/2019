@@ -54,8 +54,8 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	 */
 
     public static void setSpeed(double value) {
-        if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorRight.get()) && value < 0) return;
-        if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorLeft.get()) && value > 0) return;
+        if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorRight.get()) && value < 0) value = 0;
+        if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorLeft.get()) && value > 0) value = 0;
         if (RobotMap.turretSensorLeft.get() || RobotMap.turretSensorRight.get()) value /= 2;
         RobotMap.turretTalon.set(value);
     }
