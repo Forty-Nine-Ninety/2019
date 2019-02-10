@@ -126,7 +126,7 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
         builder.addDoubleProperty("PulseWidthAbsoluteDistance", () -> getPosition(SensorMode.PulseWidth), null);
         builder.addDoubleProperty("RelativeQuadratureDistance", () -> getPosition(SensorMode.Quadrature), null);
         super.initSendable(builder);
-        builder.setSmartDashboardType("Encoder");
+        builder.setSmartDashboardType(""); //to use read-only table view
     }
 
     @Override
