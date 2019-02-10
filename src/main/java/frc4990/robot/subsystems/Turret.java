@@ -9,10 +9,14 @@ import frc4990.robot.RobotMap;
 
 public class Turret extends Subsystem implements PIDSource, PIDOutput {
     
-    public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
+	public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
+	
+	public Turret() {
+		RobotMap.turretTalon.syncPosition();
+	}
 
     /**
-	 * Configures the open-loop ramp rate of throttle output to the default value. As of 1/25/19, it's 0.3.
+	 * Configures the open-loop ramp rate of throttle output to the default value.
 	 */
 	public void configOpenloopRamp() {
         RobotMap.turretTalon.configOpenloopRamp(Dashboard.getConst("Turret/rampDownTime", 0), 0);
@@ -54,15 +58,14 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	 */
 
     public static void setSpeed(double value) {
-        if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorRight.get()) && value < 0) value = 0;
-        if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorLeft.get()) && value > 0) value = 0;
-        if (RobotMap.turretSensorLeft.get() || RobotMap.turretSensorRight.get()) value /= 2;
+        if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorRight.get()) && value < 0) value = 0; //At end of right range
+        if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorLeft.get()) && value > 0) value = 0; //At end of left range
+        if (RobotMap.turretSensorLeft.get() || RobotMap.turretSensorRight.get()) value /= 2; //near end of either range
         RobotMap.turretTalon.set(value);
     }
     
     /**
-	 * Returns raw average left/right encoder value, in unknown units. Use pidGet()
-	 * to return distance in feet.
+	 * Returns encoder value, in unknown units.
 	 */
 
 	public double getEncoderDistance() {
@@ -70,8 +73,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	}
 	
 	/**
-	 * Returns raw average left/right encoder value, in unknown units. Use pidGet()
-	 * to return distance in feet.
+	 * Returns encoder rate, in unknown units. 
 	 */
 
 	public double getEncoderRate() {
