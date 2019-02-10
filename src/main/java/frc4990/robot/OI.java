@@ -14,6 +14,7 @@ import frc4990.robot.commands.TurretTurn;
 import frc4990.robot.commands.TeleopDriveTrainController.StickShapingMode;
 import frc4990.robot.commands.TurretTurn.TurretPoint;
 import frc4990.robot.components.JoystickAnalogButton;
+import frc4990.robot.components.F310Gamepad.POV;
 import frc4990.robot.subsystems.Dashboard;
 
 /**
@@ -29,10 +30,10 @@ public class OI{
 
 	public static JoystickAnalogButton turretLeftAnalogButton = RobotMap.opGamepad.leftTrigger;
 	public static JoystickAnalogButton turretRightAnalogButton = RobotMap.opGamepad.rightTrigger;
-	public static Button turretForwardButton = RobotMap.opGamepad.getPOVButton(0);
-	public static Button turretLeftButton = RobotMap.opGamepad.getPOVButton(1);
-	public static Button turretRightButton = RobotMap.opGamepad.getPOVButton(2);
-	public static Button turretBackButton = RobotMap.opGamepad.getPOVButton(3);
+	public static Button turretForwardButton = RobotMap.opGamepad.getPOVButton(POV.north);
+	public static Button turretLeftButton = RobotMap.opGamepad.getPOVButton(POV.west);
+	public static Button turretRightButton = RobotMap.opGamepad.getPOVButton(POV.east);
+	public static Button turretBackButton = RobotMap.opGamepad.getPOVButton(POV.south);
 	public static Button turretSafeButton = RobotMap.opGamepad.a;
 	
 	/* Controller Mapping:
@@ -69,15 +70,13 @@ public class OI{
 		//Pneumatics
 		RobotMap.opGamepad.x.whenPressed(RobotMap.frontSolenoid.toggle(RobotMap.frontSolenoid));
 		RobotMap.opGamepad.y.whenPressed(RobotMap.rearSolenoid.toggle(RobotMap.rearSolenoid));
-		RobotMap.opGamepad.rightBumper.whenPressed(
-			new InstantCommand((Runnable) () -> {
-				if (RobotMap.compressor.getClosedLoopControl()) {RobotMap.compressor.setClosedLoopControl(false);} 
-				else {RobotMap.compressor.setClosedLoopControl(true);}
+		RobotMap.opGamepad.rightBumper.whenPressed( //toggle compressor
+			new InstantCommand("CompressorToggle", (Runnable) () -> {
+				RobotMap.compressor.setClosedLoopControl(!RobotMap.compressor.getClosedLoopControl());
 				System.out.println(RobotMap.compressor.getClosedLoopControl() ? "Compressor off" : "Compressor holding pressure");
 			})
 		);
 	}
-	
 	
 	public class stickShapingToggle extends InstantCommand {
 
