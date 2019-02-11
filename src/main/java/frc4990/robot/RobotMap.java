@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
@@ -59,6 +60,7 @@ public class RobotMap {
 	public static HatchClaw hatchClaw = new HatchClaw();
 	public static Pneumatic hatchPneumatic;
 	public static WPI_TalonSRX hatchMotor;
+	public static Counter hatchMotorCounter = new Counter(1); //DIO port 1
 
 	public static DigitalInput turretSensorLeft;
 	public static DigitalInput turretSensorMiddle;

@@ -1,6 +1,5 @@
 package frc4990.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
@@ -18,22 +17,21 @@ public class HatchClaw extends Subsystem implements PIDSource, PIDOutput {
 
 	private int mPosition = 0;
 	private int mRate;
-	private Counter mCounter = new Counter();
 
 	@Override
     public void periodic() {
-		mPosition += (mRate = (RobotMap.hatchMotor.get() > 0) ? mCounter.get() : -1 * mCounter.get());
-		mCounter.reset();
+		mPosition += (mRate = (RobotMap.hatchMotor.get() > 0) ? RobotMap.hatchMotorCounter.get() : -1 * RobotMap.hatchMotorCounter.get());
+		RobotMap.hatchMotorCounter.reset();
 	 }
 	
 	public void resetCounter() {
 		mPosition = 0;
 		mRate = 0;
-		mCounter.reset();
+		RobotMap.hatchMotorCounter.reset();
 	}
 
     /**
-	 * Configures the open-loop ramp rate of throttle output to the default value. As of 1/25/19, it's 0.3.
+	 * Configures the open-loop ramp rate of throttle output to the default value.
 	 */
 	public void configOpenloopRamp() {
         RobotMap.turretTalon.configOpenloopRamp(Dashboard.getConst("Hatch/rampDownTime", 0), 0);
