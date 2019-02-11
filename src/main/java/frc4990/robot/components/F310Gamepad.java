@@ -8,8 +8,8 @@ public class F310Gamepad extends Joystick {
 
 	public enum POV {
 		north(0), northWest(45), west(90), 
-		southWest(135), south(180), southEast(-135), 
-		east(-90), northEast(-45), none(0);
+		southWest(135), south(180), southEast(225), 
+		east(270), northEast(315);
 
 		private int value;
     
