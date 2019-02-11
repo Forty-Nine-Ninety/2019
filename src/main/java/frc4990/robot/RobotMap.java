@@ -35,11 +35,9 @@ public class RobotMap {
 	public static F310Gamepad driveGamepad = new F310Gamepad(0);
 	public static F310Gamepad opGamepad = new F310Gamepad(1);
 	
-	public static PowerDistributionPanel pdp = new PowerDistributionPanel();
-	public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
-	public static Compressor compressor = new Compressor(0);
-
-	public static DriveTrain driveTrain = new DriveTrain();
+	public static PowerDistributionPanel pdp;
+	public static AHRS ahrs;
+	public static Compressor compressor;
 
 	public static TalonWithMagneticEncoder leftFrontDriveTalon;
 	public static WPI_TalonSRX leftRearDriveTalon;
@@ -48,28 +46,43 @@ public class RobotMap {
 
 	public static SpeedControllerGroup leftMotorGroup;
 	public static SpeedControllerGroup rightMotorGroup;
+	public static DriveTrain driveTrain;
+	public static Dashboard dashboard;
 
-	public static Pneumatic frontSolenoid = new Pneumatic(0, 0);
-	public static Pneumatic rearSolenoid = new Pneumatic(0, 1);
-
-	public static Turret turret = new Turret();
+	public static Turret turret;
 	public static TalonWithMagneticEncoder turretTalon;
-
 	public static DigitalInput turretSensorLeft;
 	public static DigitalInput turretSensorMiddle;
 	public static DigitalInput turretSensorRight;
+  
+	public static int pcmCANID;
 
-	public static Dashboard dashboard = new Dashboard();
-	public static DigitalInput robotSelector = new DigitalInput(9); //true = practice bot, false = competition bot
+	public static Pneumatic frontSolenoid;
+	public static Pneumatic rearSolenoid;
+
+	public static DigitalInput robotSelector; //true = practice bot, false = competition bot
 
 	public RobotMap() {
+    
+    //all port bindings or empty constuctors that stay the same for the pratice & real robots.
+
+		ahrs = new AHRS(SPI.Port.kMXP);
+
+		driveGamepad = new F310Gamepad(0);
+		opGamepad = new F310Gamepad(1);
+		
+		robotSelector = new DigitalInput(9);
 
 		if (robotSelector.get()) { //practice bot
+      
+      //all port bindings that are only true for the practice robot.
 
-			leftFrontDriveTalon = new TalonWithMagneticEncoder(22);
-			leftRearDriveTalon = new WPI_TalonSRX(9);
-			rightFrontDriveTalon = new TalonWithMagneticEncoder(6);
-			rightRearDriveTalon = new WPI_TalonSRX(21);
+			pcmCANID = 12;
+			pdp = new PowerDistributionPanel(2);
+			leftFrontDriveTalon = new TalonWithMagneticEncoder(31);
+			leftRearDriveTalon = new WPI_TalonSRX(32);
+			rightFrontDriveTalon = new TalonWithMagneticEncoder(33);
+			rightRearDriveTalon = new WPI_TalonSRX(34);
 
 			turretTalon = new TalonWithMagneticEncoder(30);
 			turretSensorLeft = new DigitalInput(0);
@@ -78,7 +91,11 @@ public class RobotMap {
 
 
 		} else { //competition bot
+      
+       //all port bindings that are only true for the competition robot.
 
+			pcmCANID = 0;
+			pdp = new PowerDistributionPanel(0);
 			leftFrontDriveTalon = new TalonWithMagneticEncoder(1);
 			leftRearDriveTalon = new WPI_TalonSRX(2);
 			rightFrontDriveTalon = new TalonWithMagneticEncoder(3);
@@ -91,7 +108,20 @@ public class RobotMap {
 
 		}
 
+		//all port bindings that are dependent on robot-specific port bindings.
+    
+		frontSolenoid = new Pneumatic(pcmCANID, 0);
+		rearSolenoid = new Pneumatic(pcmCANID, 1);
+		compressor = new Compressor(pcmCANID);
+
 		leftMotorGroup = new SpeedControllerGroup(leftFrontDriveTalon, leftRearDriveTalon);
 		rightMotorGroup = new SpeedControllerGroup(rightFrontDriveTalon, rightRearDriveTalon);
+    
+    //all subsystems go at the end.
+		
+    turret = new Turret();
+		driveTrain = new DriveTrain();
+		dashboard = new Dashboard();
+	
 	}
 }

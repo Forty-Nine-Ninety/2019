@@ -1,12 +1,9 @@
 package frc4990.robot;
 
-
-
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc4990.robot.commands.AutonomusCommand;
 
 //This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that was the Freshmen Union of 2018
@@ -26,41 +23,26 @@ public class Robot extends TimedRobot {
 	 * @author Class of '21 (created in 2018 season)
 	 *
 	 */
-	public enum StartingPosition { STAY, FORWARD, LEFT, CENTER, RIGHT, TEST };
-
-	public static SendableChooser<StartingPosition> autoChooser;
-
-	public static StartingPosition startPos = StartingPosition.FORWARD;
+	public static RobotMap robotMap;
 
 	public static Command autonomusCommand;
 
 	public static OI oi;
-	public static RobotMap robotMap;
 
-	public static Notifier processThread;
+	public static Notifier processThread = new Notifier(() -> Robot.resetSensors());
 
 	/**
+	 * This function is run when the robot is first started up and 
+	 * should be used for any initialization code.
 	 * @author Team 4990
 	 */
 
-	public void robotInit() { // This function is run when the robot is first started up and should be used
-								// for any initialization code.
+	public void robotInit() { 
 		System.out.println("Initializing Robot.");
-		robotMap = new RobotMap();
-		oi = new OI();
-		
-		Robot.autoChooser = new SendableChooser<StartingPosition>(){{
-			setDefaultOption("Forward (cross line)", StartingPosition.FORWARD);
-			addOption("Left", StartingPosition.LEFT);
-			addOption("Center", StartingPosition.CENTER);
-			addOption("Right", StartingPosition.RIGHT);
-			addOption("Stay", StartingPosition.STAY);
-			addOption("Test", StartingPosition.TEST);
-		}};
 
-		processThread = new Notifier((Runnable) () -> {
-			Robot.resetSensors();
-		});
+		robotMap = new RobotMap();
+
+		oi = new OI();
 
 		processThread.startSingle(0);
 
@@ -90,7 +72,12 @@ public class Robot extends TimedRobot {
 	}
 
 	public void autonomousPeriodic() { // This function is called periodically during autonomous
-		Scheduler.getInstance().run(); // runs execute() of current commands and periodic() of subsystems.
+		Scheduler.getInstance().run(); 
+	   /* Polls the Buttons
+		* Execute/Remove the Commands
+		* Send values to SmartDashboard
+		* Add Commands
+		* Add Default Commands */
 	}
 
 	public void teleopInit() { // This function is called at the start of teleop
@@ -104,8 +91,12 @@ public class Robot extends TimedRobot {
 
 	public void teleopPeriodic() { // This function is called periodically during teleop
 		//System.out.println("Running periodic at " + (System.currentTimeMillis() % 100000) + "ms");
-		Scheduler.getInstance().run(); // runs execute() of current commands and periodic() of subsystems.
-
+		Scheduler.getInstance().run(); 
+	   /* Polls the Buttons
+		* Execute/Remove the Commands
+		* Send values to SmartDashboard
+		* Add Commands
+		* Add Default Commands */
 	}
 
 	public void testInit() {
@@ -114,7 +105,12 @@ public class Robot extends TimedRobot {
 	}
 
 	public void testPeriodic() {
-		Scheduler.getInstance().run(); // runs execute() of current commands and period() of subsystems.
+		Scheduler.getInstance().run(); 
+	   /* Polls the Buttons
+		* Execute/Remove the Commands
+		* Send values to SmartDashboard
+		* Add Commands
+		* Add Default Commands */
 	}
 
 	public static void resetSensors() {
