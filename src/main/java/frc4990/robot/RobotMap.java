@@ -96,14 +96,13 @@ public class RobotMap {
 			turretSensorMiddle = new DigitalInput(1);
 			turretSensorRight = new DigitalInput(2);
 
-
 			turretTalon = new TalonWithMagneticEncoder(30);
 			turretSensorLeft = new DigitalInput(0);
 			turretSensorMiddle = new DigitalInput(1);
 			turretSensorRight = new DigitalInput(2);
 
-			hatchPneumatic = new Pneumatic(0, 3);
-			hatchMotor = new WPI_TalonSRX(31);
+			hatchPneumatic = new Pneumatic(pcmCANID, 2);
+			hatchMotor = new WPI_TalonSRX(26);
 
 		} else { //competition bot
       
@@ -121,8 +120,8 @@ public class RobotMap {
 			turretSensorMiddle = new DigitalInput(1);
 			turretSensorRight = new DigitalInput(2);
 
-			hatchPneumatic = new Pneumatic(0, 3);
-			hatchMotor = new WPI_TalonSRX(31);
+			hatchPneumatic = new Pneumatic(pcmCANID, 2);
+			hatchMotor = new WPI_TalonSRX(36);
 		}
 
 		//all port bindings that are dependent on robot-specific port bindings.
