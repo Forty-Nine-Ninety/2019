@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
@@ -19,6 +20,7 @@ import frc4990.robot.components.F310Gamepad;
 import frc4990.robot.components.TalonWithMagneticEncoder;
 import frc4990.robot.subsystems.Dashboard;
 import frc4990.robot.subsystems.DriveTrain;
+import frc4990.robot.subsystems.HatchClaw;
 import frc4990.robot.subsystems.Pneumatic;
 import frc4990.robot.subsystems.Turret;
 
@@ -38,6 +40,8 @@ public class RobotMap {
 	public static PowerDistributionPanel pdp;
 	public static AHRS ahrs;
 	public static Compressor compressor;
+
+	public static DriveTrain driveTrain;
 
 	public static TalonWithMagneticEncoder leftFrontDriveTalon;
 	public static WPI_TalonSRX leftRearDriveTalon;
@@ -61,6 +65,13 @@ public class RobotMap {
 	public static Pneumatic rearSolenoid;
 
 	public static DigitalInput robotSelector; //true = practice bot, false = competition bot
+
+
+	public static HatchClaw hatchClaw = new HatchClaw();
+	public static Pneumatic hatchPneumatic;
+	public static WPI_TalonSRX hatchMotor;
+	public static Counter hatchMotorCounter = new Counter(1); //DIO port 1
+	public static DigitalInput robotSelector = new DigitalInput(9); //true = practice bot, false = competition bot
 
 	public RobotMap() {
     
@@ -90,6 +101,14 @@ public class RobotMap {
 			turretSensorRight = new DigitalInput(2);
 
 
+			turretTalon = new TalonWithMagneticEncoder(30);
+			turretSensorLeft = new DigitalInput(0);
+			turretSensorMiddle = new DigitalInput(1);
+			turretSensorRight = new DigitalInput(2);
+
+			hatchPneumatic = new Pneumatic(0, 3);
+			hatchMotor = new WPI_TalonSRX(31);
+
 		} else { //competition bot
       
        //all port bindings that are only true for the competition robot.
@@ -106,6 +125,8 @@ public class RobotMap {
 			turretSensorMiddle = new DigitalInput(1);
 			turretSensorRight = new DigitalInput(2);
 
+			hatchPneumatic = new Pneumatic(0, 3);
+			hatchMotor = new WPI_TalonSRX(31);
 		}
 
 		//all port bindings that are dependent on robot-specific port bindings.

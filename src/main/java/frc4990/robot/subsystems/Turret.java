@@ -12,6 +12,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
 	
 	public Turret() {
+    super("Turret");
 		RobotMap.turretTalon.syncPosition();
 	}
 
@@ -19,7 +20,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	 * Configures the open-loop ramp rate of throttle output to the default value.
 	 */
 	public void configOpenloopRamp() {
-        RobotMap.turretTalon.configOpenloopRamp(Dashboard.getConst("Turret/rampDownTime", 0), 0);
+        RobotMap.turretTalon.configOpenloopRamp(Dashboard.getConst("Turret/rampDownTime", 0.3), 0);
     }
     
     @Override

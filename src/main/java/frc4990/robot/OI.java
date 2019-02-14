@@ -30,6 +30,7 @@ public class OI{
 
 	public static JoystickAnalogButton turretLeftAnalogButton = RobotMap.opGamepad.leftTrigger;
 	public static JoystickAnalogButton turretRightAnalogButton = RobotMap.opGamepad.rightTrigger;
+  
 	public static Button turretForwardButton = RobotMap.opGamepad.getPOVButton(POV.north);
 	public static Button turretLeftButton = RobotMap.opGamepad.getPOVButton(POV.west);
 	public static Button turretRightButton = RobotMap.opGamepad.getPOVButton(POV.east);
@@ -66,6 +67,11 @@ public class OI{
 		turretRightButton.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Right));
 		turretBackButton.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Back));
 		turretSafeButton.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Safe));
+    
+		//Hatch
+		//RobotMap.opGamepad.a.whenPressed(RobotMap.hatchPneumatic.toggle(RobotMap.hatchPneumatic));
+		RobotMap.opGamepad.b.whenPressed(RobotMap.hatchClaw.toggleMotor());
+		
 
 		//Pneumatics
 		RobotMap.opGamepad.x.whenPressed(RobotMap.frontSolenoid.toggle(RobotMap.frontSolenoid));
