@@ -50,7 +50,6 @@ public class RobotMap {
 
 	public static SpeedControllerGroup leftMotorGroup;
 	public static SpeedControllerGroup rightMotorGroup;
-	public static DriveTrain driveTrain;
 	public static Dashboard dashboard;
 
 	public static Turret turret;
@@ -63,9 +62,6 @@ public class RobotMap {
 
 	public static Pneumatic frontSolenoid;
 	public static Pneumatic rearSolenoid;
-
-	public static DigitalInput robotSelector; //true = practice bot, false = competition bot
-
 
 	public static HatchClaw hatchClaw = new HatchClaw();
 	public static Pneumatic hatchPneumatic;
