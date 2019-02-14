@@ -24,9 +24,9 @@ public class HatchClaw extends Subsystem implements PIDSource, PIDOutput {
 		RobotMap.hatchMotorCounter.reset();
 	 }
 	
-	public void resetCounter() {
-		mPosition = 0;
-		mRate = 0;
+	public static void resetCounter() {
+		RobotMap.hatchClaw.mPosition = 0;
+		RobotMap.hatchClaw.mRate = 0;
 		RobotMap.hatchMotorCounter.reset();
 	}
 
@@ -47,7 +47,7 @@ public class HatchClaw extends Subsystem implements PIDSource, PIDOutput {
 		return this.pidSourceType;
     }
     
-    public StartCommand toggleMotor() { 
+    public static StartCommand toggleMotor() { 
 		return new StartCommand(new SetHatchPosition());
 	}
     
@@ -64,7 +64,7 @@ public class HatchClaw extends Subsystem implements PIDSource, PIDOutput {
         setSpeed(output);
     }
 
-    public void setSpeed(double value) {
+    public static void setSpeed(double value) {
         RobotMap.turretTalon.set(value);
     }
     
@@ -72,16 +72,16 @@ public class HatchClaw extends Subsystem implements PIDSource, PIDOutput {
 	 * Returns encoder value, in unknown units. 
 	 */
 
-	public double getEncoderDistance() {
-		return mPosition;
+	public static double getEncoderDistance() {
+		return RobotMap.hatchClaw.mPosition;
 	}
 	
 	/**
 	 * Returns encoder rate, in unknown units.
 	 */
 
-	public double getEncoderRate() {
-		return mRate;
+	public static double getEncoderRate() {
+		return RobotMap.hatchClaw.mRate;
     }
 
 	@Override

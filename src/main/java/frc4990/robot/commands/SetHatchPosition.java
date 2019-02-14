@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
 import frc4990.robot.RobotMap;
 import frc4990.robot.subsystems.Dashboard;
+import frc4990.robot.subsystems.HatchClaw;
 import frc4990.robot.subsystems.HatchClaw.HatchPosition;
 public class SetHatchPosition extends Command {
 	
@@ -33,12 +34,12 @@ public class SetHatchPosition extends Command {
 		RobotMap.hatchClaw.setPIDSourceType(PIDSourceType.kDisplacement);
 	    this.setName("Hatch", "SetHatchPosition");    
 		Dashboard.debugTab.add(this);
-		RobotMap.hatchClaw.resetCounter();
+		HatchClaw.resetCounter();
 	}
 
 	public void execute() {
-		if (target == HatchPosition.Engaged && RobotMap.hatchClaw.getEncoderDistance() < -85) RobotMap.hatchMotor.set(speed);
-		else if (target == HatchPosition.Relaxed && RobotMap.hatchClaw.getEncoderDistance() < 85) RobotMap.hatchMotor.set(-1 * speed);
+		if (target == HatchPosition.Engaged && HatchClaw.getEncoderDistance() < -85) RobotMap.hatchMotor.set(speed);
+		else if (target == HatchPosition.Relaxed && HatchClaw.getEncoderDistance() < 85) RobotMap.hatchMotor.set(-1 * speed);
 		else isFinished = true;
 	}
 	
