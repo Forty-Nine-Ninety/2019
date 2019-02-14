@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import frc4990.robot.OI;
 import frc4990.robot.RobotMap;
+import frc4990.robot.subsystems.DriveTrain;
 /**
  * Class for controlling drivetrains.
  * @author Class of '21 (created in 2018 season)
@@ -53,23 +54,23 @@ public class TeleopDriveTrainController extends Command {
 						RobotMap.ahrs.reset();
 					}
 					driveMode = DriveMode.STRAIGHT;
-					RobotMap.driveTrain.setSpeed(throttle, throttle);
+					DriveTrain.setSpeed(throttle, throttle);
 					
 				} else if (throttle == 0 && turnSteepness != 0) { //spin in place
 					/* the right motor's velocity has the opposite sign of the the left motor's
 					* since the right motor will spin in the opposite direction from the left
 					*/
 					driveMode = DriveMode.TURN;
-					RobotMap.driveTrain.setSpeed(turnSteepness * currentTurnSteepnessMultiplier, 
+					DriveTrain.setSpeed(turnSteepness * currentTurnSteepnessMultiplier, 
 					-turnSteepness * currentTurnSteepnessMultiplier);
 					
 				} else {
 					driveMode = DriveMode.NONE;
-					RobotMap.driveTrain.setSpeed(0, 0);
+					DriveTrain.setSpeed(0, 0);
 				}
 				break;
 			case DifferentialDrive://New!  but there is no code.
-				RobotMap.driveTrain.curvatureDrive(
+				DriveTrain.curvatureDrive(
 					OI.throttleAnalogButton.getRawAxis() * currentThrottleMultiplier, 
 					OI.turnSteepnessAnalogButton.getRawAxis() * currentTurnSteepnessMultiplier, true);
 				break;
@@ -126,7 +127,7 @@ public class TeleopDriveTrainController extends Command {
 		
 		//System.out.println(leftWheelSpeed + "; " + rightWheelSpeed);
 		
-		RobotMap.driveTrain.setSpeed(leftWheelSpeed, rightWheelSpeed);
+		DriveTrain.setSpeed(leftWheelSpeed, rightWheelSpeed);
 	}
 	
 	/**
@@ -153,7 +154,7 @@ public class TeleopDriveTrainController extends Command {
 	
 	@Override
 	protected void end() {
-		RobotMap.driveTrain.setSpeed(0,0);
+		DriveTrain.setSpeed(0,0);
 	}
 
 }

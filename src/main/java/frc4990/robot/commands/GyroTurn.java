@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc4990.robot.RobotMap;
 import frc4990.robot.subsystems.Dashboard;
+import frc4990.robot.subsystems.DriveTrain;
 
 public class GyroTurn extends Command implements PIDOutput {
 
@@ -64,7 +65,7 @@ public class GyroTurn extends Command implements PIDOutput {
 	public void execute() {
 		System.out.println("maxSpeed = " + maxSpeed + ", turnOutput = " + this.turnController.get() + ", ahrs = " + RobotMap.ahrs.pidGet() + ", isEnabled = "+turnController.isEnabled());
 		if (Dashboard.getBoolean("gyroTurn/turnInPlace", true)) {
-			RobotMap.driveTrain.setSpeed(
+			DriveTrain.setSpeed(
 				this.turnController.get(), 
 				-this.turnController.get());
 		}
@@ -75,24 +76,24 @@ public class GyroTurn extends Command implements PIDOutput {
 				radius += DRIVETRAIN_WIDTH / 2;
 				ratio = radius / (radius + DRIVETRAIN_WIDTH);
 				if (Math.abs(ratio) < 1) {
-					RobotMap.driveTrain.setSpeed(maxSpeed, ratio * maxSpeed);
+					DriveTrain.setSpeed(maxSpeed, ratio * maxSpeed);
 				}
 				else {
-					RobotMap.driveTrain.setSpeed((1 / ratio) * maxSpeed, maxSpeed);
+					DriveTrain.setSpeed((1 / ratio) * maxSpeed, maxSpeed);
 				}
 			}
 			else if (radius > 0) {
 				radius -= DRIVETRAIN_WIDTH / 2;
 				ratio = radius / (radius + DRIVETRAIN_WIDTH);
 				if (Math.abs(ratio) < 1) {
-					RobotMap.driveTrain.setSpeed(ratio * maxSpeed, maxSpeed);
+					DriveTrain.setSpeed(ratio * maxSpeed, maxSpeed);
 				}
 				else {
-					RobotMap.driveTrain.setSpeed(maxSpeed, (1 / ratio) * maxSpeed);
+					DriveTrain.setSpeed(maxSpeed, (1 / ratio) * maxSpeed);
 				}
 			}
 			else {
-				RobotMap.driveTrain.setSpeed(this.turnController.get(), -this.turnController.get());
+				DriveTrain.setSpeed(this.turnController.get(), -this.turnController.get());
 			}
 		}
 		if(this.turnController.isEnabled() == false) turnController.setEnabled(true);

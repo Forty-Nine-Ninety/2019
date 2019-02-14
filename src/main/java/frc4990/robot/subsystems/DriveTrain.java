@@ -61,8 +61,8 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 *            speed to set, min -1, max 1 (stop is 0)
 	 */
 
-	public void setSpeed(double speed) {
-		this.setSpeed(speed, speed);
+	public static void setSpeed(double speed) {
+		DriveTrain.setSpeed(speed, speed);
 	}
 
 	/**
@@ -74,16 +74,16 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 *            speed to set, min -1, max 1 (stop is 0)
 	 */
 
-	public void setSpeed(double leftSpeed, double rightSpeed) {
-		differentialDrive.tankDrive(leftSpeed * leftSpeedAdjust, rightSpeed * rightSpeedAdjust, false);
+	public static void setSpeed(double leftSpeed, double rightSpeed) {
+		RobotMap.driveTrain.differentialDrive.tankDrive(leftSpeed * RobotMap.driveTrain.leftSpeedAdjust, rightSpeed * RobotMap.driveTrain.rightSpeedAdjust, false);
 	}
 
-	public void arcadeDrive(double xSpeed, double zRotation, Boolean squareInputs) {
-		differentialDrive.arcadeDrive(xSpeed, zRotation, squareInputs);
+	public static void arcadeDrive(double xSpeed, double zRotation, Boolean squareInputs) {
+		RobotMap.driveTrain.differentialDrive.arcadeDrive(xSpeed, zRotation, squareInputs);
 	}
 
-	public void curvatureDrive(double xSpeed, double zRotation, Boolean squareInputs) {
-		differentialDrive.curvatureDrive(xSpeed, zRotation, squareInputs);
+	public static void curvatureDrive(double xSpeed, double zRotation, Boolean squareInputs) {
+		RobotMap.driveTrain.differentialDrive.curvatureDrive(xSpeed, zRotation, squareInputs);
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 * to return distance in feet.
 	 */
 
-	public double getEncoderDistance() {
+	public static double getEncoderDistance() {
 		return (RobotMap.leftFrontDriveTalon.getPosition() + RobotMap.rightFrontDriveTalon.getPosition()) / 2;
 	}
 	
@@ -129,7 +129,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 * to return distance in feet.
 	 */
 
-	public double getEncoderRate() {
+	public static double getEncoderRate() {
 		return (RobotMap.leftFrontDriveTalon.getRate() + RobotMap.rightFrontDriveTalon.getRate()) / 2;
 	}
 
