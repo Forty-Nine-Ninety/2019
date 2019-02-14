@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource, Sendable {
 
-    private int timeoutMs = 5;
+    private int timeoutMs = 3;
 
     private PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
 
@@ -36,6 +36,7 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
         public TalonWithMagneticEncoder(int CANID) {
             super(CANID);
             configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, timeoutMs); //Pulse-width
+            syncPosition();
         }
 
        /**
@@ -60,7 +61,7 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
        /**
        * Gets the current count. Returns the current count on the Encoder.
        *
-       * @return Current count from the Encoder 
+       * @return Current count from the Encoder (PULSE WIDTH/Absolute)
        */
       public int getPosition() {
         return getPosition(SensorMode.PulseWidth);
@@ -76,18 +77,17 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
       }
     
       /**
-       * Reset the Encoder distance to zero. Resets the current count to zero on the encoder.
+       * Reset the Encoder distance to zero. Resets the current count (pulse width and Quadrature) to zero on the encoder. 
        */
       public void resetEncoder() {
-        setPosition(SensorMode.PulseWidth, 0);
-        setPosition(SensorMode.Quadrature, 0);
+        setPosition(0);
       }
 
       /**
-       * Sync the Encoder's Pulse Width (absolute) measurement with its Quadrature (not absolute) measurement.
+       * Sync the Encoder's Pulse Width (absolute) measurement with its Quadrature (relative) measurement.
        */
       public void syncPosition() {
-        setSelectedSensorPosition(getSelectedSensorPosition(0), 1, timeoutMs);
+        setPosition(SensorMode.Quadrature, getPosition(SensorMode.PulseWidth));
       }
     
       /**
@@ -96,13 +96,13 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
        * @return The current rate of the encoder.
        */
       public double getRate(SensorMode mode) {
-        return getSelectedSensorVelocity(mode.get());
+        return (mode.get() == 1) ? this.getSensorCollection().getQuadratureVelocity() : getSelectedSensorVelocity();
       }
 
       /**
        * Get the current rate of the encoder. 
        *
-       * @return The current rate of the encoder.
+       * @return The current rate of the encoder. (PULSE WIDTH/Absolute)
        */
       public double getRate() {
         return getRate(SensorMode.PulseWidth);
