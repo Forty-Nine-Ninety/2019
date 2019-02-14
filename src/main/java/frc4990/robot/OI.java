@@ -9,13 +9,12 @@ package frc4990.robot;
 
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.InstantCommand;
-import frc4990.robot.commands.TeleopDriveTrainController;
-import frc4990.robot.commands.TurretTurn;
+import frc4990.robot.commands.*;
 import frc4990.robot.commands.TeleopDriveTrainController.StickShapingMode;
 import frc4990.robot.commands.TurretTurn.TurretPoint;
-import frc4990.robot.components.JoystickAnalogButton;
+import frc4990.robot.components.*;
 import frc4990.robot.components.F310Gamepad.POV;
-import frc4990.robot.subsystems.Dashboard;
+import frc4990.robot.subsystems.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -42,6 +41,23 @@ public class OI{
 		    Joysticks 1 and 2: forward/backward and turn left/right
 			X button: toggle slow throttle
 			B button: toggle slow turning
+			Y button: toggle stick shaping methods (differential drive and 2018-season)
+		
+		Turret: (OP controller)
+			POV pad: (up, down, left & right) move turret to point forwards, backwards, left & right)
+			A button: move turret to safe point (45 degrees) (inside frame perimiter)
+		
+		HatchClaw: (OP controller)
+			B button: toggle hatch motor (90 degrees and 0 degrees)
+			Left bumper (button): toggle HatchClaw pnuematic actuator
+		
+		Climbing Pneumatics: (Op controller)
+			X Button: toggle front pneumatics
+			Y Button: toggle rear pneumatics
+
+		Compressor: (OP controller)
+			Right bumper (button): toggle compressor (on until about 115 psi is reached or just off)
+
 		
 		Check which controller is which: (both)
 		    START key (RIGHT Middle): prints in console which controller it is being pressed on
@@ -50,9 +66,9 @@ public class OI{
 	public OI() {
 
 		//drivetrain
-		RobotMap.driveGamepad.x.toggleWhenPressed(new DriveSpeedToggle());
-		RobotMap.driveGamepad.b.toggleWhenPressed(new TurnSpeedToggle());
-		RobotMap.driveGamepad.y.whenPressed(new stickShapingToggle());
+		RobotMap.driveGamepad.x.toggleWhenPressed(driveSpeedToggle());
+		RobotMap.driveGamepad.b.toggleWhenPressed(turnSpeedToggle());
+		RobotMap.driveGamepad.y.whenPressed(stickShapingToggle());
 
 		
 		//controller check
@@ -66,52 +82,50 @@ public class OI{
 		turretLeftButton.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Left));
 		turretRightButton.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Right));
 		turretBackButton.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Back));
-		turretSafeButton.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Safe));
+		RobotMap.opGamepad.a.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Safe));
     
 		//Hatch
-		//RobotMap.opGamepad.a.whenPressed(RobotMap.hatchPneumatic.toggle(RobotMap.hatchPneumatic));
-		RobotMap.opGamepad.b.whenPressed(RobotMap.hatchClaw.toggleMotor());
+		RobotMap.opGamepad.leftBumper.whenPressed(RobotMap.hatchPneumatic.toggle(RobotMap.hatchPneumatic));
+		RobotMap.opGamepad.b.whenPressed(HatchClaw.toggleMotor());
 		
 
 		//Pneumatics
 		RobotMap.opGamepad.x.whenPressed(RobotMap.frontSolenoid.toggle(RobotMap.frontSolenoid));
 		RobotMap.opGamepad.y.whenPressed(RobotMap.rearSolenoid.toggle(RobotMap.rearSolenoid));
-		RobotMap.opGamepad.rightBumper.whenPressed( //toggle compressor
-			new InstantCommand("CompressorToggle", (Runnable) () -> {
-				RobotMap.compressor.setClosedLoopControl(!RobotMap.compressor.getClosedLoopControl());
-				System.out.println(RobotMap.compressor.getClosedLoopControl() ? "Compressor off" : "Compressor holding pressure");
-			})
-		);
+		RobotMap.opGamepad.rightBumper.whenPressed(compressorToggle());
 	}
 	
-	public class stickShapingToggle extends InstantCommand {
-
-		public stickShapingToggle() {}
-		
-		public void initialize() {
+	public static InstantCommand stickShapingToggle() {
+		return new InstantCommand("StickShapingToggle", (Runnable) () -> {
 			TeleopDriveTrainController.stickShapingMode = (TeleopDriveTrainController.stickShapingMode == StickShapingMode.DifferentialDrive) ? StickShapingMode.SquaredThrottle : StickShapingMode.DifferentialDrive;
 			System.out.println("[StickShaping Method] Changed to:" + TeleopDriveTrainController.stickShapingMode.toString());
-	
-		}
+		});
 		
 	}
 
-	public class DriveSpeedToggle extends InstantCommand {
-		public void initialize() {
+	public static InstantCommand driveSpeedToggle() {
+		return new InstantCommand("DriveSpeedToggle", (Runnable) () -> {
 			TeleopDriveTrainController.currentThrottleMultiplier = TeleopDriveTrainController.currentThrottleMultiplier == 
 				Dashboard.getConst("DriveDpiToggle/lowThrottleMultiplier", 0.5) ? 
 				TeleopDriveTrainController.currentThrottleMultiplier = Dashboard.getConst("DriveDpiToggle/defaultThrottleMultiplier", 1.0) : 
 				Dashboard.getConst("DriveDpiToggle/lowThrottleMultiplier", 0.5);
 			System.out.println("Throttle Speed: " + TeleopDriveTrainController.currentThrottleMultiplier + "x");
-		}
+		});
 	}
 
-	public class TurnSpeedToggle extends InstantCommand {
-		public void initialize() {
+	public static InstantCommand turnSpeedToggle() {
+		return new InstantCommand("TurnSpeedToggle", (Runnable) () -> {
 			TeleopDriveTrainController.currentTurnSteepnessMultiplier = TeleopDriveTrainController.currentTurnSteepnessMultiplier == 
 				Dashboard.getConst("TurnSpeedToggle/lowTurnMultiplier", 0.6) ? Dashboard.getConst("DriveDpiToggle/defaultTurnSpeedMultiplier", 1.0) : 
 				Dashboard.getConst("TurnSpeedToggle/lowTurnMultiplier", 0.6);
 			System.out.println("Turn Speed: " + TeleopDriveTrainController.currentTurnSteepnessMultiplier + "x");
-		}
+		});
+	}
+
+	public static InstantCommand compressorToggle() {
+		return new InstantCommand("CompressorToggle", (Runnable) () -> {
+			RobotMap.compressor.setClosedLoopControl(!RobotMap.compressor.getClosedLoopControl());
+			System.out.println(RobotMap.compressor.getClosedLoopControl() ? "Compressor off" : "Compressor holding pressure");
+		});
 	}
 }
