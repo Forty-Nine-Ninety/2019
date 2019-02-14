@@ -17,6 +17,12 @@ public class SetHatchPosition extends Command {
 		this.speed = speed;
 	}
 
+	public SetHatchPosition(double speed) {
+		requires(RobotMap.hatchClaw);
+		target = (RobotMap.hatchClaw.hatchPosition == HatchPosition.Engaged) ? HatchPosition.Relaxed : HatchPosition.Engaged;
+		this.speed = speed;
+	}
+
 	public SetHatchPosition() {
 		requires(RobotMap.hatchClaw);
 		target = RobotMap.hatchClaw.hatchPosition == HatchPosition.Engaged ? HatchPosition.Relaxed : HatchPosition.Engaged;
