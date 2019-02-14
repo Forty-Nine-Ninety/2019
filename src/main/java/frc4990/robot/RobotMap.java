@@ -34,39 +34,45 @@ import frc4990.robot.subsystems.Turret;
 
 public class RobotMap {
 
+	//Driver Station Inputs
 	public static F310Gamepad driveGamepad = new F310Gamepad(0);
 	public static F310Gamepad opGamepad = new F310Gamepad(1);
 	
+	//Sensors
 	public static PowerDistributionPanel pdp;
 	public static AHRS ahrs;
 	public static Compressor compressor;
+	public static int pcmCANID;
 
-	public static DriveTrain driveTrain;
-
+	//DriveTrain
 	public static TalonWithMagneticEncoder leftFrontDriveTalon;
 	public static WPI_TalonSRX leftRearDriveTalon;
 	public static TalonWithMagneticEncoder rightFrontDriveTalon;
 	public static WPI_TalonSRX rightRearDriveTalon;
-
 	public static SpeedControllerGroup leftMotorGroup;
 	public static SpeedControllerGroup rightMotorGroup;
-	public static Dashboard dashboard;
 
-	public static Turret turret;
+	//Turret
 	public static TalonWithMagneticEncoder turretTalon;
 	public static DigitalInput turretSensorLeft;
 	public static DigitalInput turretSensorMiddle;
 	public static DigitalInput turretSensorRight;
-  
-	public static int pcmCANID;
 
+	//Climbing pneumatics
 	public static Pneumatic frontSolenoid;
 	public static Pneumatic rearSolenoid;
 
-	public static HatchClaw hatchClaw;
+	//HatchClaw
 	public static Pneumatic hatchPneumatic;
 	public static WPI_TalonSRX hatchMotor;
 	public static Counter hatchMotorCounter;
+
+	//Subsystems
+	public static DriveTrain driveTrain;
+	public static HatchClaw hatchClaw;
+	public static Turret turret;
+	public static Dashboard dashboard;
+
 	public static DigitalInput robotSelector = new DigitalInput(9); //true = practice bot, false = competition bot
 
 	public RobotMap() {
@@ -82,10 +88,11 @@ public class RobotMap {
 
 		if (robotSelector.get()) { //practice bot
       
-      //all port bindings that are only true for the practice robot.
+      //all port bindings that are only true for the practice robot. (PDP = 2, PCM = 12, Talons = 30 through 40)
 
 			pcmCANID = 12;
 			pdp = new PowerDistributionPanel(2);
+
 			leftFrontDriveTalon = new TalonWithMagneticEncoder(31);
 			leftRearDriveTalon = new WPI_TalonSRX(32);
 			rightFrontDriveTalon = new TalonWithMagneticEncoder(33);
@@ -97,14 +104,15 @@ public class RobotMap {
 			turretSensorRight = new DigitalInput(2);
 
 			hatchMotor = new WPI_TalonSRX(36);
-			hatchMotorCounter = new Counter(4);
+			hatchMotorCounter = new Counter(3);
 
 		} else { //competition bot
       
-       //all port bindings that are only true for the competition robot.
+       //all port bindings that are only true for the competition robot. (PDP = 1, PCM = 11, Talons = 20 through 30)
 
 			pcmCANID = 11;
 			pdp = new PowerDistributionPanel(1);
+
 			leftFrontDriveTalon = new TalonWithMagneticEncoder(21);
 			leftRearDriveTalon = new WPI_TalonSRX(22);
 			rightFrontDriveTalon = new TalonWithMagneticEncoder(23);
@@ -116,7 +124,7 @@ public class RobotMap {
 			turretSensorRight = new DigitalInput(2);
 
 			hatchMotor = new WPI_TalonSRX(36);
-			hatchMotorCounter = new Counter(4);
+			hatchMotorCounter = new Counter(3);
 		}
 
 		//all port bindings that are dependent on robot-specific port bindings.
