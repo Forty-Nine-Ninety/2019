@@ -36,7 +36,6 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
         public TalonWithMagneticEncoder(int CANID) {
             super(CANID);
             configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, timeoutMs); //Pulse-width
-            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 1, timeoutMs); //Quadrature
         }
 
        /**
@@ -54,8 +53,8 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
        *
        * @return the ErrorCode
        */
-      public ErrorCode setPosition(SensorMode mode, int sensorPosition) {
-        return setSelectedSensorPosition(sensorPosition, mode.get(), timeoutMs);
+      public ErrorCode setPosition(SensorMode mode, int sensorPos) {
+        return (mode.get() == 1) ? this.getSensorCollection().setQuadraturePosition(sensorPos, timeoutMs) : this.setSelectedSensorPosition(sensorPos, mode.get(), timeoutMs);
       }
 
        /**
@@ -73,15 +72,15 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
        * @return Current count from the Encoder 
        */
       public int getPosition(SensorMode mode) {
-        return getSelectedSensorPosition(mode.get());
+        return (mode.get() == 1) ? this.getSensorCollection().getQuadraturePosition() : getSelectedSensorPosition();
       }
     
       /**
        * Reset the Encoder distance to zero. Resets the current count to zero on the encoder.
        */
       public void resetEncoder() {
-        setSelectedSensorPosition(0, 0, timeoutMs);
-        setSelectedSensorPosition(0, 1, timeoutMs);
+        setPosition(SensorMode.PulseWidth, 0);
+        setPosition(SensorMode.Quadrature, 0);
       }
 
       /**
