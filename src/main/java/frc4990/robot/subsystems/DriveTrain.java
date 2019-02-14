@@ -2,6 +2,7 @@ package frc4990.robot.subsystems;
 
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc4990.robot.RobotMap;
@@ -10,7 +11,7 @@ import frc4990.robot.commands.TeleopDriveTrainController;
 public class DriveTrain extends Subsystem implements PIDSource {
 
 	public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
-	public DifferentialDrive differentialDrive = new DifferentialDrive(RobotMap.leftMotorGroup, RobotMap.rightMotorGroup);
+	public DifferentialDrive differentialDrive = new DifferentialDrive(new SpeedControllerGroup(RobotMap.leftFrontDriveTalon, RobotMap.leftRearDriveTalon), new SpeedControllerGroup(RobotMap.rightFrontDriveTalon, RobotMap.rightRearDriveTalon));
 
 	private double leftSpeedAdjust = 1.0;
 	private double rightSpeedAdjust = 0.99;

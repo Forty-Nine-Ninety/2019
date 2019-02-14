@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc4990.robot.OI;
 import frc4990.robot.Robot;
 import frc4990.robot.RobotMap;
@@ -16,10 +17,32 @@ public class Dashboard extends Subsystem{
 
 	private static Preferences preferences = Preferences.getInstance();
 	@java.lang.FunctionalInterface
-	public interface FunctionalInterface { Object anything();}
+	public interface FunctionalInterface { Object get();}
 	
 	public static ShuffleboardTab driveTab = Shuffleboard.getTab("Drive");
 	public static ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
+
+	public static InstantCommand initDebugDashboard =
+		new InstantCommand("initDebugDashboard") { 
+			public void initialize() {
+				setRunWhenDisabled(true);
+				Dashboard.addDashboardTab(true);
+			}
+	};
+
+	public enum StartingPosition { STAY, FORWARD, LEFT, CENTER, RIGHT, TEST };
+
+	public static StartingPosition startPos = StartingPosition.FORWARD;
+
+	public static SendableChooser<StartingPosition> autoChooser	= 
+		new SendableChooser<StartingPosition>(){{
+			setDefaultOption("Forward (cross line)", StartingPosition.FORWARD);
+			addOption("Left", StartingPosition.LEFT);
+			addOption("Center", StartingPosition.CENTER);
+			addOption("Right", StartingPosition.RIGHT);
+			addOption("Stay", StartingPosition.STAY);
+			addOption("Test", StartingPosition.TEST);
+	}};
 
 	/**
 	 * Initializes the dashboards(debug and drive modes) with values and things.
@@ -60,6 +83,9 @@ public class Dashboard extends Subsystem{
 
 			//Subsystems
 			debugTab.add("Subsystem/DriveTrain", RobotMap.driveTrain);
+      
+			debugTab.add("Subsystem/Turret", RobotMap.turret);
+			//debugTab.add("Subsystem/otherSubsystem", RobotMap.otherSubsystem;
 			debugTab.add("Subsystem/HatchClaw", RobotMap.hatchClaw);
 
 			//Climbing Pneumatics
@@ -70,12 +96,19 @@ public class Dashboard extends Subsystem{
 			debugTab.add("HatchClaw/Solenoid", RobotMap.hatchPneumatic);
 			debugTab.add("HatchClaw/HatchMotor", RobotMap.hatchMotor);
 
+			//Turret
+			debugTab.add("Turret/TurretMotor", RobotMap.turretTalon);
+			debugTab.add("Turret/TurretSensor/left", RobotMap.turretSensorLeft);
+			debugTab.add("Turret/TurretSensor/middle", RobotMap.turretSensorMiddle);
+			debugTab.add("Turret/TurretSensor/right", RobotMap.turretSensorRight);
+
+
 		} else if (! debug) { //drive
 			System.out.println("Adding Drive Tab Components.");
 			driveTab.add("Scheduler", Scheduler.getInstance()).withSize(2, 3).withPosition(0, 0);
-			driveTab.add("SelectedStartPosition", new SendableObject((FunctionalInterface) () -> Robot.autoChooser.getSelected().name())).withSize(2, 1).withPosition(3, 3);
-			driveTab.add("AutoChooser", Robot.autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(4, 3);
-			driveTab.add("initDebugDashboard", RobotMap.dashboard.initDebugDashboard());
+			driveTab.add("SelectedStartPosition", new SendableObject((FunctionalInterface) () -> autoChooser.getSelected().name())).withSize(2, 1).withPosition(3, 3);
+			driveTab.add("AutoChooser", autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(4, 3);
+			driveTab.add("initDebugDashboard", initDebugDashboard);
 		}
 	}
 
@@ -159,15 +192,6 @@ public class Dashboard extends Subsystem{
 			System.err.println("pref Key" + "Const/" + key + "already taken by a different type");
 		}
 
-	}
-
-	public InstantCommand initDebugDashboard() {
-		return new InstantCommand("initDebugDashboard") { 
-			public void initialize() {
-				setRunWhenDisabled(true);
-				Dashboard.addDashboardTab(true);
-			}
-		};
 	}
 
 	@Override

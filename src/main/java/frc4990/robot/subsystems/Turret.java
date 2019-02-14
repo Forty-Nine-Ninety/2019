@@ -9,14 +9,15 @@ import frc4990.robot.RobotMap;
 
 public class Turret extends Subsystem implements PIDSource, PIDOutput {
     
-    public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
-
-    public Turret() {
-        super("Turret");
-    }
+	public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
+	
+	public Turret() {
+    super("Turret");
+		RobotMap.turretTalon.syncPosition();
+	}
 
     /**
-	 * Configures the open-loop ramp rate of throttle output to the default value. As of 1/25/19, it's 0.3.
+	 * Configures the open-loop ramp rate of throttle output to the default value.
 	 */
 	public void configOpenloopRamp() {
         RobotMap.turretTalon.configOpenloopRamp(Dashboard.getConst("Turret/rampDownTime", 0.3), 0);
@@ -32,13 +33,9 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		return this.pidSourceType;
     }
     
-    public InstantCommand setTurretSpeed(Turret t, double speed) { 
-		return new InstantCommand("RotateTurret", this) {
-			public void initialize() {
-				t.setSpeed(speed);
-			}
-		};
-    }
+    public InstantCommand setTurretSpeed(double speed) { 
+		return new InstantCommand("SetTurretSpeed", this, () -> Turret.setSpeed(speed));
+	}
     
     /**
 	 * Returns right encoder value, in feet.
@@ -54,18 +51,22 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
     @Override
     public void pidWrite(double output) {
         setSpeed(output);
-    }
+	}
+	/**
+	 * Checks hall effect sensors (contactless limits) and if movement is allowed, it will be sent to motor during periodic()
+	 * If movement is not allowed, function returns.
+	 * @param value speed to set, [-1 to 1]
+	 */
 
-    public void setSpeed(double value) {
-        if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorRight.get()) && value < 0) return;
-        if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorLeft.get()) && value > 0) return;
-        if (RobotMap.turretSensorLeft.get() || RobotMap.turretSensorRight.get()) value /= 2;
+    public static void setSpeed(double value) {
+        if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorRight.get()) && value < 0) value = 0; //At end of right range
+        if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorLeft.get()) && value > 0) value = 0; //At end of left range
+        if (RobotMap.turretSensorLeft.get() || RobotMap.turretSensorRight.get()) value /= 2; //near end of either range
         RobotMap.turretTalon.set(value);
     }
     
     /**
-	 * Returns raw average left/right encoder value, in unknown units. Use pidGet()
-	 * to return distance in feet.
+	 * Returns encoder value, in unknown units.
 	 */
 
 	public double getEncoderDistance() {
@@ -73,8 +74,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	}
 	
 	/**
-	 * Returns raw average left/right encoder value, in unknown units. Use pidGet()
-	 * to return distance in feet.
+	 * Returns encoder rate, in unknown units. 
 	 */
 
 	public double getEncoderRate() {
@@ -82,9 +82,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
     }
 
 	@Override
-	protected void initDefaultCommand() {
-		
-    }
+	protected void initDefaultCommand() {}
     
     @Override
     public void periodic() {}
