@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc4990.robot.RobotMap;
 import frc4990.robot.subsystems.Dashboard;
+import frc4990.robot.subsystems.DriveTrain;
 
 public class GyroStraight extends Command implements PIDOutput, PIDSource {
 
@@ -69,7 +70,7 @@ public class GyroStraight extends Command implements PIDOutput, PIDSource {
 	}
 	
 	public void pidOutput(double turnOutput, double speed) {
-		RobotMap.driveTrain.setSpeed(speed + turnOutput, speed - turnOutput);
+		DriveTrain.setSpeed(speed + turnOutput, speed - turnOutput);
 	}
 
 

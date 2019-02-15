@@ -63,6 +63,7 @@ public class Dashboard extends Subsystem{
 			//Base sensors
 			debugTab.add("Base/PDP", RobotMap.pdp).withWidget(BuiltInWidgets.kPowerDistributionPanel)./*withSize(3, 2).*/withPosition(8, 3);
 			debugTab.add("Base/NavX-MXP-AHRS", RobotMap.ahrs).withWidget(BuiltInWidgets.kGyro)/*.withSize(2, 2)*/;
+			debugTab.add("Base/Compressor", RobotMap.compressor);
 
 			//Drive Train Components
 			debugTab.add("DriveTrain/Left/Encoder", RobotMap.leftFrontDriveTalon).withWidget(BuiltInWidgets.kEncoder)./*withSize(2, 1).*/withPosition(11, 0);
@@ -82,12 +83,25 @@ public class Dashboard extends Subsystem{
 
 			//Subsystems
 			debugTab.add("Subsystem/DriveTrain", RobotMap.driveTrain);
+      
+			debugTab.add("Subsystem/Turret", RobotMap.turret);
 			//debugTab.add("Subsystem/otherSubsystem", RobotMap.otherSubsystem;
+			debugTab.add("Subsystem/HatchClaw", RobotMap.hatchClaw);
 
-			//Pneumatics
-			debugTab.add("Pneumatics/Compressor", RobotMap.compressor);
-			debugTab.add("Pneumatics/FrontSolenoid", RobotMap.frontSolenoid);
-			debugTab.add("Pneumatics/RearSolenoid", RobotMap.rearSolenoid);
+			//Climbing Pneumatics
+			debugTab.add("Climbing/FrontSolenoid", RobotMap.frontSolenoid);
+			debugTab.add("Climbing/RearSolenoid", RobotMap.rearSolenoid);
+
+			//Hatch manipulator
+			debugTab.add("HatchClaw/Solenoid", RobotMap.hatchPneumatic);
+			debugTab.add("HatchClaw/HatchMotor", RobotMap.hatchMotor);
+
+			//Turret
+			debugTab.add("Turret/TurretMotor", RobotMap.turretTalon);
+			debugTab.add("Turret/TurretSensor/left", RobotMap.turretSensorLeft);
+			debugTab.add("Turret/TurretSensor/middle", RobotMap.turretSensorMiddle);
+			debugTab.add("Turret/TurretSensor/right", RobotMap.turretSensorRight);
+
 
 		} else if (! debug) { //drive
 			System.out.println("Adding Drive Tab Components.");

@@ -3,6 +3,7 @@ package frc4990.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc4990.robot.RobotMap;
 import frc4990.robot.subsystems.Dashboard;
+import frc4990.robot.subsystems.DriveTrain;
 
 public class RobotDriveStraight extends Command {
 
@@ -30,7 +31,7 @@ public class RobotDriveStraight extends Command {
 	public void initialize() {
 		System.out.println("Initalizing GyroStraight with time " + RobotDriveStraight.targetTime);
 		RobotMap.driveTrain.resetDistanceTraveled();
-		RobotMap.driveTrain.setSpeed(speed);
+		DriveTrain.setSpeed(speed);
 	}
 
 	public void execute() {
@@ -38,7 +39,7 @@ public class RobotDriveStraight extends Command {
 	}
 	
 	public void end() {
-		RobotMap.driveTrain.setSpeed(0);
+		DriveTrain.setSpeed(0);
 	}
 	
 	public void interrupted() {

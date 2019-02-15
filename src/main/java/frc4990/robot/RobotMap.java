@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
@@ -19,8 +20,9 @@ import frc4990.robot.components.F310Gamepad;
 import frc4990.robot.components.TalonWithMagneticEncoder;
 import frc4990.robot.subsystems.Dashboard;
 import frc4990.robot.subsystems.DriveTrain;
+import frc4990.robot.subsystems.HatchClaw;
 import frc4990.robot.subsystems.Pneumatic;
-
+import frc4990.robot.subsystems.Turret;
 
 
 /**
@@ -31,32 +33,51 @@ import frc4990.robot.subsystems.Pneumatic;
  */
 
 public class RobotMap {
+
+	//Driver Station Inputs
+	public static F310Gamepad driveGamepad = new F310Gamepad(0);
+	public static F310Gamepad opGamepad = new F310Gamepad(1);
 	
+	//Sensors
 	public static PowerDistributionPanel pdp;
 	public static AHRS ahrs;
 	public static Compressor compressor;
+	public static int pcmCANID;
 
-	public static F310Gamepad driveGamepad;
-	public static F310Gamepad opGamepad;
-
+	//DriveTrain
 	public static TalonWithMagneticEncoder leftFrontDriveTalon;
 	public static WPI_TalonSRX leftRearDriveTalon;
 	public static TalonWithMagneticEncoder rightFrontDriveTalon;
 	public static WPI_TalonSRX rightRearDriveTalon;
-
 	public static SpeedControllerGroup leftMotorGroup;
 	public static SpeedControllerGroup rightMotorGroup;
-	public static DriveTrain driveTrain;
-	public static Dashboard dashboard;
 
-	public static int pcmCANID;
+	//Turret
+	public static TalonWithMagneticEncoder turretTalon;
+	public static DigitalInput turretSensorLeft;
+	public static DigitalInput turretSensorMiddle;
+	public static DigitalInput turretSensorRight;
 
+	//Climbing pneumatics
 	public static Pneumatic frontSolenoid;
 	public static Pneumatic rearSolenoid;
 
-	public static DigitalInput robotSelector; //true = practice bot, false = competition bot
+	//HatchClaw
+	public static Pneumatic hatchPneumatic;
+	public static WPI_TalonSRX hatchMotor;
+	public static Counter hatchMotorCounter;
+
+	//Subsystems
+	public static DriveTrain driveTrain;
+	public static HatchClaw hatchClaw;
+	public static Turret turret;
+	public static Dashboard dashboard;
+
+	public static DigitalInput robotSelector = new DigitalInput(9); //true = practice bot, false = competition bot
 
 	public RobotMap() {
+    
+    //all port bindings or empty constuctors that stay the same for the pratice & real robots.
 
 		ahrs = new AHRS(SPI.Port.kMXP);
 
@@ -66,33 +87,60 @@ public class RobotMap {
 		robotSelector = new DigitalInput(9);
 
 		if (robotSelector.get()) { //practice bot
+      
+      //all port bindings that are only true for the practice robot. (PDP = 2, PCM = 12, Talons = 30 through 40)
 
 			pcmCANID = 12;
 			pdp = new PowerDistributionPanel(2);
+
 			leftFrontDriveTalon = new TalonWithMagneticEncoder(31);
 			leftRearDriveTalon = new WPI_TalonSRX(32);
 			rightFrontDriveTalon = new TalonWithMagneticEncoder(33);
 			rightRearDriveTalon = new WPI_TalonSRX(34);
 
+			turretTalon = new TalonWithMagneticEncoder(35);
+			turretSensorLeft = new DigitalInput(0);
+			turretSensorMiddle = new DigitalInput(1);
+			turretSensorRight = new DigitalInput(2);
+
+			hatchMotor = new WPI_TalonSRX(36);
+			hatchMotorCounter = new Counter(3);
+
 		} else { //competition bot
+      
+       //all port bindings that are only true for the competition robot. (PDP = 1, PCM = 11, Talons = 20 through 30)
 
-			pcmCANID = 0;
-			pdp = new PowerDistributionPanel(0);
-			leftFrontDriveTalon = new TalonWithMagneticEncoder(1);
-			leftRearDriveTalon = new WPI_TalonSRX(2);
-			rightFrontDriveTalon = new TalonWithMagneticEncoder(3);
-			rightRearDriveTalon = new WPI_TalonSRX(4);
+			pcmCANID = 11;
+			pdp = new PowerDistributionPanel(1);
 
+			leftFrontDriveTalon = new TalonWithMagneticEncoder(21);
+			leftRearDriveTalon = new WPI_TalonSRX(22);
+			rightFrontDriveTalon = new TalonWithMagneticEncoder(23);
+			rightRearDriveTalon = new WPI_TalonSRX(24);
+
+			turretTalon = new TalonWithMagneticEncoder(25);
+			turretSensorLeft = new DigitalInput(0);
+			turretSensorMiddle = new DigitalInput(1);
+			turretSensorRight = new DigitalInput(2);
+
+			hatchMotor = new WPI_TalonSRX(36);
+			hatchMotorCounter = new Counter(3);
 		}
 
-		
+		//all port bindings that are dependent on robot-specific port bindings.
+    
 		frontSolenoid = new Pneumatic(pcmCANID, 0);
 		rearSolenoid = new Pneumatic(pcmCANID, 1);
+		hatchPneumatic = new Pneumatic(pcmCANID, 2);
 		compressor = new Compressor(pcmCANID);
 
 		leftMotorGroup = new SpeedControllerGroup(leftFrontDriveTalon, leftRearDriveTalon);
 		rightMotorGroup = new SpeedControllerGroup(rightFrontDriveTalon, rightRearDriveTalon);
+    
+    //all subsystems go at the end.
 		
+		turret = new Turret();
+		hatchClaw = new HatchClaw();
 		driveTrain = new DriveTrain();
 		dashboard = new Dashboard();
 	
