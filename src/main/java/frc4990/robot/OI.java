@@ -7,12 +7,12 @@
 
 package frc4990.robot;
 
-import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc4990.robot.commands.*;
 import frc4990.robot.commands.TeleopDriveTrainController.StickShapingMode;
 import frc4990.robot.commands.TurretTurn.TurretPoint;
-import frc4990.robot.components.*;
+import frc4990.robot.components.F310Gamepad.Axis;
+import frc4990.robot.components.F310Gamepad.Buttons;
 import frc4990.robot.components.F310Gamepad.POV;
 import frc4990.robot.subsystems.*;
 
@@ -24,17 +24,8 @@ import frc4990.robot.subsystems.*;
  */
 public class OI{
 	
-	public static JoystickAnalogButton throttleAnalogButton = RobotMap.driveGamepad.leftJoystickY;
-	public static JoystickAnalogButton turnSteepnessAnalogButton = RobotMap.driveGamepad.rightJoystickX;
-
-	public static JoystickAnalogButton turretLeftAnalogButton = RobotMap.opGamepad.leftTrigger;
-	public static JoystickAnalogButton turretRightAnalogButton = RobotMap.opGamepad.rightTrigger;
-  
-	public static Button turretForwardButton = RobotMap.opGamepad.getPOVButton(POV.north);
-	public static Button turretLeftButton = RobotMap.opGamepad.getPOVButton(POV.west);
-	public static Button turretRightButton = RobotMap.opGamepad.getPOVButton(POV.east);
-	public static Button turretBackButton = RobotMap.opGamepad.getPOVButton(POV.south);
-	public static Button turretSafeButton = RobotMap.opGamepad.a;
+	public static Axis throttleAxis = Axis.leftJoystickY; //used in TeleopDriveTrain Controller
+	public static Axis turnSteepnessAxis = Axis.rightJoystickX; //used in TeleopDriveTrain Controller
 	
 	/* Controller Mapping:
 		Drive Train: (drive controller)
@@ -44,7 +35,7 @@ public class OI{
 			Y button: toggle stick shaping methods (differential drive and 2018-season)
 		
 		Turret: (OP controller)
-			POV pad: (up, down, left & right) move turret to point forwards, backwards, left & right)
+			POV pad: (up, down, left & right) move turret to point forwards, backwards, left & right
 			A button: move turret to safe point (45 degrees) (inside frame perimiter)
 		
 		HatchClaw: (OP controller)
@@ -66,38 +57,45 @@ public class OI{
 	public OI() {
 
 		//drivetrain
-		RobotMap.driveGamepad.x.toggleWhenPressed(driveSpeedToggle());
-		RobotMap.driveGamepad.b.toggleWhenPressed(turnSpeedToggle());
-		RobotMap.driveGamepad.y.whenPressed(stickShapingToggle());
+		RobotMap.driveGamepad.getButton(Buttons.x).toggleWhenPressed(driveSpeedToggle());
+		RobotMap.driveGamepad.getButton(Buttons.b).toggleWhenPressed(turnSpeedToggle());
+		RobotMap.driveGamepad.getButton(Buttons.y).whenPressed(stickShapingToggle());
 
 		
 		//controller check
-		RobotMap.driveGamepad.start.toggleWhenPressed(new InstantCommand("DriveControllerCheck", () -> System.out.println("START pressed on Drive Gamepad.")));
-		RobotMap.opGamepad.start.toggleWhenPressed(new InstantCommand("OPControllerCheck", () -> System.out.println("START pressed on OP Gamepad.")));
+		RobotMap.driveGamepad.getButton(Buttons.start).toggleWhenPressed(
+			new InstantCommand("DriveControllerCheck", () -> System.out.println("START pressed on Drive Gamepad.")));
+		RobotMap.opGamepad.getButton(Buttons.start).toggleWhenPressed(
+			new InstantCommand("OPControllerCheck", () -> System.out.println("START pressed on OP Gamepad.")));
 
-		//turret
-		turretLeftAnalogButton.whileHeld(RobotMap.turret.setTurretSpeed(-1 * turretLeftAnalogButton.getRawAxis()));
-		turretRightAnalogButton.whileHeld(RobotMap.turret.setTurretSpeed(turretRightAnalogButton.getRawAxis()));
-		turretForwardButton.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Forward));
-		turretLeftButton.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Left));
-		turretRightButton.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Right));
-		turretBackButton.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Back));
-		RobotMap.opGamepad.a.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Safe));
+		//turret (manual turning)
+		RobotMap.opGamepad.getAxis(Axis.leftTrigger).whileHeld(RobotMap.turret.setTurretSpeed(
+			-1 * RobotMap.opGamepad.getAxis(Axis.leftTrigger).getRawAxis()));
+		RobotMap.opGamepad.getAxis(Axis.rightTrigger).whileHeld(RobotMap.turret.setTurretSpeed(
+			RobotMap.opGamepad.getAxis(Axis.rightTrigger).getRawAxis()));
+		
+		//turret (setpoints)	
+		RobotMap.opGamepad.getPOVButton(POV.north).toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Forward));
+		RobotMap.opGamepad.getPOVButton(POV.west).toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Left));
+		RobotMap.opGamepad.getPOVButton(POV.east).toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Right));
+		RobotMap.opGamepad.getPOVButton(POV.south).toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Back));
+		RobotMap.opGamepad.getButton(Buttons.a).toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Safe));
     
 		//Hatch
-		RobotMap.opGamepad.leftBumper.whenPressed(RobotMap.hatchPneumatic.toggle(RobotMap.hatchPneumatic));
-		RobotMap.opGamepad.b.whenPressed(HatchClaw.toggleMotor());
+		RobotMap.opGamepad.getButton(Buttons.leftBumper).whenPressed(RobotMap.hatchPneumatic.toggle(RobotMap.hatchPneumatic));
+		RobotMap.opGamepad.getButton(Buttons.b).whenPressed(HatchClaw.toggleMotor());
 		
 
 		//Pneumatics
-		RobotMap.opGamepad.x.whenPressed(RobotMap.frontSolenoid.toggle(RobotMap.frontSolenoid));
-		RobotMap.opGamepad.y.whenPressed(RobotMap.rearSolenoid.toggle(RobotMap.rearSolenoid));
-		RobotMap.opGamepad.rightBumper.whenPressed(compressorToggle());
+		RobotMap.opGamepad.getButton(Buttons.x).whenPressed(RobotMap.frontSolenoid.toggle(RobotMap.frontSolenoid));
+		RobotMap.opGamepad.getButton(Buttons.y).whenPressed(RobotMap.rearSolenoid.toggle(RobotMap.rearSolenoid));
+		RobotMap.opGamepad.getButton(Buttons.rightBumper).whenPressed(compressorToggle());
 	}
 	
 	public static InstantCommand stickShapingToggle() {
 		return new InstantCommand("StickShapingToggle", (Runnable) () -> {
-			TeleopDriveTrainController.stickShapingMode = (TeleopDriveTrainController.stickShapingMode == StickShapingMode.DifferentialDrive) ? StickShapingMode.SquaredThrottle : StickShapingMode.DifferentialDrive;
+			TeleopDriveTrainController.stickShapingMode = (TeleopDriveTrainController.stickShapingMode == StickShapingMode.DifferentialDrive) ? 
+			StickShapingMode.SquaredThrottle : StickShapingMode.DifferentialDrive;
 			System.out.println("[StickShaping Method] Changed to:" + TeleopDriveTrainController.stickShapingMode.toString());
 		});
 		

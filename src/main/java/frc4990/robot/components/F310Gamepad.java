@@ -1,7 +1,6 @@
 package frc4990.robot.components;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
 public class F310Gamepad extends Joystick {
@@ -40,33 +39,21 @@ public class F310Gamepad extends Joystick {
         }
 	}
 
-	/*
-	 * the following methods provide semantic sugar over the raw axis and button
-	 * inputs from the F310 Gamepad, as discovered by using the FRC Driver Station
-	 * software.
-	 */
+	public enum Axis {
+		leftTrigger(2), rightTrigger(3),
+		leftJoystickX(0), leftJoystickY(1),
+		rightJoystickX(4), rightJoystickY(5);
 
-	public Button a = new JoystickButton(this, 1);
-	public Button b = new JoystickButton(this, 2);
-	public Button x = new JoystickButton(this, 3);
-	public Button y = new JoystickButton(this, 4);
-	public Button leftBumper = new JoystickButton(this, 5);
-	public Button rightBumper = new JoystickButton(this, 6);
-	public Button start = new JoystickButton(this, 10);
-	public Button back = new JoystickButton(this, 9);
-	public Button rightJoystickButton = new JoystickButton(this, 12);
-	public Button leftJoystickButton = new JoystickButton(this, 11);
-
-	/*
-	* Use <JoystickAnalogButton>.get() to get boolean value.
-	* Use <JoystickAnalogButton>.getRawAxis() to get double value.
-	*/
-	public JoystickAnalogButton leftTrigger = new JoystickAnalogButton(this, 2, 0.95);
-	public JoystickAnalogButton rightTrigger = new JoystickAnalogButton(this, 3, 0.95);
-	public JoystickAnalogButton leftJoystickX = new JoystickAnalogButton(this, 0);
-	public JoystickAnalogButton leftJoystickY = new JoystickAnalogButton(this, 1, 0.0078126, true);
-	public JoystickAnalogButton rightJoystickX = new JoystickAnalogButton(this, 4, 0.0391);
-	public JoystickAnalogButton rightJoystickY = new JoystickAnalogButton(this, 5);
+		private int value;
+    
+        Axis(int value) {
+            this.value = value;
+        }
+    
+        public int get() {
+            return value;
+        }
+	}
 
 	/**
 	 * Initializes new F310 Gamepad
@@ -86,6 +73,23 @@ public class F310Gamepad extends Joystick {
 
 	public JoystickButton getButton(Buttons button) {
 		return new JoystickButton(this, button.get());
+	}
+
+	public JoystickAnalogButton getAxis(Axis axis) {
+		switch (axis) {
+			case leftJoystickY:  return new JoystickAnalogButton(this, 1, 0.0078126, true);
+			case leftTrigger:    return new JoystickAnalogButton(this, 2, 0.95);
+			case rightTrigger:   return new JoystickAnalogButton(this, 2, 0.95);
+			case rightJoystickX: return new JoystickAnalogButton(this, 4, 0.0391);
+			default: return new JoystickAnalogButton(this, axis.get());
+	}}
+
+	public Double getRawAxis(Axis axis) {
+		return getAxis(axis).getRawAxis();
+	}
+
+	public Boolean getBooleanAxis(Axis axis) {
+		return getAxis(axis).get();
 	}
 
 	public Boolean isPOVPressed(int pov) {

@@ -41,8 +41,8 @@ public class TeleopDriveTrainController extends Command {
 
 		switch (stickShapingMode) {
 			case SquaredThrottle://Another one that we tried.
-				throttle = getSquaredThrottle(OI.throttleAnalogButton.getRawAxis() * currentThrottleMultiplier);
-				turnSteepness = getSquaredThrottle(OI.turnSteepnessAnalogButton.getRawAxis());
+				throttle = getSquaredThrottle(RobotMap.driveGamepad.getRawAxis(OI.throttleAxis) * currentThrottleMultiplier);
+				turnSteepness = getSquaredThrottle(RobotMap.driveGamepad.getRawAxis(OI.turnSteepnessAxis));
 
 				if (throttle != 0 && turnSteepness != 0) { //arc turn
 					driveMode = DriveMode.ARC;
@@ -71,8 +71,8 @@ public class TeleopDriveTrainController extends Command {
 				break;
 			case DifferentialDrive://New!  but there is no code.
 				DriveTrain.curvatureDrive(
-					OI.throttleAnalogButton.getRawAxis() * currentThrottleMultiplier, 
-					OI.turnSteepnessAnalogButton.getRawAxis() * currentTurnSteepnessMultiplier, true);
+					RobotMap.driveGamepad.getRawAxis(OI.throttleAxis) * currentThrottleMultiplier, 
+					RobotMap.driveGamepad.getRawAxis(OI.turnSteepnessAxis) * currentTurnSteepnessMultiplier, true);
 				break;
 			default:
 				break;

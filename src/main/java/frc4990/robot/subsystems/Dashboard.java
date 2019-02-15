@@ -73,8 +73,8 @@ public class Dashboard extends Subsystem{
 			debugTab.add("DifferentialDrive", RobotMap.driveTrain.differentialDrive).withWidget(BuiltInWidgets.kDifferentialDrive).withSize(2, 2).withPosition(11, 4);
 			
 			//Drive Station Inputs
-			debugTab.add("DriveStationInput/turnSteepness", new SendableObject((FunctionalInterface) () -> OI.turnSteepnessAnalogButton.getRawAxis().toString()));
-			debugTab.add("DriveStationInput/throttle", new SendableObject((FunctionalInterface) () -> {return OI.throttleAnalogButton.getRawAxis().toString(); }));
+			debugTab.add("DriveStationInput/turnSteepness", new SendableObject(() -> RobotMap.driveGamepad.getRawAxis(OI.turnSteepnessAxis).toString()));
+			debugTab.add("DriveStationInput/throttle", new SendableObject(() -> RobotMap.driveGamepad.getRawAxis(OI.throttleAxis).toString()));
 
 			//Autonomus
 			if (Robot.autonomusCommand != null) {
@@ -83,9 +83,7 @@ public class Dashboard extends Subsystem{
 
 			//Subsystems
 			debugTab.add("Subsystem/DriveTrain", RobotMap.driveTrain);
-      
 			debugTab.add("Subsystem/Turret", RobotMap.turret);
-			//debugTab.add("Subsystem/otherSubsystem", RobotMap.otherSubsystem;
 			debugTab.add("Subsystem/HatchClaw", RobotMap.hatchClaw);
 
 			//Climbing Pneumatics
@@ -106,7 +104,7 @@ public class Dashboard extends Subsystem{
 		} else if (! debug) { //drive
 			System.out.println("Adding Drive Tab Components.");
 			driveTab.add("Scheduler", Scheduler.getInstance()).withSize(2, 3).withPosition(0, 0);
-			driveTab.add("SelectedStartPosition", new SendableObject((FunctionalInterface) () -> autoChooser.getSelected().name())).withSize(2, 1).withPosition(3, 3);
+			driveTab.add("SelectedStartPosition", new SendableObject((FunctionalInterface) () -> autoChooser.getSelected().name())).withSize(2, 1).withPosition(2, 3);
 			driveTab.add("AutoChooser", autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(4, 3);
 			driveTab.add("initDebugDashboard", initDebugDashboard);
 		}
