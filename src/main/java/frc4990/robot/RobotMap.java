@@ -83,8 +83,6 @@ public class RobotMap {
 
 		driveGamepad = new F310Gamepad(0);
 		opGamepad = new F310Gamepad(1);
-		
-		robotSelector = new DigitalInput(9);
 
 		if (robotSelector.get()) { //practice bot
       
