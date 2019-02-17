@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc4990.robot.commands.AutonomusCommand;
 
 //This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that was the Freshmen Union of 2018
 
@@ -55,9 +54,9 @@ public class Robot extends TimedRobot {
 
 	public void disabledInit() {
 		System.out.println("ROBOT DISABLED.");
-		if (autonomusCommand != null) {
+		/*if (autonomusCommand != null) {
 			autonomusCommand.cancel();
-		}
+		}*/
 	}
 
 	public void disabledPeriodic() { // This function is run periodically when the robot is DISABLED. Be careful.
@@ -65,8 +64,9 @@ public class Robot extends TimedRobot {
 	}
 
 	public void autonomousInit() { // This function is called at the start of autonomous
-		autonomusCommand = new AutonomusCommand();
+		/*autonomusCommand = new AutonomusCommand();
 		autonomusCommand.start();
+		*/
 
 		System.out.println("Auto Init complete");
 	}
