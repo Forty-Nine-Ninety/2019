@@ -8,11 +8,13 @@
 package frc4990.robot;
 
 import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.POVButton;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc4990.robot.commands.*;
 import frc4990.robot.commands.TeleopDriveTrainController.StickShapingMode;
 import frc4990.robot.commands.TurretTurn.TurretPoint;
 import frc4990.robot.components.*;
+import frc4990.robot.components.F310Gamepad.Buttons;
 import frc4990.robot.components.F310Gamepad.POV;
 import frc4990.robot.subsystems.*;
 
@@ -24,17 +26,29 @@ import frc4990.robot.subsystems.*;
  */
 public class OI{
 	
-	public static JoystickAnalogButton throttleAnalogButton = RobotMap.driveGamepad.leftJoystickY;
-	public static JoystickAnalogButton turnSteepnessAnalogButton = RobotMap.driveGamepad.rightJoystickX;
+	public static JoystickAnalogButton throttle = RobotMap.driveGamepad.leftJoystickY;
+	public static JoystickAnalogButton turnSteepness = RobotMap.driveGamepad.rightJoystickX;
 
-	public static JoystickAnalogButton turretLeftAnalogButton = RobotMap.opGamepad.leftTrigger;
-	public static JoystickAnalogButton turretRightAnalogButton = RobotMap.opGamepad.rightTrigger;
-  
-	public static Button turretForwardButton = RobotMap.opGamepad.getPOVButton(POV.north);
-	public static Button turretLeftButton = RobotMap.opGamepad.getPOVButton(POV.west);
-	public static Button turretRightButton = RobotMap.opGamepad.getPOVButton(POV.east);
-	public static Button turretBackButton = RobotMap.opGamepad.getPOVButton(POV.south);
-	public static Button turretSafeButton = RobotMap.opGamepad.a;
+	public static JoystickAnalogButton turretTurn = RobotMap.driveGamepad.leftJoystickX;
+	public static Button turretForwardButton = RobotMap.opGamepad.getButton(Buttons.y);
+	public static Button turretLeftButton = RobotMap.opGamepad.getButton(Buttons.x);
+	public static Button turretRightButton = RobotMap.opGamepad.getButton(Buttons.b);
+	public static Button turretBackButton = RobotMap.opGamepad.getButton(Buttons.a);
+	public static Button turretSafeButton = RobotMap.opGamepad.getButton(Buttons.start);
+
+	public static JoystickAnalogButton hatchPneumatic = RobotMap.opGamepad.rightJoystickX;
+	public static POVButton hatchMotorUp = RobotMap.opGamepad.getPOVButton(POV.north);
+	public static POVButton hatchMotorDown = RobotMap.opGamepad.getPOVButton(POV.south);
+
+	public static Button manualIntakeSequence = RobotMap.opGamepad.getButton(Buttons.leftBumper);
+	public static Button manualOutakeSequence = RobotMap.opGamepad.getButton(Buttons.rightBumper);
+	public static Button limelightIntakeSequence = RobotMap.opGamepad.leftTrigger;
+	public static Button limelightOutakeSequence = RobotMap.opGamepad.rightTrigger;
+
+	public static Button frontPneumatics = RobotMap.driveGamepad.rightBumper;
+	public static Button rearPneumatics = RobotMap.driveGamepad.leftBumper;
+	public static Button climbSequence = RobotMap.driveGamepad.rightTrigger;
+
 	
 	/* Controller Mapping:
 		Drive Train: (drive controller)
@@ -71,13 +85,12 @@ public class OI{
 		RobotMap.driveGamepad.y.whenPressed(stickShapingToggle());
 
 		
-		//controller check
-		RobotMap.driveGamepad.start.toggleWhenPressed(new InstantCommand("DriveControllerCheck", () -> System.out.println("START pressed on Drive Gamepad.")));
-		RobotMap.opGamepad.start.toggleWhenPressed(new InstantCommand("OPControllerCheck", () -> System.out.println("START pressed on OP Gamepad.")));
+		//controller check (not needed)
+		//RobotMap.driveGamepad.back.toggleWhenPressed(new InstantCommand("DriveControllerCheck", () -> System.out.println("START pressed on Drive Gamepad.")));
+		//RobotMap.opGamepad.back.toggleWhenPressed(new InstantCommand("OPControllerCheck", () -> System.out.println("START pressed on OP Gamepad.")));
 
 		//turret
-		turretLeftAnalogButton.whileHeld(RobotMap.turret.setTurretSpeed(-1 * turretLeftAnalogButton.getRawAxis()));
-		turretRightAnalogButton.whileHeld(RobotMap.turret.setTurretSpeed(turretRightAnalogButton.getRawAxis()));
+		turretTurn.whileHeld(RobotMap.turret.setTurretSpeed(turretTurn.getRawAxis()));
 		turretForwardButton.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Forward));
 		turretLeftButton.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Left));
 		turretRightButton.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Right));
@@ -85,14 +98,14 @@ public class OI{
 		RobotMap.opGamepad.a.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Safe));
     
 		//Hatch
-		RobotMap.opGamepad.leftBumper.whenPressed(RobotMap.hatchPneumatic.toggle(RobotMap.hatchPneumatic));
+		RobotMap.opGamepad.leftBumper.whenPressed(RobotMap.hatchPneumatic.toggleCommand());
 		RobotMap.opGamepad.b.whenPressed(HatchClaw.toggleMotor());
 		
 
 		//Pneumatics
-		RobotMap.opGamepad.x.whenPressed(RobotMap.frontSolenoid.toggle(RobotMap.frontSolenoid));
-		RobotMap.opGamepad.y.whenPressed(RobotMap.rearSolenoid.toggle(RobotMap.rearSolenoid));
-		RobotMap.opGamepad.rightBumper.whenPressed(compressorToggle());
+		RobotMap.opGamepad.x.whenPressed(RobotMap.frontSolenoid.toggleCommand());
+		RobotMap.opGamepad.y.whenPressed(RobotMap.rearSolenoid.toggleCommand());
+		RobotMap.opGamepad.back.whenPressed(compressorToggle());
 	}
 	
 	public static InstantCommand stickShapingToggle() {
