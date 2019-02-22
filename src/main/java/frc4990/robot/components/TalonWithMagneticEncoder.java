@@ -60,10 +60,8 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
          *            CAN bus ID of Talon with MagneticEncoder (0 to 63, set from the web dashboard)
          */
         public TalonWithMagneticEncoder(int CANID, SensorMode defaultSensorMode) {
-          super(CANID);
+          this(CANID);
           this.defaultSensorMode = defaultSensorMode;
-          configSelectedFeedbackSensor(defaultSensorMode.get() == 1 ? FeedbackDevice.CTRE_MagEncoder_Relative : FeedbackDevice.CTRE_MagEncoder_Absolute, 0, timeoutMs); //Pulse-width
-          syncPosition();
       }
 
        /**
