@@ -72,6 +72,9 @@ public class Dashboard extends Subsystem{
 			debugTab.add("DriveTrain/Right/motorGroup", RobotMap.rightMotorGroup).withWidget(BuiltInWidgets.kSpeedController)./*withSize(2, 1).*/withPosition(11, 3);
 			debugTab.add("DifferentialDrive", RobotMap.driveTrain.differentialDrive).withWidget(BuiltInWidgets.kDifferentialDrive).withSize(2, 2).withPosition(11, 4);
 			
+			debugTab.add("DriveAdjust/left", RobotMap.driveTrain.leftSpeedAdjust);
+			debugTab.add("DriveAdjust/right", RobotMap.driveTrain.rightSpeedAdjust);
+
 			//Drive Station Inputs
 			debugTab.add("DriveStationInput/turnSteepness", new SendableObject((FunctionalInterface) () -> OI.turnSteepness.getRawAxis().toString()));
 			debugTab.add("DriveStationInput/throttle", new SendableObject((FunctionalInterface) () -> {return OI.throttle.getRawAxis().toString(); }));
