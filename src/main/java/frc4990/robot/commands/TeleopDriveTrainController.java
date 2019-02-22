@@ -72,7 +72,7 @@ public class TeleopDriveTrainController extends Command {
 			case DifferentialDrive://New!  but there is no code.
 				DriveTrain.curvatureDrive(
 					OI.throttleAnalogButton.getRawAxis() * currentThrottleMultiplier, 
-					OI.turnSteepnessAnalogButton.getRawAxis() * currentTurnSteepnessMultiplier, true);
+					OI.turnSteepnessAnalogButton.getRawAxis() * currentTurnSteepnessMultiplier + (1-RobotMap.driveTrain.rightSpeedAdjust), true);
 				break;
 			default:
 				break;
