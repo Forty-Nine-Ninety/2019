@@ -83,9 +83,7 @@ public class Dashboard extends Subsystem{
 
 			//Subsystems
 			debugTab.add("Subsystem/DriveTrain", RobotMap.driveTrain);
-      
 			debugTab.add("Subsystem/Turret", RobotMap.turret);
-			//debugTab.add("Subsystem/otherSubsystem", RobotMap.otherSubsystem;
 			debugTab.add("Subsystem/HatchClaw", RobotMap.hatchClaw);
 
 			//Climbing Pneumatics
@@ -106,9 +104,10 @@ public class Dashboard extends Subsystem{
 		} else if (! debug) { //drive
 			System.out.println("Adding Drive Tab Components.");
 			driveTab.add("Scheduler", Scheduler.getInstance()).withSize(2, 3).withPosition(0, 0);
-			driveTab.add("SelectedStartPosition", new SendableObject((FunctionalInterface) () -> autoChooser.getSelected().name())).withSize(2, 1).withPosition(3, 3);
+			driveTab.add("SelectedStartPosition", new SendableObject((FunctionalInterface) () -> autoChooser.getSelected().name())).withSize(2, 1).withPosition(2, 3);
 			driveTab.add("AutoChooser", autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(4, 3);
 			driveTab.add("initDebugDashboard", initDebugDashboard);
+			driveTab.add("DebugTabComponents", new SendableObject(() -> debugTab.getComponents().size()));
 		}
 	}
 
