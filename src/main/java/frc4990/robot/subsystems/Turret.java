@@ -1,5 +1,8 @@
 package frc4990.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
@@ -9,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc4990.robot.OI;
 import frc4990.robot.RobotMap;
 import frc4990.robot.components.JoystickAnalogButton;
+import frc4990.robot.components.TalonWithMagneticEncoder;
 
 public class Turret extends Subsystem implements PIDSource, PIDOutput {
     
@@ -17,6 +21,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	public Turret() {
     super("Turret");
 		RobotMap.turretTalon.syncPosition();
+		initalizeTurretPID();
 	}
 
     /**
@@ -103,5 +108,21 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	}
     
     @Override
-    public void periodic() {}
+		public void periodic() {}
+		
+	protected void initalizeTurretPID() {
+		TalonWithMagneticEncoder talon = RobotMap.turretTalon;
+		talon.configFactoryDefault();
+		talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 5);
+		talon.syncPosition();
+		talon.setSensorPhase(true);
+		talon.setInverted(false);
+		talon.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 5);
+		talon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_Targets, 10, 5);
+		talon.configNominalOutputForward(0, 5);
+		talon.configNominalOutputReverse(0, 5);
+		talon.configPeakOutputForward(1, 5);
+		talon.configPeakOutputReverse(-1, 5);
+		talon.selectProfileSlot(0, 0);
+	}
 }
