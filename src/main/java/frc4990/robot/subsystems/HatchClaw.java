@@ -78,7 +78,7 @@ public class HatchClaw extends Subsystem implements PIDSource, PIDOutput {
         setSpeed(output);
     }
 
-    public static void setSpeed(double value) {
+    public void setSpeed(double value) {
         RobotMap.hatchMotor.set(value);
     }
     
