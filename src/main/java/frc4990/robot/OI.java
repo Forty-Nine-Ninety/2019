@@ -10,10 +10,10 @@ package frc4990.robot;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import edu.wpi.first.wpilibj.command.InstantCommand;
+import frc4990.robot.commands.PIDTurretTurn.TurretPoint;
+import frc4990.robot.commands.PIDTurretTurn;
 import frc4990.robot.commands.TeleopDriveTrainController;
 import frc4990.robot.commands.TeleopDriveTrainController.StickShapingMode;
-import frc4990.robot.commands.TurretTurn;
-import frc4990.robot.commands.TurretTurn.TurretPoint;
 import frc4990.robot.components.F310Gamepad.Axis;
 import frc4990.robot.components.F310Gamepad.Buttons;
 import frc4990.robot.components.F310Gamepad.POV;
@@ -32,7 +32,7 @@ public class OI{
 	public static JoystickAnalogButton throttle = RobotMap.driveGamepad.getAxis(Axis.leftJoystickY);
 	public static JoystickAnalogButton turnSteepness = RobotMap.driveGamepad.getAxis(Axis.rightJoystickX);
 
-	public static JoystickAnalogButton turretTurn = RobotMap.driveGamepad.getAxis(Axis.leftJoystickX);
+	public static JoystickAnalogButton turretTurn = RobotMap.opGamepad.getAxis(Axis.leftJoystickX);
 	public static Button turretForward = RobotMap.opGamepad.getButton(Buttons.y);
 	public static Button turretLeft = RobotMap.opGamepad.getButton(Buttons.x);
 	public static Button turretRight = RobotMap.opGamepad.getButton(Buttons.b);
@@ -96,17 +96,18 @@ public class OI{
 		opControllerCheck.toggleWhenPressed(new InstantCommand("OPControllerCheck", () -> System.out.println("START pressed on OP Gamepad.")));
 
 		//turret
-		turretTurn.whileHeld(RobotMap.turret.setTurretSpeed(turretTurn.getRawAxis()));
-		turretForward.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Forward));
-		turretLeft.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Left));
-		turretRight.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Right));
-		turretBack.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Back));
-		turretSafe.toggleWhenPressed(new TurretTurn(0.8, TurretPoint.Safe));
+		//turretTurn.whileHeld(RobotMap.turret.setTurretSpeed(turretTurn.getRawAxis()));
+		turretForward.toggleWhenActive(new PIDTurretTurn(0.8, TurretPoint.Forward));
+		turretLeft.toggleWhenActive(new PIDTurretTurn(0.8, TurretPoint.Left));
+		turretLeft.toggleWhenActive(new PIDTurretTurn(0.8, TurretPoint.Left));
+		turretRight.toggleWhenActive(new PIDTurretTurn(0.8, TurretPoint.Right));
+		turretBack.toggleWhenActive(new PIDTurretTurn(0.8, TurretPoint.Back));
+		turretSafe.toggleWhenActive(new PIDTurretTurn(0.8, TurretPoint.Safe));
     
 		//Hatch
 		hatchPneumatic.whenPressed(RobotMap.hatchPneumatic.toggleCommand());
-		hatchMotorUp.whenPressed(HatchClaw.toggleMotor());
-		hatchMotorDown.whenPressed(HatchClaw.toggleMotor());
+		hatchMotorUp.whileHeld(HatchClaw.move(0.8, 2));
+		hatchMotorDown.whileHeld(HatchClaw.move(-0.8, 2));
 		
 
 		//Pneumatics

@@ -51,7 +51,7 @@ public class Dashboard extends Subsystem{
 	public Dashboard() {
 		System.out.println("Starting Initializing Dashboard.");
 		addDashboardTab(false);
-		//addDashboardTab(true);
+		addDashboardTab(true);
 		System.out.println("Done Initializing Dashboard.");
 	}
 

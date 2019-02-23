@@ -1,5 +1,7 @@
 package frc4990.robot.subsystems;
 
+import edu.wpi.first.wpilibj.command.TimedCommand;
+
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
@@ -50,6 +52,18 @@ public class HatchClaw extends Subsystem implements PIDSource, PIDOutput {
     public static StartCommand toggleMotor() { 
 		return new StartCommand(new SetHatchPosition());
 	}
+
+	public static TimedCommand move(double speed, double seconds) {
+		return new TimedCommand("HatchMove", seconds) {
+			public void initialize() {
+				RobotMap.hatchClaw.setSpeed(speed);
+			}
+
+			public void end() {
+				RobotMap.hatchClaw.setSpeed(0);
+			}
+		};
+	}
     
     /**
 	 * Returns right encoder value, in feet.
@@ -65,7 +79,7 @@ public class HatchClaw extends Subsystem implements PIDSource, PIDOutput {
     }
 
     public static void setSpeed(double value) {
-        RobotMap.turretTalon.set(value);
+        RobotMap.hatchMotor.set(value);
     }
     
     /**

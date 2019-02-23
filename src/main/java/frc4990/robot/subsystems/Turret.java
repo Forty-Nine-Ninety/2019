@@ -3,9 +3,12 @@ package frc4990.robot.subsystems;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc4990.robot.OI;
 import frc4990.robot.RobotMap;
+import frc4990.robot.components.JoystickAnalogButton;
 
 public class Turret extends Subsystem implements PIDSource, PIDOutput {
     
@@ -34,7 +37,20 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
     }
     
     public InstantCommand setTurretSpeed(double speed) { 
-		return new InstantCommand("SetTurretSpeed", this, () -> Turret.setSpeed(speed));
+		return new InstantCommand("SetTurretSpeed", this, () -> RobotMap.turret.setSpeed(speed));
+	}
+
+	public Command setTurretSpeed(JoystickAnalogButton axis) { 
+		return new Command("setTurretSpeed", this) {
+			protected void execute() {
+				RobotMap.turret.setSpeed(-axis.getRawAxis());
+			}
+
+			@Override
+			protected boolean isFinished() {
+				return false;
+			}
+		};
 	}
     
     /**
@@ -58,11 +74,11 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	 * @param value speed to set, [-1 to 1]
 	 */
 
-    public static void setSpeed(double value) {
-        if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorRight.get()) && value < 0) value = 0; //At end of right range
+    public void setSpeed(double value) {
+        /*if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorRight.get()) && value < 0) value = 0; //At end of right range
         if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorLeft.get()) && value > 0) value = 0; //At end of left range
         if (RobotMap.turretSensorLeft.get() || RobotMap.turretSensorRight.get()) value /= 2; //near end of either range
-        RobotMap.turretTalon.set(value);
+		*/RobotMap.turretTalon.set(value);
     }
     
     /**
@@ -82,7 +98,9 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
     }
 
 	@Override
-	protected void initDefaultCommand() {}
+	protected void initDefaultCommand() {
+		this.setDefaultCommand(this.setTurretSpeed(OI.turretTurn));
+	}
     
     @Override
     public void periodic() {}
