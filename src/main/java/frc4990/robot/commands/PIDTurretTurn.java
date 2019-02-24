@@ -18,22 +18,22 @@ public class PIDTurretTurn extends PIDCommand {
 
 
 	public PIDTurretTurn(double speed, TurretPoint point) {
-		super(Dashboard.getConst("PIDTurretTurn/p", 0.4),
+		super(Dashboard.getConst("PIDTurretTurn/p", 0.6),
 		Dashboard.getConst("PIDTurretTurn/i", 0),
-		Dashboard.getConst("PIDTurretTurn/d", 0.2));
+		Dashboard.getConst("PIDTurretTurn/d", 6));
 
 		switch(point) {
 			case Forward:
-				target = 0;
+				target = 15000;//0;
 				break;
 			case Left:
-				target = 270d * 4096d / 180d;
+				target = 7000; //270d * 4096d / 180d;
 				break;
 			case Right:
-				target = 90d * 4096d / 180d;
+				target = 24000;//90d * 4096d / 180d;
 				break;
 			case Back:
-				target = 180d * 4096d / 180d;
+				target = -2000; //180d * 4096d / 180d;
 				break;
 			case Safe:
 				target = 45d * 4096d / 180d;
@@ -47,11 +47,11 @@ public class PIDTurretTurn extends PIDCommand {
 		System.out.println("Initalizing PIDTurretTurn");
 		//this.setSubsystem("Turret");
 		SmartDashboard.putData(this);
-		RobotMap.turretTalon.resetEncoder();
-		//this.getPIDController().setInputRange(0, 4096);
-		this.getPIDController().setOutputRange(-1, 1);
-		this.getPIDController().setPercentTolerance(10);
+		//this.getPIDController().setInputRange(0, 4096*2);
+		this.getPIDController().setOutputRange(-0.5, 0.5);
 		//this.getPIDController().setContinuous(true);
+		this.getPIDController().setAbsoluteTolerance(20);
+
 		this.getPIDController().setSetpoint(target);
 		this.getPIDController().enable();
 	}
@@ -62,6 +62,7 @@ public class PIDTurretTurn extends PIDCommand {
 	
 	public void end() {
 		RobotMap.turretTalon.set(0);
+		this.close();
 	}
 	
 	public void interrupted() {
@@ -79,6 +80,6 @@ public class PIDTurretTurn extends PIDCommand {
 
 	@Override
 	protected void usePIDOutput(double output) {
-		RobotMap.turret.setSpeed(-output);
+		RobotMap.turret.setSpeed(output);
 	}
 }

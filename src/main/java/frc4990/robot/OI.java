@@ -38,6 +38,8 @@ public class OI{
 	public static Button turretRight = RobotMap.opGamepad.getButton(Buttons.b);
 	public static Button turretBack = RobotMap.opGamepad.getButton(Buttons.a);
 	public static Button turretSafe = RobotMap.opGamepad.getButton(Buttons.start);
+	public static Button turretReset = RobotMap.opGamepad.getPOVButton(POV.east);
+
 
 	public static JoystickAnalogButton hatchPneumatic = RobotMap.opGamepad.getAxis(Axis.rightJoystickX);
 	public static POVButton hatchMotorUp = RobotMap.opGamepad.getPOVButton(POV.north);
@@ -103,6 +105,7 @@ public class OI{
 		turretRight.toggleWhenActive(new PIDTurretTurn(0.8, TurretPoint.Right));
 		turretBack.toggleWhenActive(new PIDTurretTurn(0.8, TurretPoint.Back));
 		turretSafe.toggleWhenActive(new PIDTurretTurn(0.8, TurretPoint.Safe));
+		turretReset.whenActive(new InstantCommand(() -> RobotMap.turretTalon.resetEncoder()));
     
 		//Hatch
 		hatchPneumatic.whenPressed(RobotMap.hatchPneumatic.toggleCommand());
