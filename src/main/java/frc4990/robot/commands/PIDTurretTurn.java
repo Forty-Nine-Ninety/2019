@@ -1,11 +1,13 @@
 package frc4990.robot.commands;
 
-import edu.wpi.first.wpilibj.command.PIDCommand;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
+import edu.wpi.first.wpilibj.command.Command;
 import frc4990.robot.RobotMap;
+import frc4990.robot.components.TalonWithMagneticEncoder;
 import frc4990.robot.subsystems.Dashboard;
 
-public class PIDTurretTurn extends PIDCommand {
+public class PIDTurretTurn extends Command {
 	public enum TurretPoint {
 		Forward,
 		Left,
@@ -18,11 +20,55 @@ public class PIDTurretTurn extends PIDCommand {
 
 
 	public PIDTurretTurn(double speed, TurretPoint point) {
-		super(Dashboard.getConst("PIDTurretTurn/p", 0.6),
-		Dashboard.getConst("PIDTurretTurn/i", 0),
-		Dashboard.getConst("PIDTurretTurn/d", 6));
+		super("PIDTurretTurn", RobotMap.turret);
+		target = getTarget(point);
+		TalonWithMagneticEncoder talon = RobotMap.turretTalon;
+		
+		/* Set Motion Magic gains in slot0 - see documentation */
+		talon.selectProfileSlot(0, 0);
+		talon.config_kF(0, 1, 5);
+		talon.config_kP(0, Dashboard.getConst("PIDTurretTurn/p", 0.3), 5);
+		talon.config_kI(0, Dashboard.getConst("PIDTurretTurn/i", 0), 5);
+		talon.config_kD(0, Dashboard.getConst("PIDTurretTurn/d", 0), 5);
 
-		switch(point) {
+		/* Set acceleration and vcruise velocity - see documentation */
+		talon.configMotionCruiseVelocity(150, 5);
+		talon.configMotionAcceleration(600, 5);
+
+	}
+
+	public void initialize() {
+		System.out.println("Initalizing PIDTurretTurn");
+		this.setSubsystem("Turret");
+		RobotMap.turretTalon.set(ControlMode.MotionMagic, target);
+	}
+
+	public void execute() {
+		//Dashboard.putConst("PIDTurretTurn/error", this.getPIDController().getError());
+	}
+	
+	public void end() {
+		RobotMap.turretTalon.set(0);
+	}
+	
+	public void interrupted() {
+		end();
+	}
+	
+	public boolean isFinished() {
+		return RobotMap.turretTalon.getClosedLoopError(0) < 100;
+	}
+
+	protected double returnPIDInput() {
+		return RobotMap.turretTalon.getPosition();
+	}
+
+	protected void usePIDOutput(double output) {
+		RobotMap.turret.setSpeed(-output);
+	}
+
+	protected double getTarget(TurretPoint turretPoint) {
+		switch(turretPoint) {
 			case Forward:
 				target = 15000;//0;
 				break;
@@ -41,45 +87,6 @@ public class PIDTurretTurn extends PIDCommand {
 			default:
 				break;
 		}
-	}
-
-	public void initialize() {
-		System.out.println("Initalizing PIDTurretTurn");
-		//this.setSubsystem("Turret");
-		SmartDashboard.putData(this);
-		//this.getPIDController().setInputRange(0, 4096*2);
-		this.getPIDController().setOutputRange(-0.5, 0.5);
-		//this.getPIDController().setContinuous(true);
-		this.getPIDController().setAbsoluteTolerance(20);
-
-		this.getPIDController().setSetpoint(target);
-		this.getPIDController().enable();
-	}
-
-	public void execute() {
-		Dashboard.putConst("PIDTurretTurn/error", this.getPIDController().getError());
-	}
-	
-	public void end() {
-		RobotMap.turretTalon.set(0);
-		this.close();
-	}
-	
-	public void interrupted() {
-		end();
-	}
-	
-	public boolean isFinished() {
-		return this.getPIDController().onTarget();
-	}
-
-	@Override
-	protected double returnPIDInput() {
-		return RobotMap.turretTalon.getPosition();
-	}
-
-	@Override
-	protected void usePIDOutput(double output) {
-		RobotMap.turret.setSpeed(output);
-	}
+		return target;
+	}	
 }
