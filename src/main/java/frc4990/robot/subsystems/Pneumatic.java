@@ -21,7 +21,7 @@ public class Pneumatic extends Subsystem {
 	}
 
 	public void toggle() {
-		solenoid.set(solenoid.get() ? false : true);
+		solenoid.set(! solenoid.get());
 	}
 
 	public InstantCommand toggle(Pneumatic subsystem) { 
