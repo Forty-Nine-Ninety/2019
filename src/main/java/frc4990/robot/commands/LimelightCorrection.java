@@ -32,14 +32,14 @@ public class LimelightCorrection extends Command {
 					speedR -= dError * kPD;
 				case Left:
 					speedL += kP * hError;
-					speedR -= kP * speedL;
+					speedR -= kP * hError;
 					break;
 				case Back:
 					speedL -= dError * kPD;
 					speedR += dError * kPD;
 				case Right:
 					speedL -= kP * hError;
-					speedR += speedL;
+					speedR += kP * hError;
 					break;
 				default:
 					break;
@@ -52,14 +52,14 @@ public class LimelightCorrection extends Command {
 					speedR += dError * kPD;
 				case Left:
 					speedL -= kP * hError;
-					speedR += kP * speedL;
+					speedR += kP * hError;
 					break;
 				case Back:
 					speedL += dError * kPD;
 					speedR -= dError * kPD;
 				case Right:
 					speedL += kP * hError;
-					speedR -= speedL;
+					speedR -= kP * hError;
 					break;
 				default:
 					break;
