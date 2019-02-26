@@ -7,7 +7,7 @@ import edu.wpi.first.networktables.*;
  * 
  * @author MajikalExplosions
  */
-public class Limelight {
+public class CLimelight {
 
     /**
      * Gets valid target
