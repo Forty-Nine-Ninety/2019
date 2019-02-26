@@ -9,46 +9,63 @@ import frc4990.robot.subsystems.DriveTrain;
 public class LimelightCorrection extends Command {
 
 	private int accuracy;
-	private double kP = 0.1;
+	private double kP = -0.1, kPD = -0.1;
+	private double speed;
 	private TurretPoint target;
 
-	public LimelightCorrection(int a, TurretPoint target) {
+	public LimelightCorrection(int a, TurretPoint target, double s) {
 		requires(RobotMap.driveTrain);
 		accuracy = a;
+		speed = s;
 		//requires(RobotMap.driveTrain);
 	}
 
 	public void initialize() {}
 
 	public void execute() {
-		double error = CLimelight.getCrosshairHorizontalOffset();
-		double speed = 0;
-		//TODO add forward and back stuff (see http://docs.limelightvision.io/en/latest/cs_aimandrange.html)
-        if (error > accuracy) {
+		double hError = CLimelight.getCrosshairHorizontalOffset() * -1, dError = CLimelight.getCrosshairVerticalOffset() * -1;
+		double speedL = speed, speedR = speed;
+        if (hError > accuracy) {
             switch(target) {
+				case Forward:
+					speedL += dError * kPD;
+					speedR -= dError * kPD;
 				case Left:
-					speed += kP * error;
+					speedL += kP * hError;
+					speedR -= kP * speedL;
 					break;
+				case Back:
+					speedL -= dError * kPD;
+					speedR += dError * kPD;
 				case Right:
-					speed -= kP * error;
+					speedL -= kP * hError;
+					speedR += speedL;
 					break;
 				default:
 					break;
 			}
         }
-        else if (error < -1 * accuracy) {
+        else if (hError < -1 * accuracy) {
             switch(target) {
+				case Forward:
+					speedL -= dError * kPD;
+					speedR += dError * kPD;
 				case Left:
-					speed -= kP * error;
+					speedL -= kP * hError;
+					speedR += kP * speedL;
 					break;
+				case Back:
+					speedL += dError * kPD;
+					speedR -= dError * kPD;
 				case Right:
-					speed += kP * error;
+					speedL += kP * hError;
+					speedR -= speedL;
 					break;
 				default:
 					break;
 			}
 		}
-		RobotMap.driveTrain.setSpeed(speed);
+		RobotMap.driveTrain.setSpeed(clamp(speedL, -1, 1), clamp(speedR, -1, 1));
 	}
 	
 	public void end() {
@@ -63,4 +80,7 @@ public class LimelightCorrection extends Command {
 		return Math.abs(CLimelight.getCrosshairHorizontalOffset()) < accuracy;
 	}
 
+	private static double clamp(double val, double min, double max) {
+		return Math.max(min, Math.min(max, val));
+	}
 }

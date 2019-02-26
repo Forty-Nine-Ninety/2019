@@ -35,7 +35,7 @@ public class PlaceHatchLimelight extends CommandGroup {
 			System.out.println("I'm sorry; I couldn't figure out which side you were trying to place the hatch on.");
 			return;//driver, you done messed up.  You had 90 - 2 * TURRET_ACCURACY_THRESHOLD per side and you couldn't manage to stop the hatch in that spot even with the setpoints?
 		}
-		addSequential(new LimelightCorrection(HATCH_ACCURACY_THRESHOLD, target));
+		addSequential(new LimelightCorrection(HATCH_ACCURACY_THRESHOLD, target, 0.5));
 		addSequential(new ToggleHatchPneumatic());
 		addSequential(new SetHatchPosition(HatchPosition.Relaxed, 0.2));
 		addSequential(new ToggleHatchPneumatic());
