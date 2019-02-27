@@ -23,13 +23,6 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		RobotMap.turretTalon.syncPosition();
 		initalizeTurretPID();
 	}
-
-    /**
-	 * Configures the open-loop ramp rate of throttle output to the default value.
-	 */
-	public void configOpenloopRamp() {
-        RobotMap.turretTalon.configOpenloopRamp(Dashboard.getConst("Turret/rampDownTime", 0.3), 0);
-    }
     
     @Override
 	public void setPIDSourceType(PIDSourceType pidSource) {
@@ -123,5 +116,21 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		talon.configNominalOutputReverse(0, 5);
 		talon.configPeakOutputForward(1, 5);
 		talon.configPeakOutputReverse(-1, 5);
+			
+		/* Set Motion Magic gains in slot0 - see documentation */
+		talon.selectProfileSlot(0, 0);
+		talon.config_kF(0, 0.553, 5);
+		talon.config_kP(0, 0.7, 5);
+		talon.config_kI(0, 0.003, 5);
+		talon.config_kD(0, 4, 5);
+
+		/* Set acceleration and vcruise velocity - see documentation */
+		talon.configMotionCruiseVelocity(1600, 5);
+		talon.configMotionAcceleration(1800, 5);
+		talon.configMotionSCurveStrength(2);
+
+		/* misc other configs */
+		talon.config_IntegralZone(0,80);
+		talon.configAllowableClosedloopError(0, 15);
 	}
 }

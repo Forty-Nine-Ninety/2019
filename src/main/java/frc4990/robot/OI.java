@@ -101,7 +101,6 @@ public class OI{
 		//turretTurn.whileHeld(RobotMap.turret.setTurretSpeed(turretTurn.getRawAxis()));
 		turretForward.toggleWhenActive(new PIDTurretTurn(0.8, TurretPoint.Forward));
 		turretLeft.toggleWhenActive(new PIDTurretTurn(0.8, TurretPoint.Left));
-		turretLeft.toggleWhenActive(new PIDTurretTurn(0.8, TurretPoint.Left));
 		turretRight.toggleWhenActive(new PIDTurretTurn(0.8, TurretPoint.Right));
 		turretBack.toggleWhenActive(new PIDTurretTurn(0.8, TurretPoint.Back));
 		turretSafe.toggleWhenActive(new PIDTurretTurn(0.8, TurretPoint.Safe));
