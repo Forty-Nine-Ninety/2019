@@ -24,7 +24,7 @@ public class F310Gamepad extends Joystick {
 	public enum Buttons {
 		a(1), b(2), x(3), y(4), 
 		leftBumper(5), rightBumper(6),
-		start(10), back(9), 
+		start(8), back(9), 
 		rightJoystickButton(12), 
 		leftJoystickButton(11);
 

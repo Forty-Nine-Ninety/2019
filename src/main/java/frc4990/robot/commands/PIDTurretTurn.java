@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;
 import frc4990.robot.RobotMap;
 import frc4990.robot.components.TalonWithMagneticEncoder;
-import frc4990.robot.subsystems.Dashboard;
 
 public class PIDTurretTurn extends Command {
 	public enum TurretPoint {
@@ -26,19 +25,24 @@ public class PIDTurretTurn extends Command {
 		
 		/* Set Motion Magic gains in slot0 - see documentation */
 		talon.selectProfileSlot(0, 0);
-		talon.config_kF(0, 1, 5);
-		talon.config_kP(0, Dashboard.getConst("PIDTurretTurn/p", 0.3), 5);
-		talon.config_kI(0, Dashboard.getConst("PIDTurretTurn/i", 0), 5);
-		talon.config_kD(0, Dashboard.getConst("PIDTurretTurn/d", 0), 5);
+		talon.config_kF(0, 0.553, 5);
+		talon.config_kP(0, 0.7, 5);
+		talon.config_kI(0, 0.003, 5);
+		talon.config_kD(0, 4, 5);
 
 		/* Set acceleration and vcruise velocity - see documentation */
-		talon.configMotionCruiseVelocity(150, 5);
-		talon.configMotionAcceleration(600, 5);
+		talon.configMotionCruiseVelocity(1600, 5);
+		talon.configMotionAcceleration(1800, 5);
+		talon.configMotionSCurveStrength(2);
+
+		/* misc other configs */
+		talon.config_IntegralZone(0,80);
+		talon.configAllowableClosedloopError(0, 15);
 
 	}
 
 	public void initialize() {
-		System.out.println("Initalizing PIDTurretTurn");
+		System.out.println("Initalizing PIDTurretTurn with target " + target);
 		this.setSubsystem("Turret");
 		RobotMap.turretTalon.set(ControlMode.MotionMagic, target);
 	}
@@ -56,7 +60,7 @@ public class PIDTurretTurn extends Command {
 	}
 	
 	public boolean isFinished() {
-		return RobotMap.turretTalon.getClosedLoopError(0) < 100;
+		return RobotMap.turretTalon.getClosedLoopError(0) < 20;
 	}
 
 	protected double returnPIDInput() {
@@ -70,6 +74,27 @@ public class PIDTurretTurn extends Command {
 	protected double getTarget(TurretPoint turretPoint) {
 		switch(turretPoint) {
 			case Forward:
+				target = -3200;//0;
+				break;
+			case Left:
+				target = -12000; //270d * 4096d / 180d;
+				break;
+			case Right:
+				target = 5600;//90d * 4096d / 180d;
+				break;
+			case Back:
+				target = (RobotMap.turretTalon.getPosition() > -3200) ? 14500 : -21000; //180d * 4096d / 180d;
+				break;
+			case Safe:
+				target = 0; //45d * 4096d / 180d;
+				break;
+			default:
+				break;
+		}
+		return target;
+
+		/* tested values:
+		 * case Forward:
 				target = 15000;//0;
 				break;
 			case Left:
@@ -86,7 +111,6 @@ public class PIDTurretTurn extends Command {
 				break;
 			default:
 				break;
-		}
-		return target;
+		 */
 	}	
 }
