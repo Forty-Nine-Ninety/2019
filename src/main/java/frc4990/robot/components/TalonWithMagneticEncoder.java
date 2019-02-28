@@ -49,7 +49,8 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
          */
         public TalonWithMagneticEncoder(int CANID) {
             super(CANID);
-            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, timeoutMs); //Pulse-width
+            configSelectedFeedbackSensor((defaultSensorMode.get() == 0) ? FeedbackDevice.CTRE_MagEncoder_Absolute : 
+              FeedbackDevice.CTRE_MagEncoder_Relative, 0, timeoutMs);
             syncPosition();
         }
 
@@ -151,8 +152,9 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
 
     @Override
     public void initSendable(SendableBuilder builder) {
-      builder.addDoubleProperty("Speed", this::getRate, null);
-      builder.addDoubleProperty("Distance", this::getPosition, null);
+      builder.addDoubleProperty("Encoder Speed", this::getRate, null);
+      builder.addDoubleProperty("Encoder Distance", this::getPosition, null);
+      builder.addDoubleProperty("Commanded Speed", this::get, null);
       super.initSendable(builder);
       builder.setSmartDashboardType(""); //to use read-only table view
     }

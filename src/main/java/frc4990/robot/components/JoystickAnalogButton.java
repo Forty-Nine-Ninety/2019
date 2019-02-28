@@ -46,38 +46,6 @@ import edu.wpi.first.wpilibj.buttons.Button;
 			this(joystick, axisNumber, threshold);
 			m_inverted = true;
 		}
-		/**
-		 * Set the value above which triggers should occur (for positive thresholds)
-		 *  or below which triggers should occur (for negative thresholds)
-		 * The default threshold value is 0.5
-		 *  
-		 * @param threshold the threshold value (1 to -1)
-		 */
-		public void setThreshold(double threshold){
-			m_threshold = Math.abs(threshold);
-		}
-		 
-		/**
-		 * Get the defined threshold value.
-		 * @return the threshold value
-		 */
-		public double getThreshold(){
-			return m_threshold;
-		}
-
-		/**
-		 * @return the m_inverted
-		 */
-		public Boolean getInverted() {
-			return m_inverted;
-		}
-
-		/**
-		 * @param m_inverted the m_inverted to set
-		 */
-		public void setInverted(Boolean m_inverted) {
-			this.m_inverted = m_inverted;
-		}
 		
 		/**
 		 * Returns boolean value of analog button.

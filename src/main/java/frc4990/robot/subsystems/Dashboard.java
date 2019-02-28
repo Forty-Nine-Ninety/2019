@@ -50,7 +50,7 @@ public class Dashboard extends Subsystem{
 	public Dashboard() {
 		System.out.println("Starting Initializing Dashboard.");
 		addDashboardTab(false);
-		//addDashboardTab(true);
+		addDashboardTab(true);
 		System.out.println("Done Initializing Dashboard.");
 	}
 
@@ -75,8 +75,8 @@ public class Dashboard extends Subsystem{
 			debugTab.add("DriveAdjust/right", RobotMap.driveTrain.rightSpeedAdjust);
 
 			//Drive Station Inputs
-			debugTab.add("DriveStationInput/turnSteepness", new SendableObject((FunctionalInterface) () -> OI.turnSteepnessAnalogButton.getRawAxis().toString()));
-			debugTab.add("DriveStationInput/throttle", new SendableObject((FunctionalInterface) () -> {return OI.throttleAnalogButton.getRawAxis().toString(); }));
+			debugTab.add("DriveStationInput/turnSteepness", new SendableObject((FunctionalInterface) () -> OI.turnSteepness.getRawAxis().toString()));
+			debugTab.add("DriveStationInput/throttle", new SendableObject((FunctionalInterface) () -> {return OI.throttle.getRawAxis().toString(); }));
 
 			//Autonomus
 			/*if (Robot.autonomusCommand != null) {
@@ -109,6 +109,7 @@ public class Dashboard extends Subsystem{
 			//driveTab.add("SelectedStartPosition", new SendableObject((FunctionalInterface) () -> autoChooser.getSelected().name())).withSize(2, 1).withPosition(3, 3);
 			//driveTab.add("AutoChooser", autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(4, 3);
 			driveTab.add("initDebugDashboard", initDebugDashboard);
+			driveTab.add("DebugTabComponents", new SendableObject(() -> debugTab.getComponents().size()));
 		}
 	}
 
