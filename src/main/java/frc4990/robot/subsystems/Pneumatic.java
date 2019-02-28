@@ -24,8 +24,8 @@ public class Pneumatic extends Subsystem {
 		solenoid.set(! solenoid.get());
 	}
 
-	public InstantCommand toggle(Pneumatic subsystem) { 
-		return new InstantCommand("TogglePneumatic", this, () -> subsystem.toggle());
+	public InstantCommand toggleCommand() { 
+		return new InstantCommand("TogglePneumatic", this, () -> this.toggle());
 	}
 
 	public void clearStickyFaults() {

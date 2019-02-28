@@ -1,11 +1,18 @@
 package frc4990.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc4990.robot.OI;
 import frc4990.robot.RobotMap;
+import frc4990.robot.components.JoystickAnalogButton;
+import frc4990.robot.components.TalonWithMagneticEncoder;
 
 public class Turret extends Subsystem implements PIDSource, PIDOutput {
     
@@ -14,14 +21,8 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	public Turret() {
     super("Turret");
 		RobotMap.turretTalon.syncPosition();
+		initalizeTurretPID();
 	}
-
-    /**
-	 * Configures the open-loop ramp rate of throttle output to the default value.
-	 */
-	public void configOpenloopRamp() {
-        RobotMap.turretTalon.configOpenloopRamp(Dashboard.getConst("Turret/rampDownTime", 0.3), 0);
-    }
     
     @Override
 	public void setPIDSourceType(PIDSourceType pidSource) {
@@ -34,7 +35,20 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
     }
     
     public InstantCommand setTurretSpeed(double speed) { 
-		return new InstantCommand("SetTurretSpeed", this, () -> Turret.setSpeed(speed));
+		return new InstantCommand("SetTurretSpeed", this, () -> RobotMap.turret.setSpeed(speed));
+	}
+
+	public Command setTurretSpeed(JoystickAnalogButton axis) { 
+		return new Command("setTurretSpeed", this) {
+			protected void execute() {
+				RobotMap.turret.setSpeed(-axis.getRawAxis());
+			}
+
+			@Override
+			protected boolean isFinished() {
+				return false;
+			}
+		};
 	}
     
     /**
@@ -58,11 +72,11 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	 * @param value speed to set, [-1 to 1]
 	 */
 
-    public static void setSpeed(double value) {
-        if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorRight.get()) && value < 0) value = 0; //At end of right range
+    public void setSpeed(double value) {
+        /*if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorRight.get()) && value < 0) value = 0; //At end of right range
         if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorLeft.get()) && value > 0) value = 0; //At end of left range
         if (RobotMap.turretSensorLeft.get() || RobotMap.turretSensorRight.get()) value /= 2; //near end of either range
-        RobotMap.turretTalon.set(value);
+		*/RobotMap.turretTalon.set(value);
     }
     
     /**
@@ -82,8 +96,41 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
     }
 
 	@Override
-	protected void initDefaultCommand() {}
+	protected void initDefaultCommand() {
+		this.setDefaultCommand(this.setTurretSpeed(OI.turretTurn));
+	}
     
     @Override
-    public void periodic() {}
+		public void periodic() {}
+		
+	protected void initalizeTurretPID() {
+		TalonWithMagneticEncoder talon = RobotMap.turretTalon;
+		talon.configFactoryDefault();
+		talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 5);
+		talon.syncPosition();
+		talon.setSensorPhase(true);
+		talon.setInverted(false);
+		talon.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 5);
+		talon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_Targets, 10, 5);
+		talon.configNominalOutputForward(0, 5);
+		talon.configNominalOutputReverse(0, 5);
+		talon.configPeakOutputForward(1, 5);
+		talon.configPeakOutputReverse(-1, 5);
+			
+		/* Set Motion Magic gains in slot0 - see documentation */
+		talon.selectProfileSlot(0, 0);
+		talon.config_kF(0, 0.553, 5);
+		talon.config_kP(0, 0.7, 5);
+		talon.config_kI(0, 0.003, 5);
+		talon.config_kD(0, 4, 5);
+
+		/* Set acceleration and vcruise velocity - see documentation */
+		talon.configMotionCruiseVelocity(1600, 5);
+		talon.configMotionAcceleration(1800, 5);
+		talon.configMotionSCurveStrength(2);
+
+		/* misc other configs */
+		talon.config_IntegralZone(0,80);
+		talon.configAllowableClosedloopError(0, 15);
+	}
 }
