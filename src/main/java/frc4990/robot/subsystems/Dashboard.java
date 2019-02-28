@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc4990.robot.OI;
-import frc4990.robot.Robot;
 import frc4990.robot.RobotMap;
 import frc4990.robot.components.SendableObject;
 
@@ -80,9 +79,9 @@ public class Dashboard extends Subsystem{
 			debugTab.add("DriveStationInput/throttle", new SendableObject((FunctionalInterface) () -> {return OI.throttle.getRawAxis().toString(); }));
 
 			//Autonomus
-			if (Robot.autonomusCommand != null) {
+			/*if (Robot.autonomusCommand != null) {
 				debugTab.add("Autonomus/AutonomusCommand", Robot.autonomusCommand).withWidget(BuiltInWidgets.kCommand);//.withPosition(11, 4);
-			}
+			}*/
 
 			//Subsystems
 			debugTab.add("Subsystem/DriveTrain", RobotMap.driveTrain);
@@ -107,8 +106,8 @@ public class Dashboard extends Subsystem{
 		} else if (! debug) { //drive
 			System.out.println("Adding Drive Tab Components.");
 			driveTab.add("Scheduler", Scheduler.getInstance()).withSize(2, 3).withPosition(0, 0);
-			driveTab.add("SelectedStartPosition", new SendableObject((FunctionalInterface) () -> autoChooser.getSelected().name())).withSize(2, 1).withPosition(2, 3);
-			driveTab.add("AutoChooser", autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(4, 3);
+			//driveTab.add("SelectedStartPosition", new SendableObject((FunctionalInterface) () -> autoChooser.getSelected().name())).withSize(2, 1).withPosition(3, 3);
+			//driveTab.add("AutoChooser", autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(4, 3);
 			driveTab.add("initDebugDashboard", initDebugDashboard);
 			driveTab.add("DebugTabComponents", new SendableObject(() -> debugTab.getComponents().size()));
 		}
