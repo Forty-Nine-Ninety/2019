@@ -2,7 +2,7 @@ package frc4990.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc4990.robot.RobotMap;
-import frc4990.robot.commands.TurretTurn.TurretPoint;
+import frc4990.robot.commands.PIDTurretTurn.TurretPoint;
 import frc4990.robot.components.CLimelight;
 import frc4990.robot.subsystems.DriveTrain;
 
@@ -65,11 +65,11 @@ public class LimelightCorrection extends Command {
 					break;
 			}
 		}
-		RobotMap.driveTrain.setSpeed(clamp(speedL, -1, 1), clamp(speedR, -1, 1));
+		DriveTrain.setSpeed(clamp(speedL, -1, 1), clamp(speedR, -1, 1));
 	}
 	
 	public void end() {
-		RobotMap.driveTrain.setSpeed(0);
+		DriveTrain.setSpeed(0);
 	}
 	
 	public void interrupted() {

@@ -18,7 +18,7 @@ public class PIDTurretTurn extends Command {
 	private TurretPoint point;
 
 
-	public PIDTurretTurn(double speed, TurretPoint point) {
+	public PIDTurretTurn(TurretPoint point) {
 		super("PIDTurretTurn", RobotMap.turret);
 		target = getTarget(point);
 		this.point = point;

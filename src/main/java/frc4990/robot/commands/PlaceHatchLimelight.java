@@ -2,7 +2,7 @@ package frc4990.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc4990.robot.RobotMap;
-import frc4990.robot.commands.TurretTurn.TurretPoint;
+import frc4990.robot.commands.PIDTurretTurn.TurretPoint;
 import frc4990.robot.components.CLimelight;
 import frc4990.robot.subsystems.HatchClaw.HatchPosition;
 
@@ -17,19 +17,19 @@ public class PlaceHatchLimelight extends CommandGroup {
 		TurretPoint target;
 		if (turnPosition > 225 + TURRET_ACCURACY_THRESHOLD && turnPosition < 315 - TURRET_ACCURACY_THRESHOLD) {
 			//cargo (l)
-			addSequential(new TurretTurn(0.8, (target = TurretPoint.Left)));
+			addSequential(new PIDTurretTurn(target = TurretPoint.Left));
 		}
 		else if (turnPosition > 45 + TURRET_ACCURACY_THRESHOLD && turnPosition < 135 - TURRET_ACCURACY_THRESHOLD) {
 			//cargo (r)
-			addSequential(new TurretTurn(0.8, (target = TurretPoint.Right)));
+			addSequential(new PIDTurretTurn(target = TurretPoint.Right));
 		}
 		else if ((turnPosition > 315 + TURRET_ACCURACY_THRESHOLD && turnPosition <= 360) || (turnPosition > 0 && turnPosition <= 45 - TURRET_ACCURACY_THRESHOLD)) {
 			//rocket (f)
-			addSequential(new TurretTurn(0.8, (target = TurretPoint.Forward)));
+			addSequential(new PIDTurretTurn(target = TurretPoint.Forward));
 		}
 		else if (turnPosition > 135 + TURRET_ACCURACY_THRESHOLD && turnPosition < 225 - TURRET_ACCURACY_THRESHOLD) {
 			//rocket (b)
-			addSequential(new TurretTurn(0.8, (target = TurretPoint.Back)));
+			addSequential(new PIDTurretTurn(target = TurretPoint.Back));
 		}
 		else {
 			System.out.println("I'm sorry; I couldn't figure out which side you were trying to place the hatch on.");

@@ -99,11 +99,11 @@ public class OI{
 
 		//turret
 		//turretTurn.whileHeld(RobotMap.turret.setTurretSpeed(turretTurn.getRawAxis()));
-		turretForward.toggleWhenActive(new PIDTurretTurn(0.8, TurretPoint.Forward));
-		turretLeft.toggleWhenActive(new PIDTurretTurn(0.8, TurretPoint.Left));
-		turretRight.toggleWhenActive(new PIDTurretTurn(0.8, TurretPoint.Right));
-		turretBack.toggleWhenActive(new PIDTurretTurn(0.8, TurretPoint.Back));
-		turretSafe.toggleWhenActive(new PIDTurretTurn(0.8, TurretPoint.Safe));
+		turretForward.toggleWhenActive(new PIDTurretTurn(TurretPoint.Forward));
+		turretLeft.toggleWhenActive(new PIDTurretTurn(TurretPoint.Left));
+		turretRight.toggleWhenActive(new PIDTurretTurn(TurretPoint.Right));
+		turretBack.toggleWhenActive(new PIDTurretTurn(TurretPoint.Back));
+		turretSafe.toggleWhenActive(new PIDTurretTurn(TurretPoint.Safe));
 		turretReset.whenActive(new InstantCommand(() -> RobotMap.turretTalon.resetEncoder()));
     
 		//Hatch
