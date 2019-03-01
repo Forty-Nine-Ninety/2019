@@ -15,8 +15,8 @@ import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import frc4990.robot.components.F310Gamepad;
+import frc4990.robot.components.TalonSRXGroup;
 import frc4990.robot.components.TalonWithMagneticEncoder;
 import frc4990.robot.subsystems.Dashboard;
 import frc4990.robot.subsystems.DriveTrain;
@@ -49,8 +49,8 @@ public class RobotMap {
 	public static WPI_TalonSRX leftRearDriveTalon;
 	public static TalonWithMagneticEncoder rightFrontDriveTalon;
 	public static WPI_TalonSRX rightRearDriveTalon;
-	public static SpeedControllerGroup leftMotorGroup;
-	public static SpeedControllerGroup rightMotorGroup;
+	public static TalonSRXGroup leftMotorGroup;
+	public static TalonSRXGroup rightMotorGroup;
 
 	//Turret
 	public static TalonWithMagneticEncoder turretTalon;
@@ -136,9 +136,9 @@ public class RobotMap {
 		hatchPneumatic = new Pneumatic(pcmCANID, 2);
 		compressor = new Compressor(pcmCANID);
 
-		leftMotorGroup = new SpeedControllerGroup(leftFrontDriveTalon, leftRearDriveTalon);
-		rightMotorGroup = new SpeedControllerGroup(rightFrontDriveTalon, rightRearDriveTalon);
-    
+		leftMotorGroup = new TalonSRXGroup(leftFrontDriveTalon, leftRearDriveTalon);
+		rightMotorGroup = new TalonSRXGroup(rightFrontDriveTalon, rightRearDriveTalon);
+
     //all subsystems go at the end.
 		
 		turret = new Turret();
