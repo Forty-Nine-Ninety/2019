@@ -73,6 +73,10 @@ public class RobotMap {
 	public static Turret turret;
 	public static Dashboard dashboard;
 
+	/**
+	 * true = practice, false = comp
+	 */
+
 	public static DigitalInput robotSelector = new DigitalInput(9); //true = practice bot, false = competition bot
 
 	public RobotMap() {

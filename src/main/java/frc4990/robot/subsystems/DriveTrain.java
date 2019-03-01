@@ -13,8 +13,8 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
 	public DifferentialDrive differentialDrive = new DifferentialDrive(new SpeedControllerGroup(RobotMap.leftFrontDriveTalon, RobotMap.leftRearDriveTalon), new SpeedControllerGroup(RobotMap.rightFrontDriveTalon, RobotMap.rightRearDriveTalon));
 
-	public double leftSpeedAdjust = 1.0;
-	public double rightSpeedAdjust = 0.85;
+	public double leftSpeedAdjust = (RobotMap.robotSelector.get()) ? 0.88 : 1.0;
+	public double rightSpeedAdjust = (RobotMap.robotSelector.get()) ? 1.0 : 0.85;
 
 	/**
 	 * Includes 4 driving motors and 2 encoders; all specified as static objects in RobotMap.
