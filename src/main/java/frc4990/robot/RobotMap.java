@@ -90,7 +90,7 @@ public class RobotMap {
 
 		if (robotSelector.get()) { //practice bot
 			System.out.println("I am the *PRACTICE* bot.");
-      //all port bindings that are only true for the practice robot. (PDP = 2, PCM = 12, Talons = 30 through 40)
+      //all port bindings that are only true for the practice robot. (PDP = 2, PCM = 12, Talons = 31 through 40)
 
 			pcmCANID = 12;
 			pdp = new PowerDistributionPanel(2);
@@ -110,7 +110,7 @@ public class RobotMap {
 
 		} else { //competition bot
 			System.out.println("I am the *COMP* bot.");
-       //all port bindings that are only true for the competition robot. (PDP = 1, PCM = 11, Talons = 20 through 30)
+       //all port bindings that are only true for the competition robot. (PDP = 1, PCM = 11, Talons = 21 through 30)
 			
 			pcmCANID = 11;
 			pdp = new PowerDistributionPanel(1);

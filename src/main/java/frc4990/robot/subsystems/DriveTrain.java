@@ -1,5 +1,7 @@
 package frc4990.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.*;
+
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -22,8 +24,60 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public DriveTrain() {
-		configOpenloopRamp();
+		//configOpenloopRamp();
+		configDifferentialDrive();
+		configTalonPID();
+	}
+
+	private void configTalonPID() {
+		RobotMap.leftFrontDriveTalon.configSelectedFeedbackSensor(	FeedbackDevice.QuadEncoder,	0, 5);
+		RobotMap.rightFrontDriveTalon.configRemoteFeedbackFilter(RobotMap.rightFrontDriveTalon.getDeviceID(), RemoteSensorSource.TalonSRX_SelectedSensor, 0, 5);
+		RobotMap.rightFrontDriveTalon.configSensorTerm(SensorTerm.Diff1, FeedbackDevice.RemoteSensor0, 5);
+		RobotMap.rightFrontDriveTalon.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 5);
+		RobotMap.rightFrontDriveTalon.configSelectedFeedbackSensor(FeedbackDevice.SensorDifference, 1, 5);
+		//TODO: change '51711' to measured value for this:
+		/* Empirically measure what the difference between encoders per 360'
+	 	* Drive the robot in clockwise rotations and measure the units per rotation.
+	 	* Drive the robot in counter clockwise rotations and measure the units per rotation.
+	 	* Take the average of the two.
+		*/
+		RobotMap.rightFrontDriveTalon.configSelectedFeedbackCoefficient(3600 / 51711, 1, 5);
+		//TODO: Fix sensor phase issues
+		RobotMap.leftFrontDriveTalon.setInverted(false);
+		RobotMap.leftFrontDriveTalon.setSensorPhase(true);
+		RobotMap.rightFrontDriveTalon.setInverted(true);
+		RobotMap.rightFrontDriveTalon.setSensorPhase(true);
+
+		RobotMap.rightFrontDriveTalon.setStatusFramePeriod(StatusFrame.Status_12_Feedback1, 20, 5);
+		RobotMap.rightFrontDriveTalon.setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1, 20, 5);
+		RobotMap.leftFrontDriveTalon.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, 5);		//Used remotely by right Talon, speed up
+
+		RobotMap.rightFrontDriveTalon.configNeutralDeadband(0.001, 5);
+		RobotMap.leftFrontDriveTalon.configNeutralDeadband(0.001, 5);
+
+		RobotMap.leftFrontDriveTalon.configPeakOutputForward(+1.0, 5);
+		RobotMap.leftFrontDriveTalon.configPeakOutputReverse(-1.0, 5);
+		RobotMap.rightFrontDriveTalon.configPeakOutputForward(+1.0, 5);
+		RobotMap.rightFrontDriveTalon.configPeakOutputReverse(-1.0, 5);
+
+		RobotMap.rightFrontDriveTalon.config_kP(1, 0, 5); //TODO: Add kP
+		RobotMap.rightFrontDriveTalon.config_kI(1, 0, 5); //TODO: Add kI
+		RobotMap.rightFrontDriveTalon.config_kD(1, 0, 5); //TODO: Add kD
+		RobotMap.rightFrontDriveTalon.config_kF(1, 0.25, 5); //TODO: Add kF
+		RobotMap.rightFrontDriveTalon.config_IntegralZone(1, 50, 5); //TODO: Add IZone
+		RobotMap.rightFrontDriveTalon.configClosedLoopPeakOutput(1, 1, 5); //TODO: Add peak output
+		RobotMap.rightFrontDriveTalon.configAllowableClosedloopError(1, 0, 5); //TODO: Add allowable error
+
+		/* configAuxPIDPolarity(boolean invert, int timeoutMs)
+		 * false means talon's local output is PID0 + PID1, and other side Talon is PID0 - PID1
+		 * true means talon's local output is PID0 - PID1, and other side Talon is PID0 + PID1
+		 */
+		RobotMap.rightFrontDriveTalon.configAuxPIDPolarity(false, 5);
+	}
+
+	private void configDifferentialDrive() {
 		differentialDrive.setExpiration(0.3); //sets motor safety to 0.3 seconds. This is a band-aid for the larger issue of the main thread taking more than 20ms to execute.
+		differentialDrive.setRightSideInverted(false);
 	}
 
 	/**

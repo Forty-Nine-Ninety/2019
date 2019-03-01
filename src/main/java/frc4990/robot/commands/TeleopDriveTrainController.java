@@ -1,5 +1,9 @@
 package frc4990.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.FollowerType;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import frc4990.robot.OI;
@@ -23,7 +27,7 @@ public class TeleopDriveTrainController extends Command {
 
 	public static double currentTurnSteepnessMultiplier = 1.0;
 
-	private double throttle, turnSteepness;
+	private double throttle, turnSteepness, _targetAngle;
 
 	/**
 	 * Constructor for TeleopDriveTrainController
@@ -51,10 +55,14 @@ public class TeleopDriveTrainController extends Command {
 					
 				} else if (throttle != 0 && turnSteepness == 0) { //go forward
 					if (driveMode != DriveMode.STRAIGHT) { //changed modes
-						RobotMap.ahrs.reset();
+						RobotMap.rightFrontDriveTalon.selectProfileSlot(1, 1);
+						_targetAngle = RobotMap.rightFrontDriveTalon.getSelectedSensorPosition(1);
+						//RobotMap.ahrs.reset();
 					}
 					driveMode = DriveMode.STRAIGHT;
-					DriveTrain.setSpeed(throttle, throttle);
+					RobotMap.rightFrontDriveTalon.set(ControlMode.PercentOutput, throttle, DemandType.AuxPID, _targetAngle);
+					RobotMap.leftFrontDriveTalon.follow(RobotMap.rightFrontDriveTalon, FollowerType.AuxOutput1);
+					//DriveTrain.setSpeed(throttle, throttle);
 					
 				} else if (throttle == 0 && turnSteepness != 0) { //spin in place
 					/* the right motor's velocity has the opposite sign of the the left motor's
