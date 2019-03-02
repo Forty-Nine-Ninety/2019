@@ -52,22 +52,22 @@ public class DriveTrain extends Subsystem implements PIDSource {
 		RobotMap.leftFrontDriveTalon.configClosedloopRamp(0.3, 5);
 
 		RobotMap.rightFrontDriveTalon.selectProfileSlot(0, 0);
-		RobotMap.rightFrontDriveTalon.config_kP(0, 0, 5); //TODO: Add kP
-		RobotMap.rightFrontDriveTalon.config_kI(0, 0, 5); //TODO: Add kI
-		RobotMap.rightFrontDriveTalon.config_kD(0, 0, 5); //TODO: Add kD
-		RobotMap.rightFrontDriveTalon.config_kF(0, 0.25, 5); //TODO: Add kF
-		RobotMap.rightFrontDriveTalon.config_IntegralZone(0, 50, 5); //TODO: Add IZone
-		RobotMap.rightFrontDriveTalon.configClosedLoopPeakOutput(0, 1, 5); //TODO: Add peak output
-		RobotMap.rightFrontDriveTalon.configAllowableClosedloopError(0, 0, 5); //TODO: Add allowable error
+		RobotMap.rightFrontDriveTalon.config_kP(0, 0, 5); 
+		RobotMap.rightFrontDriveTalon.config_kI(0, 0, 5); 
+		RobotMap.rightFrontDriveTalon.config_kD(0, 0, 5); 
+		RobotMap.rightFrontDriveTalon.config_kF(0, 0.25, 5);
+		RobotMap.rightFrontDriveTalon.config_IntegralZone(0, 50, 5); 
+		RobotMap.rightFrontDriveTalon.configClosedLoopPeakOutput(0, 1, 5); 
+		RobotMap.rightFrontDriveTalon.configAllowableClosedloopError(0, 0, 5); 
 
 		RobotMap.leftFrontDriveTalon.selectProfileSlot(0, 0);
-		RobotMap.leftFrontDriveTalon.config_kP(0, 0, 5); //TODO: Add kP
-		RobotMap.leftFrontDriveTalon.config_kI(0, 0, 5); //TODO: Add kI
-		RobotMap.leftFrontDriveTalon.config_kD(0, 0, 5); //TODO: Add kD
-		RobotMap.leftFrontDriveTalon.config_kF(0, 0.25, 5); //TODO: Add kF
-		RobotMap.leftFrontDriveTalon.config_IntegralZone(0, 50, 5); //TODO: Add IZone
-		RobotMap.leftFrontDriveTalon.configClosedLoopPeakOutput(0, 1, 5); //TODO: Add peak output
-		RobotMap.leftFrontDriveTalon.configAllowableClosedloopError(0, 0, 5); //TODO: Add allowable error
+		RobotMap.leftFrontDriveTalon.config_kP(0, 0, 5); 
+		RobotMap.leftFrontDriveTalon.config_kI(0, 0, 5); 
+		RobotMap.leftFrontDriveTalon.config_kD(0, 0, 5); 
+		RobotMap.leftFrontDriveTalon.config_kF(0, 0.25, 5); 
+		RobotMap.leftFrontDriveTalon.config_IntegralZone(0, 50, 5); 
+		RobotMap.leftFrontDriveTalon.configClosedLoopPeakOutput(0, 1, 5); 
+		RobotMap.leftFrontDriveTalon.configAllowableClosedloopError(0, 0, 5); 
 
 		RobotMap.leftRearDriveTalon.follow(RobotMap.leftFrontDriveTalon);
 		RobotMap.rightRearDriveTalon.follow(RobotMap.rightFrontDriveTalon);
