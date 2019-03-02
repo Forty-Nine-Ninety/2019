@@ -48,6 +48,9 @@ public class DriveTrain extends Subsystem implements PIDSource {
 		RobotMap.rightFrontDriveTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 5);
 		RobotMap.leftFrontDriveTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 5);
 
+		RobotMap.rightFrontDriveTalon.configClosedloopRamp(0.3, 5);
+		RobotMap.leftFrontDriveTalon.configClosedloopRamp(0.3, 5);
+
 		RobotMap.rightFrontDriveTalon.selectProfileSlot(0, 0);
 		RobotMap.rightFrontDriveTalon.config_kP(0, 0, 5); //TODO: Add kP
 		RobotMap.rightFrontDriveTalon.config_kI(0, 0, 5); //TODO: Add kI
@@ -65,6 +68,9 @@ public class DriveTrain extends Subsystem implements PIDSource {
 		RobotMap.leftFrontDriveTalon.config_IntegralZone(0, 50, 5); //TODO: Add IZone
 		RobotMap.leftFrontDriveTalon.configClosedLoopPeakOutput(0, 1, 5); //TODO: Add peak output
 		RobotMap.leftFrontDriveTalon.configAllowableClosedloopError(0, 0, 5); //TODO: Add allowable error
+
+		RobotMap.leftRearDriveTalon.follow(RobotMap.leftFrontDriveTalon);
+		RobotMap.rightRearDriveTalon.follow(RobotMap.rightFrontDriveTalon);
 	}
 
 	private void configDifferentialDrive() {
