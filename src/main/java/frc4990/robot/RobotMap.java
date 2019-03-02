@@ -7,6 +7,7 @@
 
 package frc4990.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj.SPI;
 import frc4990.robot.components.F310Gamepad;
 import frc4990.robot.components.TalonSRXGroup;
 import frc4990.robot.components.TalonWithMagneticEncoder;
+import frc4990.robot.components.TalonWithMagneticEncoder.SensorMode;
 import frc4990.robot.subsystems.Dashboard;
 import frc4990.robot.subsystems.DriveTrain;
 import frc4990.robot.subsystems.HatchClaw;
@@ -95,9 +97,9 @@ public class RobotMap {
 			pcmCANID = 12;
 			pdp = new PowerDistributionPanel(2);
 
-			leftFrontDriveTalon = new TalonWithMagneticEncoder(31);
+			leftFrontDriveTalon = new TalonWithMagneticEncoder(31, SensorMode.Relative);
 			leftRearDriveTalon = new WPI_TalonSRX(32);
-			rightFrontDriveTalon = new TalonWithMagneticEncoder(33);
+			rightFrontDriveTalon = new TalonWithMagneticEncoder(33, SensorMode.Relative);
 			rightRearDriveTalon = new WPI_TalonSRX(34);
 
 			turretTalon = new TalonWithMagneticEncoder(35);
@@ -136,8 +138,8 @@ public class RobotMap {
 		hatchPneumatic = new Pneumatic(pcmCANID, 2);
 		compressor = new Compressor(pcmCANID);
 
-		leftMotorGroup = new TalonSRXGroup(leftFrontDriveTalon, leftRearDriveTalon);
-		rightMotorGroup = new TalonSRXGroup(rightFrontDriveTalon, rightRearDriveTalon);
+		leftMotorGroup = new TalonSRXGroup(ControlMode.PercentOutput, 3300.0, leftFrontDriveTalon, leftRearDriveTalon);
+		rightMotorGroup = new TalonSRXGroup(ControlMode.PercentOutput, 3100.0, rightFrontDriveTalon, rightRearDriveTalon);
 
     //all subsystems go at the end.
 		

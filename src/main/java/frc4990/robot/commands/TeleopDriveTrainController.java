@@ -1,9 +1,5 @@
 package frc4990.robot.commands;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.FollowerType;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import frc4990.robot.OI;
@@ -27,7 +23,7 @@ public class TeleopDriveTrainController extends Command {
 
 	public static double currentTurnSteepnessMultiplier = 1.0;
 
-	private double throttle, turnSteepness, _targetAngle;
+	private double throttle, turnSteepness;
 
 	/**
 	 * Constructor for TeleopDriveTrainController
@@ -55,14 +51,10 @@ public class TeleopDriveTrainController extends Command {
 					
 				} else if (throttle != 0 && turnSteepness == 0) { //go forward
 					if (driveMode != DriveMode.STRAIGHT) { //changed modes
-						RobotMap.rightFrontDriveTalon.selectProfileSlot(1, 1);
-						_targetAngle = RobotMap.rightFrontDriveTalon.getSelectedSensorPosition(1);
 						//RobotMap.ahrs.reset();
 					}
 					driveMode = DriveMode.STRAIGHT;
-					RobotMap.rightFrontDriveTalon.set(ControlMode.PercentOutput, throttle, DemandType.AuxPID, _targetAngle);
-					RobotMap.leftFrontDriveTalon.follow(RobotMap.rightFrontDriveTalon, FollowerType.AuxOutput1);
-					//DriveTrain.setSpeed(throttle, throttle);
+					DriveTrain.setSpeed(throttle, throttle);
 					
 				} else if (throttle == 0 && turnSteepness != 0) { //spin in place
 					/* the right motor's velocity has the opposite sign of the the left motor's
@@ -77,7 +69,7 @@ public class TeleopDriveTrainController extends Command {
 					DriveTrain.setSpeed(0, 0);
 				}
 				break;
-			case DifferentialDrive://New!  but there is no code.
+			case DifferentialDrive: //New for 2019
 				DriveTrain.curvatureDrive(
 					OI.throttle.getRawAxis() * currentThrottleMultiplier, 
 					OI.turnSteepness.getRawAxis() * currentTurnSteepnessMultiplier, true);
