@@ -71,6 +71,9 @@ public class DriveTrain extends Subsystem implements PIDSource {
 
 		RobotMap.leftRearDriveTalon.follow(RobotMap.leftFrontDriveTalon);
 		RobotMap.rightRearDriveTalon.follow(RobotMap.rightFrontDriveTalon);
+
+		RobotMap.leftMotorGroup.coeff = 2600.0; //max = 3300
+		RobotMap.rightMotorGroup.coeff = 2800.0; //max = 3100
 	}
 
 	private void configDifferentialDrive() {

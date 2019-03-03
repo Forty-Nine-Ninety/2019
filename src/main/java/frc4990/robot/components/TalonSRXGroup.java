@@ -21,6 +21,11 @@ public class TalonSRXGroup extends SpeedControllerGroup {
         }
     }
 
+    public TalonSRXGroup(ControlMode mode, WPI_TalonSRX... talons) {
+        this(talons);
+        this.mode = mode;
+    }
+
     public TalonSRXGroup(ControlMode mode, Double coeff, WPI_TalonSRX... talons) {
         this(talons);
         this.mode = mode;
