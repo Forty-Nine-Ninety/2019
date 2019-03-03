@@ -23,7 +23,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public DriveTrain() {
-		//configOpenloopRamp();
+		configOpenloopRamp();
 		configDifferentialDrive();
 		configTalonPID();
 	}
@@ -52,21 +52,21 @@ public class DriveTrain extends Subsystem implements PIDSource {
 		RobotMap.leftFrontDriveTalon.configClosedloopRamp(0.3, 5);
 
 		RobotMap.rightFrontDriveTalon.selectProfileSlot(0, 0);
-		RobotMap.rightFrontDriveTalon.config_kP(0, 0, 5); 
+		RobotMap.rightFrontDriveTalon.config_kP(0, 0.4, 5); 
 		RobotMap.rightFrontDriveTalon.config_kI(0, 0, 5); 
-		RobotMap.rightFrontDriveTalon.config_kD(0, 0, 5); 
-		RobotMap.rightFrontDriveTalon.config_kF(0, 0.25, 5);
+		RobotMap.rightFrontDriveTalon.config_kD(0, 0.1, 5); 
+		RobotMap.rightFrontDriveTalon.config_kF(0, 0.5, 5);
 		RobotMap.rightFrontDriveTalon.config_IntegralZone(0, 50, 5); 
-		RobotMap.rightFrontDriveTalon.configClosedLoopPeakOutput(0, 1, 5); 
+		RobotMap.rightFrontDriveTalon.configClosedLoopPeakOutput(0, 1.0, 5); 
 		RobotMap.rightFrontDriveTalon.configAllowableClosedloopError(0, 0, 5); 
 
 		RobotMap.leftFrontDriveTalon.selectProfileSlot(0, 0);
-		RobotMap.leftFrontDriveTalon.config_kP(0, 0, 5); 
+		RobotMap.leftFrontDriveTalon.config_kP(0, 0.4, 5); 
 		RobotMap.leftFrontDriveTalon.config_kI(0, 0, 5); 
-		RobotMap.leftFrontDriveTalon.config_kD(0, 0, 5); 
-		RobotMap.leftFrontDriveTalon.config_kF(0, 0.25, 5); 
+		RobotMap.leftFrontDriveTalon.config_kD(0, 0.1, 5); 
+		RobotMap.leftFrontDriveTalon.config_kF(0, 0.5, 5); 
 		RobotMap.leftFrontDriveTalon.config_IntegralZone(0, 50, 5); 
-		RobotMap.leftFrontDriveTalon.configClosedLoopPeakOutput(0, 1, 5); 
+		RobotMap.leftFrontDriveTalon.configClosedLoopPeakOutput(0, 1.0, 5); 
 		RobotMap.leftFrontDriveTalon.configAllowableClosedloopError(0, 0, 5); 
 
 		RobotMap.leftRearDriveTalon.follow(RobotMap.leftFrontDriveTalon);

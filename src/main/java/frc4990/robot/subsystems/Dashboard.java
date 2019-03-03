@@ -75,8 +75,8 @@ public class Dashboard extends Subsystem{
 			debugTab.add("DriveAdjust/right", RobotMap.driveTrain.rightSpeedAdjust);
 
 			//Drive Station Inputs
-			debugTab.add("DriveStationInput/turnSteepness", new SendableObject((FunctionalInterface) () -> OI.turnSteepness.getRawAxis().toString()));
-			debugTab.add("DriveStationInput/throttle", new SendableObject((FunctionalInterface) () -> {return OI.throttle.getRawAxis().toString(); }));
+			debugTab.add("DriveStationInput/turnSteepness", new SendableObject((FunctionalInterface) () -> (double) OI.turnSteepness.getRawAxis()));
+			debugTab.add("DriveStationInput/throttle", new SendableObject((FunctionalInterface) () -> (double) OI.throttle.getRawAxis()));
 
 			//Autonomus
 			/*if (Robot.autonomusCommand != null) {

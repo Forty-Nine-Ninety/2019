@@ -1,5 +1,7 @@
 package frc4990.robot.components;
 
+import java.util.Arrays;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -7,31 +9,22 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 
 public class TalonSRXGroup extends SpeedControllerGroup {
 
-    private ControlMode mode = ControlMode.PercentOutput;
     private final WPI_TalonSRX[] talons;
-    private Double coeff;
+    public ControlMode mode = ControlMode.PercentOutput;
+    public Double coeff;
 
-    public TalonSRXGroup(WPI_TalonSRX talon, WPI_TalonSRX... talons) {
-        super(talon, talons);
-        this.talons = new WPI_TalonSRX[talons.length + 1];
-        this.talons[0] = talon;
+    public TalonSRXGroup(WPI_TalonSRX... talons) {
+        super(talons[0], Arrays.copyOfRange(talons, 1, talons.length));
+        this.talons = new WPI_TalonSRX[talons.length];
         for (int i = 0; i < talons.length; i++) {
-            this.talons[i + 1] = talons[i];
+            this.talons[i] = talons[i];
         }
     }
 
-    public TalonSRXGroup(ControlMode mode, Double coeff, WPI_TalonSRX talon, WPI_TalonSRX... talons) {
-        this(talon, talons);
-        setControlMode(mode);
-        this.coeff = coeff;
-    }
-
-    public void setControlMode(ControlMode mode) {
+    public TalonSRXGroup(ControlMode mode, Double coeff, WPI_TalonSRX... talons) {
+        this(talons);
         this.mode = mode;
-    }
-    
-    public ControlMode getControlMode() {
-        return mode;
+        this.coeff = coeff;
     }
 
     @Override
