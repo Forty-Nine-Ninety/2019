@@ -20,7 +20,6 @@ import frc4990.robot.components.F310Gamepad.Buttons;
 import frc4990.robot.components.F310Gamepad.POV;
 import frc4990.robot.components.JoystickAnalogButton;
 import frc4990.robot.subsystems.Dashboard;
-import frc4990.robot.subsystems.HatchClaw;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -42,9 +41,9 @@ public class OI{
 	public static Button turretReset = RobotMap.opGamepad.getPOVButton(POV.east);
 
 
-	public static JoystickAnalogButton hatchPneumatic = RobotMap.opGamepad.getAxis(Axis.rightJoystickX);
-	public static POVButton hatchMotorUp = RobotMap.opGamepad.getPOVButton(POV.north);
-	public static POVButton hatchMotorDown = RobotMap.opGamepad.getPOVButton(POV.south);
+	public static JoystickAnalogButton turretPneumatic = RobotMap.opGamepad.getAxis(Axis.rightJoystickX);
+	public static POVButton hatchUp = RobotMap.opGamepad.getPOVButton(POV.north);
+	public static POVButton hatchDown = RobotMap.opGamepad.getPOVButton(POV.south);
 
 	public static Button manualIntakeSequence = RobotMap.opGamepad.getButton(Buttons.leftBumper);
 	public static Button manualOutakeSequence = RobotMap.opGamepad.getButton(Buttons.rightBumper);
@@ -121,9 +120,9 @@ public class OI{
 		turretReset.whenActive(new InstantCommand(() -> RobotMap.turretTalon.resetEncoder()));
     
 		//Hatch
-		hatchPneumatic.whenPressed(RobotMap.hatchPneumatic.toggleCommand());
-		hatchMotorUp.whileHeld(HatchClaw.move(1, 2));
-		hatchMotorDown.whileHeld(HatchClaw.move(-1, 2));
+		turretPneumatic.whenPressed(RobotMap.turretPneumatic.toggleCommand());
+		hatchUp.whenPressed(new InstantCommand(() -> RobotMap.hatchPneumatic.solenoid.set(true)));
+		hatchDown.whileHeld(new InstantCommand(() -> RobotMap.hatchPneumatic.solenoid.set(false)));
 
 		//Pneumatics
 		frontPneumatics.whenPressed(RobotMap.frontSolenoid.toggleCommand());

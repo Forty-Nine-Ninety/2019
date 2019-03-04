@@ -29,7 +29,7 @@ public class RobotDriveStraight extends Command {
 	}
 
 	public void initialize() {
-		System.out.println("Initalizing GyroStraight with time " + RobotDriveStraight.targetTime);
+		System.out.println("Initalizing Simple Drive Straight with time " + RobotDriveStraight.targetTime);
 		RobotMap.driveTrain.resetDistanceTraveled();
 		DriveTrain.setSpeed(speed);
 	}

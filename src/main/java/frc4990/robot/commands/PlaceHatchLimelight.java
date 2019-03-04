@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc4990.robot.RobotMap;
 import frc4990.robot.commands.PIDTurretTurn.TurretPoint;
 import frc4990.robot.components.CLimelight;
-import frc4990.robot.subsystems.HatchClaw.HatchPosition;
 
 public class PlaceHatchLimelight extends CommandGroup {
 
@@ -36,8 +35,8 @@ public class PlaceHatchLimelight extends CommandGroup {
 			return;//driver, you done messed up.  You had 90 - 2 * TURRET_ACCURACY_THRESHOLD per side and you couldn't manage to stop the hatch in that spot even with the setpoints?
 		}
 		addSequential(new LimelightCorrection(HATCH_ACCURACY_THRESHOLD, target, 0.5));
-		addSequential(new ToggleHatchPneumatic());
-		addSequential(new SetHatchPosition(HatchPosition.Relaxed, 0.2));
-		addSequential(new ToggleHatchPneumatic());
+		addSequential(RobotMap.turretPneumatic.toggleCommand());
+		addSequential(RobotMap.hatchPneumatic.toggleCommand());
+		addSequential(RobotMap.turretPneumatic.toggleCommand());
 	}
 }

@@ -86,21 +86,18 @@ public class Dashboard extends Subsystem{
 			//Subsystems
 			debugTab.add("Subsystem/DriveTrain", RobotMap.driveTrain);
 			debugTab.add("Subsystem/Turret", RobotMap.turret);
-			debugTab.add("Subsystem/HatchClaw", RobotMap.hatchClaw);
 
 			//Climbing Pneumatics
 			debugTab.add("Climbing/FrontSolenoid", RobotMap.frontSolenoid);
 			debugTab.add("Climbing/RearSolenoid", RobotMap.rearSolenoid);
 
 			//Hatch manipulator
-			debugTab.add("HatchClaw/Solenoid", RobotMap.hatchPneumatic);
-			debugTab.add("HatchClaw/HatchMotor", RobotMap.hatchMotor);
+			debugTab.add("HatchPneumatic", RobotMap.hatchPneumatic);
+			debugTab.add("TurretPneumatic", RobotMap.turretPneumatic);
 
 			//Turret
 			debugTab.add("Turret/TurretMotor", RobotMap.turretTalon);
-			debugTab.add("Turret/TurretSensor/left", RobotMap.turretSensorLeft);
-			debugTab.add("Turret/TurretSensor/middle", RobotMap.turretSensorMiddle);
-			debugTab.add("Turret/TurretSensor/right", RobotMap.turretSensorRight);
+			debugTab.add("Turret/TurretSensor", RobotMap.turretSensor);
 
 
 		} else if (! debug) { //drive
