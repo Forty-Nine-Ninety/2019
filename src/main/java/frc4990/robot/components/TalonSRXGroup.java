@@ -15,10 +15,8 @@ public class TalonSRXGroup extends SpeedControllerGroup {
 
     public TalonSRXGroup(WPI_TalonSRX... talons) {
         super(talons[0], Arrays.copyOfRange(talons, 1, talons.length));
-        this.talons = new WPI_TalonSRX[talons.length];
-        for (int i = 0; i < talons.length; i++) {
-            this.talons[i] = talons[i];
-        }
+        
+        this.talons = Arrays.copyOf(talons, talons.length);
     }
 
     public TalonSRXGroup(ControlMode mode, WPI_TalonSRX... talons) {
