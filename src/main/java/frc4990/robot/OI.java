@@ -117,12 +117,12 @@ public class OI{
 		turretRight.toggleWhenActive(new PIDTurretTurn(TurretPoint.Right));
 		turretBack.toggleWhenActive(new PIDTurretTurn(TurretPoint.Back));
 		turretSafe.toggleWhenActive(new PIDTurretTurn(TurretPoint.Safe));
-		turretReset.whenActive(new InstantCommand(() -> RobotMap.turretTalon.resetEncoder()));
+		turretReset.whenPressed(new InstantCommand(() -> RobotMap.turretTalon.resetEncoder()));
     
 		//Hatch
 		turretPneumatic.whenPressed(RobotMap.turretPneumatic.toggleCommand());
 		hatchUp.whenPressed(new InstantCommand(() -> RobotMap.hatchPneumatic.solenoid.set(true)));
-		hatchDown.whileHeld(new InstantCommand(() -> RobotMap.hatchPneumatic.solenoid.set(false)));
+		hatchDown.whenPressed(new InstantCommand(() -> RobotMap.hatchPneumatic.solenoid.set(false)));
 
 		//Pneumatics
 		frontPneumatics.whenPressed(RobotMap.frontSolenoid.toggleCommand());
