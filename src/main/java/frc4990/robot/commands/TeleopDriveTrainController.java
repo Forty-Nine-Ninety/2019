@@ -17,7 +17,7 @@ public class TeleopDriveTrainController extends Command {
 	
 	public enum StickShapingMode { SquaredThrottle, DifferentialDrive }
 	
-	public static StickShapingMode stickShapingMode = StickShapingMode.SquaredThrottle;	
+	public static StickShapingMode stickShapingMode = StickShapingMode.DifferentialDrive;	
 
 	public static double currentThrottleMultiplier = 1.0;
 
