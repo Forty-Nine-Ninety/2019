@@ -11,14 +11,11 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.PrintCommand;
+import frc4990.robot.commands.*;
 import frc4990.robot.commands.PIDTurretTurn.TurretPoint;
-import frc4990.robot.commands.PIDTurretTurn;
-import frc4990.robot.commands.TeleopDriveTrainController;
 import frc4990.robot.commands.TeleopDriveTrainController.StickShapingMode;
-import frc4990.robot.components.F310Gamepad.Axis;
-import frc4990.robot.components.F310Gamepad.Buttons;
-import frc4990.robot.components.F310Gamepad.POV;
 import frc4990.robot.components.JoystickAnalogButton;
+import frc4990.robot.components.F310Gamepad.*;
 import frc4990.robot.subsystems.Dashboard;
 
 /**
@@ -29,9 +26,26 @@ import frc4990.robot.subsystems.Dashboard;
  */
 public class OI{
 
+	// Drive Gamepad
 	public static JoystickAnalogButton throttle = RobotMap.driveGamepad.getAxis(Axis.leftJoystickY);
 	public static JoystickAnalogButton turnSteepness = RobotMap.driveGamepad.getAxis(Axis.rightJoystickX);
 
+	public static Button frontPneumatics = RobotMap.driveGamepad.getButton(Buttons.rightBumper);
+	public static Button rearPneumatics = RobotMap.driveGamepad.getButton(Buttons.leftBumper);
+
+	public static Button compressorToggle = RobotMap.driveGamepad.getButton(Buttons.start);
+
+	public static Button driveSpeedToggle = RobotMap.driveGamepad.getButton(Buttons.x);
+	public static Button turnSpeedToggle = RobotMap.driveGamepad.getButton(Buttons.b);
+
+	public static JoystickAnalogButton shiftRight = RobotMap.driveGamepad.getAxis(Axis.rightTrigger);
+	public static JoystickAnalogButton shiftLeft = RobotMap.driveGamepad.getAxis(Axis.leftTrigger);
+
+	public static Button stickShapingToggle = RobotMap.driveGamepad.getButton(Buttons.y);
+
+	public static Button driveControllerCheck = RobotMap.driveGamepad.getButton(Buttons.back);
+
+	// OP Gamepad
 	public static JoystickAnalogButton turretTurn = RobotMap.opGamepad.getAxis(Axis.leftJoystickX);
 	public static Button turretForward = RobotMap.opGamepad.getButton(Buttons.y);
 	public static Button turretLeft = RobotMap.opGamepad.getButton(Buttons.x);
@@ -50,19 +64,6 @@ public class OI{
 	public static JoystickAnalogButton limelightIntakeSequence = RobotMap.opGamepad.getAxis(Axis.leftTrigger);
 	public static JoystickAnalogButton limelightOutakeSequence = RobotMap.opGamepad.getAxis(Axis.rightTrigger);
 
-	public static Button frontPneumatics = RobotMap.driveGamepad.getButton(Buttons.rightBumper);
-	public static Button rearPneumatics = RobotMap.driveGamepad.getButton(Buttons.leftBumper);
-	public static JoystickAnalogButton climbSequence = RobotMap.driveGamepad.getAxis(Axis.rightTrigger);
-
-	public static Button compressorToggle = RobotMap.driveGamepad.getButton(Buttons.start);
-
-	public static Button driveSpeedToggle = RobotMap.driveGamepad.getButton(Buttons.x);
-	public static Button turnSpeedToggle = RobotMap.driveGamepad.getButton(Buttons.b);
-
-	public static JoystickAnalogButton shiftRight = RobotMap.driveGamepad.getAxis(Axis.rightTrigger);
-	public static JoystickAnalogButton shiftLeft = RobotMap.driveGamepad.getAxis(Axis.leftTrigger);
-	public static Button stickShapingToggle = RobotMap.driveGamepad.getButton(Buttons.y);
-	public static Button driveControllerCheck = RobotMap.driveGamepad.getButton(Buttons.back);
 	public static Button opControllerCheck = RobotMap.opGamepad.getButton(Buttons.back);
 	
 	/* Controller Mapping:
@@ -101,17 +102,20 @@ public class OI{
 		shiftLeft.whenPressed(new InstantCommand("shiftLeft", () -> {
 			RobotMap.rightMotorGroup.coeff += 25;
 			RobotMap.leftMotorGroup.coeff -= 25;
+			System.out.println("[Drive Tuning] right coeff: " + RobotMap.rightMotorGroup.coeff + ", left coeff: " + RobotMap.leftMotorGroup.coeff);
 		}));
 		shiftRight.whenPressed(new InstantCommand("shiftRight", () -> {
 			RobotMap.rightMotorGroup.coeff -= 25;
 			RobotMap.leftMotorGroup.coeff += 25;
+			System.out.println("[Drive Tuning] right coeff: " + RobotMap.rightMotorGroup.coeff + ", left coeff: " + RobotMap.leftMotorGroup.coeff);
 		}));
 
-		//controller check (not needed)
+		//controller check (not needed, but useful)
 		driveControllerCheck.toggleWhenPressed(new PrintCommand("START pressed on Drive Gamepad."));
 		opControllerCheck.toggleWhenPressed(new PrintCommand("START pressed on OP Gamepad."));
 
 		//turret
+		//turretTurn is used in default command for Turret subsystem.
 		turretForward.toggleWhenActive(new PIDTurretTurn(TurretPoint.Forward));
 		turretLeft.toggleWhenActive(new PIDTurretTurn(TurretPoint.Left));
 		turretRight.toggleWhenActive(new PIDTurretTurn(TurretPoint.Right));
@@ -128,6 +132,10 @@ public class OI{
 		frontPneumatics.whenPressed(RobotMap.frontSolenoid.toggleCommand());
 		rearPneumatics.whenPressed(RobotMap.rearSolenoid.toggleCommand());
 		compressorToggle.whenPressed(compressorToggle());
+
+		//routines/sequences
+		manualIntakeSequence.toggleWhenPressed(new manualIntakeSequence());
+		manualOutakeSequence.toggleWhenPressed(new manualOutakeSequence());
 	}
 	
 	public static InstantCommand stickShapingToggle() {
