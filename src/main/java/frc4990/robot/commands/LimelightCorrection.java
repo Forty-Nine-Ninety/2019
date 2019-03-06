@@ -2,7 +2,7 @@ package frc4990.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc4990.robot.RobotMap;
-import frc4990.robot.commands.PIDTurretTurn.TurretPoint;
+import frc4990.robot.subsystems.Turret.TurretPoint;
 import frc4990.robot.components.CLimelight;
 import frc4990.robot.subsystems.DriveTrain;
 

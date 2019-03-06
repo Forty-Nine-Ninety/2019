@@ -17,6 +17,18 @@ import frc4990.robot.components.TalonWithMagneticEncoder;
 public class Turret extends Subsystem implements PIDSource, PIDOutput {
     
 	public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
+
+	public enum TurretPoint { Forward(-3200), Left(-12000), Right(5600), Back(14500), Safe(0), BackLeft(-21000), BackRight(14500); 
+
+		private int value;
+    
+		TurretPoint(int value) {
+				this.value = value;
+		}
+
+		public int get() {
+				return value;
+		}}
 	
 	public Turret() {
     super("Turret");
@@ -67,19 +79,15 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
         setSpeed(output);
 	}
 	/**
-	 * Checks hall effect sensors (contactless limits) and if movement is allowed, it will be sent to motor during periodic()
-	 * If movement is not allowed, function returns.
+	 * Sets speed of turret motor.
 	 * @param value speed to set, [-1 to 1]
 	 */
 
     public void setSpeed(double value) {
-        /*if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorRight.get()) && value < 0) value = 0; //At end of right range
-        if ((RobotMap.turretSensorMiddle.get() && RobotMap.turretSensorLeft.get()) && value > 0) value = 0; //At end of left range
-        if (RobotMap.turretSensorLeft.get() || RobotMap.turretSensorRight.get()) value /= 2; //near end of either range
-		*/RobotMap.turretTalon.set(value);
+		RobotMap.turretTalon.set(value);
     }
     
-    /**
+  /**
 	 * Returns encoder value, in unknown units.
 	 */
 
@@ -132,5 +140,36 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		/* misc other configs */
 		talon.config_IntegralZone(0,80);
 		talon.configAllowableClosedloopError(0, 15);
+	}
+
+	public double getTarget(TurretPoint turretPoint) {
+		switch(turretPoint) {
+			case Back:
+				return (RobotMap.turretTalon.getPosition() > TurretPoint.Forward.get()) ? 
+					TurretPoint.BackRight.get() : TurretPoint.BackLeft.get(); 
+			default:
+				return turretPoint.get();
+		}
+	}
+
+	public double getMidPoint(TurretPoint pointA, TurretPoint pointB) {
+		return (pointA.get() + pointB.get())/2;
+	}
+
+	public TurretPoint findNearestTurretPoint() {
+		double encoderPos = RobotMap.turretTalon.getPosition();
+		if (encoderPos < getMidPoint(TurretPoint.BackLeft, TurretPoint.Left)) {
+			return TurretPoint.BackLeft;
+		} else if (encoderPos > getMidPoint(TurretPoint.BackLeft, TurretPoint.Left) && encoderPos < getMidPoint(TurretPoint.Left, TurretPoint.Forward)) {
+			return TurretPoint.Left;
+		} else if (encoderPos > getMidPoint(TurretPoint.Left, TurretPoint.Forward) && encoderPos < getMidPoint(TurretPoint.Right, TurretPoint.Forward)) {
+			return TurretPoint.Forward;
+		} else if (encoderPos > getMidPoint(TurretPoint.Right, TurretPoint.Forward) && encoderPos < getMidPoint(TurretPoint.Right, TurretPoint.BackRight)) {
+			return TurretPoint.Right;
+		} else if (encoderPos > getMidPoint(TurretPoint.BackRight, TurretPoint.Right)) {
+			return TurretPoint.BackRight;
+		} else {
+			return TurretPoint.Safe;
+		}
 	}
 }
