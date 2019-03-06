@@ -101,7 +101,16 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 
 	public double getEncoderRate() {
 		return RobotMap.turretTalon.getRate();
-    }
+		}
+		
+	public void resetPosition() {
+		if (RobotMap.turretSensor.get()) {
+			RobotMap.turretTalon.resetEncoder();
+			System.out.println("[Turret] Successfully reset encoder to " + RobotMap.turretTalon.getPosition());
+		} else {
+			System.out.println("[Turret] Unable to reset encoder. Current Position: " + RobotMap.turretTalon.getPosition());
+		}
+	}
 
 	@Override
 	protected void initDefaultCommand() {

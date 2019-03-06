@@ -88,25 +88,28 @@ public class Dashboard extends Subsystem{
 			debugTab.add("Subsystem/Turret", RobotMap.turret);
 
 			//Climbing Pneumatics
-			debugTab.add("Climbing/FrontSolenoid", RobotMap.frontSolenoid);
-			debugTab.add("Climbing/RearSolenoid", RobotMap.rearSolenoid);
+			debugTab.add("Pneumatics/FrontSolenoid", RobotMap.frontSolenoid);
+			debugTab.add("Pneumatics/RearSolenoid", RobotMap.rearSolenoid);
 
 			//Hatch manipulator
-			debugTab.add("HatchPneumatic", RobotMap.hatchPneumatic);
-			debugTab.add("TurretPneumatic", RobotMap.turretPneumatic);
+			debugTab.add("Pneumatics/HatchPneumatic", RobotMap.hatchPneumatic);
+			debugTab.add("Pneumatics/TurretPneumatic", RobotMap.turretPneumatic);
 
 			//Turret
 			debugTab.add("Turret/TurretMotor", RobotMap.turretTalon);
 			debugTab.add("Turret/TurretSensor", RobotMap.turretSensor);
 
-
 		} else if (! debug) { //drive
 			System.out.println("Adding Drive Tab Components.");
 			driveTab.add("Scheduler", Scheduler.getInstance()).withSize(2, 3).withPosition(0, 0);
+			driveTab.add("initDebugDashboard", initDebugDashboard);
+			
+			driveTab.add("Turret/TurretSensor", RobotMap.turretSensor);
+
+			//driveTab.add("DebugTabComponents", new SendableObject(() -> debugTab.getComponents().size()));
+
 			//driveTab.add("SelectedStartPosition", new SendableObject((FunctionalInterface) () -> autoChooser.getSelected().name())).withSize(2, 1).withPosition(3, 3);
 			//driveTab.add("AutoChooser", autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(4, 3);
-			driveTab.add("initDebugDashboard", initDebugDashboard);
-			driveTab.add("DebugTabComponents", new SendableObject(() -> debugTab.getComponents().size()));
 		}
 	}
 
