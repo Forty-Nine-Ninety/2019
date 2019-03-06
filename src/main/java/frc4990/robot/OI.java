@@ -11,12 +11,18 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.PrintCommand;
-import frc4990.robot.commands.*;
-import frc4990.robot.commands.PIDTurretTurn.TurretPoint;
+import frc4990.robot.commands.ClimbingSequence;
+import frc4990.robot.commands.PIDTurretTurn;
+import frc4990.robot.commands.TeleopDriveTrainController;
 import frc4990.robot.commands.TeleopDriveTrainController.StickShapingMode;
+import frc4990.robot.commands.manualIntakeSequence;
+import frc4990.robot.commands.manualOutakeSequence;
+import frc4990.robot.components.F310Gamepad.Axis;
+import frc4990.robot.components.F310Gamepad.Buttons;
+import frc4990.robot.components.F310Gamepad.POV;
 import frc4990.robot.components.JoystickAnalogButton;
-import frc4990.robot.components.F310Gamepad.*;
 import frc4990.robot.subsystems.Dashboard;
+import frc4990.robot.subsystems.Turret.TurretPoint;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -32,6 +38,8 @@ public class OI{
 
 	public static Button frontPneumatics = RobotMap.driveGamepad.getButton(Buttons.rightBumper);
 	public static Button rearPneumatics = RobotMap.driveGamepad.getButton(Buttons.leftBumper);
+
+	public static Button climbingSequence = RobotMap.driveGamepad.getButton(Buttons.a);
 
 	public static Button compressorToggle = RobotMap.driveGamepad.getButton(Buttons.start);
 
@@ -125,8 +133,8 @@ public class OI{
     
 		//Hatch
 		turretPneumatic.whenPressed(RobotMap.turretPneumatic.toggleCommand());
-		hatchUp.whenPressed(new InstantCommand(() -> RobotMap.hatchPneumatic.solenoid.set(true)));
-		hatchDown.whenPressed(new InstantCommand(() -> RobotMap.hatchPneumatic.solenoid.set(false)));
+		hatchUp.whenPressed(new InstantCommand(() -> RobotMap.hatchPneumatic.open()));
+		hatchDown.whenPressed(new InstantCommand(() -> RobotMap.hatchPneumatic.close()));
 
 		//Pneumatics
 		frontPneumatics.whenPressed(RobotMap.frontSolenoid.toggleCommand());
@@ -136,6 +144,8 @@ public class OI{
 		//routines/sequences
 		manualIntakeSequence.toggleWhenPressed(new manualIntakeSequence());
 		manualOutakeSequence.toggleWhenPressed(new manualOutakeSequence());
+
+		climbingSequence.toggleWhenPressed(new ClimbingSequence());
 	}
 	
 	public static InstantCommand stickShapingToggle() {
