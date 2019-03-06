@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 public class TalonSRXGroup extends SpeedControllerGroup {
 
@@ -37,5 +38,14 @@ public class TalonSRXGroup extends SpeedControllerGroup {
         for (WPI_TalonSRX talon : talons) {
             talon.set(mode, (super.getInverted() ? -speed : speed) * coeff);
           }
+        }
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("Speed Controller");
+        builder.setActuator(true);
+        builder.setSafeState(this::stopMotor);
+        builder.addDoubleProperty("Value", this::get, this::set);
+        builder.addDoubleProperty("Coeff", () -> this.coeff, (double coeff) -> this.coeff = coeff);
+        builder.addStringProperty("Mode", () -> this.mode.toString(), null);
     }
 }

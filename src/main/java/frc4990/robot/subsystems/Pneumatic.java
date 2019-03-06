@@ -3,6 +3,7 @@ package frc4990.robot.subsystems;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 public class Pneumatic extends Subsystem {
 
@@ -46,4 +47,9 @@ public class Pneumatic extends Subsystem {
 
 	@Override
 	protected void initDefaultCommand() {}
+
+	@Override
+	public void initSendable(SendableBuilder builder) {
+		builder.addBooleanProperty("extended", () -> solenoid.get(), (boolean value) -> solenoid.set(value));
+	}
 }

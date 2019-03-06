@@ -153,10 +153,10 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
     @Override
     public void initSendable(SendableBuilder builder) {
       builder.addDoubleProperty("Encoder Speed", this::getRate, null);
-      builder.addDoubleProperty("Encoder Distance", this::getPosition, null);
-      builder.addDoubleProperty("Commanded Speed", this::get, null);
-      super.initSendable(builder);
-      builder.setSmartDashboardType(""); //to use read-only table view
+      builder.addDoubleProperty("Encoder Position", this::getPosition, (double position) -> this.setPosition((int) position));
+      builder.addDoubleProperty("Value", this::get, this::set);
+      builder.setSmartDashboardType("");
+      builder.setSafeState(this::stopMotor);
     }
 
     @Override
@@ -166,5 +166,5 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
         } else {
             return getPosition();
         }
-	}
-    }
+	  }
+}
