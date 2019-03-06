@@ -129,7 +129,7 @@ public class OI{
 		turretRight.toggleWhenActive(new PIDTurretTurn(TurretPoint.Right));
 		turretBack.toggleWhenActive(new PIDTurretTurn(TurretPoint.Back));
 		turretSafe.toggleWhenActive(new PIDTurretTurn(TurretPoint.Safe));
-		turretReset.whenPressed(RobotMap.turret.resetPosition());
+		turretReset.whenPressed(new InstantCommand(() -> RobotMap.turret.resetPosition()));
     
 		//Hatch
 		turretPneumatic.whenPressed(RobotMap.turretPneumatic.toggleCommand());
