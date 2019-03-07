@@ -67,7 +67,6 @@ public class OI{
 
 
 	public static JoystickAnalogButton turretPneumatic = RobotMap.opGamepad.getAxis(Axis.rightJoystickX);
-	public static POVButton limelightToggle = RobotMap.opGamepad.getPOVButton(POV.north);
 	public static POVButton hatchToggle = RobotMap.opGamepad.getPOVButton(POV.south);
 
 	public static Button manualIntakeSequence = RobotMap.opGamepad.getButton(Buttons.leftBumper);
@@ -77,6 +76,7 @@ public class OI{
 	public static JoystickAnalogButton limelightOutakeSequence = RobotMap.opGamepad.getAxis(Axis.rightTrigger);
 
 	public static Button limelightLight = RobotMap.opGamepad.getPOVButton(POV.west);
+	public static POVButton limelightToggle = RobotMap.opGamepad.getPOVButton(POV.north);
 
 	public static Button opControllerCheck = RobotMap.opGamepad.getButton(Buttons.back);
 	
