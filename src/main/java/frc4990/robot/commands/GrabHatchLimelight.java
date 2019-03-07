@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc4990.robot.RobotMap;
 import frc4990.robot.components.CLimelight;
 
-public class PlaceHatchLimelight extends CommandGroup {
+public class GrabHatchLimelight extends CommandGroup {
 
-	public PlaceHatchLimelight() {
+	public GrabHatchLimelight() {
 		if (! CLimelight.hasValidTarget()) return;
 		addSequential(new LimelightCorrection(5, RobotMap.turret.findNearestTurretPoint(), 0.5));
-		addSequential(new manualOutakeSequence());
+		addSequential(new manualIntakeSequence());
 	}
 }

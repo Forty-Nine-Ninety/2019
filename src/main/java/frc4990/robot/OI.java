@@ -12,7 +12,9 @@ import edu.wpi.first.wpilibj.buttons.POVButton;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc4990.robot.commands.ClimbingSequence;
+import frc4990.robot.commands.GrabHatchLimelight;
 import frc4990.robot.commands.PIDTurretTurn;
+import frc4990.robot.commands.PlaceHatchLimelight;
 import frc4990.robot.commands.TeleopDriveTrainController;
 import frc4990.robot.commands.TeleopDriveTrainController.StickShapingMode;
 import frc4990.robot.commands.manualIntakeSequence;
@@ -20,6 +22,7 @@ import frc4990.robot.commands.manualOutakeSequence;
 import frc4990.robot.components.F310Gamepad.Axis;
 import frc4990.robot.components.F310Gamepad.Buttons;
 import frc4990.robot.components.F310Gamepad.POV;
+import frc4990.robot.components.CLimelight;
 import frc4990.robot.components.JoystickAnalogButton;
 import frc4990.robot.subsystems.Dashboard;
 import frc4990.robot.subsystems.Turret.TurretPoint;
@@ -69,8 +72,11 @@ public class OI{
 
 	public static Button manualIntakeSequence = RobotMap.opGamepad.getButton(Buttons.leftBumper);
 	public static Button manualOutakeSequence = RobotMap.opGamepad.getButton(Buttons.rightBumper);
+
 	public static JoystickAnalogButton limelightIntakeSequence = RobotMap.opGamepad.getAxis(Axis.leftTrigger);
 	public static JoystickAnalogButton limelightOutakeSequence = RobotMap.opGamepad.getAxis(Axis.rightTrigger);
+
+	public static Button limelightLight = RobotMap.opGamepad.getPOVButton(POV.west);
 
 	public static Button opControllerCheck = RobotMap.opGamepad.getButton(Buttons.back);
 	
@@ -118,6 +124,9 @@ public class OI{
 			System.out.println("[Drive Tuning] right coeff: " + RobotMap.rightMotorGroup.coeff + ", left coeff: " + RobotMap.leftMotorGroup.coeff);
 		}));
 
+		//Limelight
+		//limelightLight.whenActive(new InstantCommand(() -> CLimelight.toggleLight()));
+
 		//controller check (not needed, but useful)
 		driveControllerCheck.toggleWhenPressed(new PrintCommand("START pressed on Drive Gamepad."));
 		opControllerCheck.toggleWhenPressed(new PrintCommand("START pressed on OP Gamepad."));
@@ -144,6 +153,9 @@ public class OI{
 		//routines/sequences
 		manualIntakeSequence.toggleWhenPressed(new manualIntakeSequence());
 		manualOutakeSequence.toggleWhenPressed(new manualOutakeSequence());
+
+		limelightOutakeSequence.toggleWhenPressed(new PlaceHatchLimelight());
+		limelightOutakeSequence.toggleWhenPressed(new GrabHatchLimelight());
 
 		climbingSequence.toggleWhenPressed(new ClimbingSequence());
 	}
