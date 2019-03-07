@@ -125,7 +125,7 @@ public class OI{
 		}));
 
 		//Limelight
-		//limelightLight.whenActive(new InstantCommand(() -> CLimelight.toggleLight()));
+		limelightLight.whenActive(new InstantCommand(() -> CLimelight.toggleLedMode()));
 
 		//controller check (not needed, but useful)
 		driveControllerCheck.toggleWhenPressed(new PrintCommand("START pressed on Drive Gamepad."));
