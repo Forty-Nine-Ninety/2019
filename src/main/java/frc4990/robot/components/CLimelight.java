@@ -163,6 +163,32 @@ public class CLimelight {
         }
     }
 
+     /**
+     * Sets the Limelight's Picture-in-picture state. 
+     * @param n Settings: 0 = default side by side, 1 = PiP Main, 2 = PiP Secondary
+     */
+    public static void setPiPMode(int n) {
+        if (n < 0 || n > 2) return;
+        setNetworkTableEntry("stream", n);
+    }
+
+    /**
+     * Gets the Limelight's LED state. 
+     * @return The Limelight's current LED mode (0 = default side by side, 1 = PiP Main, 2 = PiP Secondary)
+     */
+    public static int getPiPMode() {
+        return (int) getNetworkTableEntry("stream");
+    }
+    
+    /**
+     * Toggles the Limelight's PiP Mode. 0 => 1, 1 => 2, 2 => 0 
+     * (0 = default side by side, 1 = PiP Main, 2 = PiP Secondary)
+     */
+
+    public static void togglePiPMode() {
+        setNetworkTableEntry("stream", (getPiPMode() + 1) % 3);
+    }
+
     /**
      * Sets the Limelight's pipeline.
      * @param n Pipeline number between 0..9 inclusive.
