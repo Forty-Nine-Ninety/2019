@@ -67,12 +67,52 @@ public class CLimelight {
         return (int) Math.round(getNetworkTableEntry("ts")) + 11;//See http://docs.limelightvision.io/en/latest/networktables_api.html
     }
 
-     /**
+    /**
      * Sets the Limelight's LED state. 
-     * @param n Settings: 0 = default for pipeline, 1 for off, 2 for blink, 3 for on
+     * @param n Settings: 0 = default for pipeline, 1 = off, 2 = blink, 3 = on
      */
-    public static void setLimelightLedMode(int n) {
+    public static void setLedMode(int n) {
+        if (n < 0 || n > 4) return;
         setNetworkTableEntry("ledMode", n);
+    }
+
+    /**
+     * Gets the Limelight's LED state. 
+     * @return The Limelight's current LED mode (0 = default for pipeline, 1 = off, 2 = blink, 3 = on)
+     */
+    public static int getLedMode() {
+        return (int) getNetworkTableEntry("ledMode");
+    }
+
+    /**
+     * Toggles the Limelight's LED mode between 0 and 1.  If the current setting is 2 or 3, the code will change it to 1.
+     */
+    public static void toggleLedMode() {
+        switch(getLedMode()) {
+            case 1:
+                setLedMode(0);
+                break;
+            default://0, 2, and 3
+                setLedMode(1);
+                break;
+        }
+    }
+
+    /**
+     * Sets the Limelight's pipeline.
+     * @param n Pipeline number between 0..9 inclusive.
+     */
+    public static void setPipeline(int n) {
+        if (n < 0 || n > 9) return;
+        setNetworkTableEntry("pipeline", n);
+    }
+
+    /**
+     * Gets the Limelight's pipeline.
+     * @return The currently selected pipeline number
+     */
+    public static int getPipeline() {
+        return (int) getNetworkTableEntry("pipeline");
     }
 
     /**
