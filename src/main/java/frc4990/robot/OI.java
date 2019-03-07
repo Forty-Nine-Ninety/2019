@@ -20,6 +20,7 @@ import frc4990.robot.commands.manualOutakeSequence;
 import frc4990.robot.components.F310Gamepad.Axis;
 import frc4990.robot.components.F310Gamepad.Buttons;
 import frc4990.robot.components.F310Gamepad.POV;
+import frc4990.robot.components.CLimelight;
 import frc4990.robot.components.JoystickAnalogButton;
 import frc4990.robot.subsystems.Dashboard;
 import frc4990.robot.subsystems.Turret.TurretPoint;
@@ -64,8 +65,8 @@ public class OI{
 
 
 	public static JoystickAnalogButton turretPneumatic = RobotMap.opGamepad.getAxis(Axis.rightJoystickX);
-	public static POVButton hatchUp = RobotMap.opGamepad.getPOVButton(POV.north);
-	public static POVButton hatchDown = RobotMap.opGamepad.getPOVButton(POV.south);
+	public static POVButton limelightToggle = RobotMap.opGamepad.getPOVButton(POV.north);
+	public static POVButton hatchToggle = RobotMap.opGamepad.getPOVButton(POV.south);
 
 	public static Button manualIntakeSequence = RobotMap.opGamepad.getButton(Buttons.leftBumper);
 	public static Button manualOutakeSequence = RobotMap.opGamepad.getButton(Buttons.rightBumper);
@@ -133,8 +134,8 @@ public class OI{
     
 		//Hatch
 		turretPneumatic.whenPressed(RobotMap.turretPneumatic.toggleCommand());
-		hatchUp.whenPressed(new InstantCommand(() -> RobotMap.hatchPneumatic.open()));
-		hatchDown.whenPressed(new InstantCommand(() -> RobotMap.hatchPneumatic.close()));
+		limelightToggle.whenPressed(CLimelight.toggleMode());
+		hatchToggle.whenPressed(new InstantCommand(() -> RobotMap.hatchPneumatic.close()));
 
 		//Pneumatics
 		frontPneumatics.whenPressed(RobotMap.frontSolenoid.toggleCommand());

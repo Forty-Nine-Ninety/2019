@@ -73,7 +73,7 @@ public class LimelightCorrection extends Command {
 	
 	public void end() {
 		DriveTrain.setSpeed(0);
-		CLimelight.setMode(LimelightMode.Driver);
+		CLimelight.setMode(CLimelight.defaultMode);
 	}
 	
 	public void interrupted() {

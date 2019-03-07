@@ -1,6 +1,7 @@
 package frc4990.robot.components;
 
 import edu.wpi.first.networktables.*;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
  * Wrapper class for Limelight
@@ -17,11 +18,12 @@ public class CLimelight {
 		}
 
 		public int get() {
-				return value;
+			return value;
         }
     }
 
     public static LimelightMode mode = LimelightMode.Driver;
+    public static LimelightMode defaultMode = LimelightMode.Driver;
 
     /**
      * Get current LimelightMode. 
@@ -48,6 +50,28 @@ public class CLimelight {
             default:
                 return;
         }
+    }
+
+    /**
+     * Toggles between two target and driver LimelightModes.
+     */
+
+    public static InstantCommand toggleMode() {
+        return new InstantCommand(() -> setMode(
+            (getMode() == LimelightMode.Driver) ? LimelightMode.Vision_twoTarget : LimelightMode.Driver));
+    }
+
+    /**
+     * Toggles between two target and driver LimelightModes.
+     */
+    public static InstantCommand toggleDefaultMode() {
+        return new InstantCommand(() -> setDefaultMode(
+            (getMode() == LimelightMode.Driver) ? LimelightMode.Vision_twoTarget : LimelightMode.Driver));
+    }
+
+    public static void setDefaultMode(LimelightMode n) {
+        defaultMode = n;
+        setMode(n);
     }
 
     /**

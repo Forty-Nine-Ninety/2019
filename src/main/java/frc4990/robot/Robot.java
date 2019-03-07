@@ -2,7 +2,6 @@ package frc4990.robot;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc4990.robot.components.CLimelight;
 import frc4990.robot.components.CLimelight.LimelightMode;
@@ -18,15 +17,9 @@ import frc4990.robot.components.CLimelight.LimelightMode;
  */
 public class Robot extends TimedRobot {
 
-	/**
-	 * An enum that describes the starting position of the robot
-	 * 
-	 * @author Class of '21 (created in 2018 season)
-	 *
-	 */
 	public static RobotMap robotMap;
 
-	public static Command autonomusCommand;
+	//public static Command autonomusCommand;
 
 	public static OI oi;
 
@@ -47,8 +40,6 @@ public class Robot extends TimedRobot {
 
 		processThread.startSingle(0);
 
-		CLimelight.setMode(LimelightMode.Driver);
-
 		System.out.println("Robot Initialized.");
 	}
 
@@ -57,10 +48,12 @@ public class Robot extends TimedRobot {
 	}
 
 	public void disabledInit() {
-		System.out.println("ROBOT DISABLED.");
 		/*if (autonomusCommand != null) {
 			autonomusCommand.cancel();
 		}*/
+
+		CLimelight.setDefaultMode(LimelightMode.Driver);
+		System.out.println("Disabled Init complete");
 	}
 
 	public void disabledPeriodic() { // This function is run periodically when the robot is DISABLED. Be careful.
@@ -71,7 +64,7 @@ public class Robot extends TimedRobot {
 		/*autonomusCommand = new AutonomusCommand();
 		autonomusCommand.start();
 		*/
-
+		CLimelight.setDefaultMode(LimelightMode.Driver);
 		System.out.println("Auto Init complete");
 	}
 
@@ -85,16 +78,17 @@ public class Robot extends TimedRobot {
 	}
 
 	public void teleopInit() { // This function is called at the start of teleop
-		if (autonomusCommand != null) {
+		/*if (autonomusCommand != null) {
 			autonomusCommand.cancel();
-		}
+		}*/
 
+		CLimelight.setDefaultMode(LimelightMode.Vision_twoTarget);
 		RobotMap.driveTrain.clearStickyFaults();
-
+		System.out.println("Teleop Init complete");
 	}
 
 	public void teleopPeriodic() { // This function is called periodically during teleop
-		//System.out.println("Running periodic at " + (System.currentTimeMillis() % 100000) + "ms");
+		//System.out.println("Running teleop periodic at " + (System.currentTimeMillis() % 100000) + "ms");
 		Scheduler.getInstance().run(); 
 	   /* Polls the Buttons
 		* Execute/Remove the Commands
@@ -106,6 +100,8 @@ public class Robot extends TimedRobot {
 	public void testInit() {
 		RobotMap.compressor.setClosedLoopControl(true);
 		RobotMap.compressor.start();
+		CLimelight.setDefaultMode(LimelightMode.Vision_twoTarget);
+		System.out.println("Test Init complete");
 	}
 
 	public void testPeriodic() {
