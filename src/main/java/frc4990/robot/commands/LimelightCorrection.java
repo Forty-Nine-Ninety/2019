@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc4990.robot.RobotMap;
 import frc4990.robot.subsystems.Turret.TurretPoint;
 import frc4990.robot.components.CLimelight;
+import frc4990.robot.components.CLimelight.LimelightMode;
 import frc4990.robot.subsystems.DriveTrain;
 
 public class LimelightCorrection extends Command {
@@ -20,7 +21,9 @@ public class LimelightCorrection extends Command {
 		//requires(RobotMap.driveTrain);
 	}
 
-	public void initialize() {}
+	public void initialize() {
+		CLimelight.setMode(LimelightMode.Vision_twoTarget);
+	}
 
 	public void execute() {
 		double hError = CLimelight.getCrosshairHorizontalOffset() * -1, dError = CLimelight.getCrosshairVerticalOffset() * -1;
@@ -70,6 +73,7 @@ public class LimelightCorrection extends Command {
 	
 	public void end() {
 		DriveTrain.setSpeed(0);
+		CLimelight.setMode(LimelightMode.Driver);
 	}
 	
 	public void interrupted() {

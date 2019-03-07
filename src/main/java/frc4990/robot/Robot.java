@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc4990.robot.components.CLimelight;
+import frc4990.robot.components.CLimelight.LimelightMode;
 
 //This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that was the Freshmen Union of 2018
 
@@ -44,6 +46,8 @@ public class Robot extends TimedRobot {
 		oi = new OI();
 
 		processThread.startSingle(0);
+
+		CLimelight.setMode(LimelightMode.Driver);
 
 		System.out.println("Robot Initialized.");
 	}
