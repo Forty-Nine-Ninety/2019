@@ -18,16 +18,16 @@ public class CLimelight {
     }
 
     /**
-     * Gets the horizontal offset from the crosshair to the target
-     * @return The horizontal offset from the crosshair to the target
+     * Gets the horizontal offset from the crosshair to the target. 
+     * @return The horizontal offset from the crosshair to the target (-27 degrees to 27 degrees)
      */
     public static double getCrosshairHorizontalOffset() {
         return getNetworkTableEntry("tx");
     }
 
     /**
-     * Gets the vertical offset from the crosshair to the target
-     * @return The vertical offset from the crosshair to the target
+     * Gets the vertical offset from the crosshair to the target. 
+     * @return The vertical offset from the crosshair to the target (-20.5 degrees to 20.5 degrees)
      */
     public static double getCrosshairVerticalOffset() {
         return getNetworkTableEntry("ty");
@@ -56,7 +56,7 @@ public class CLimelight {
      * @return The pipeline’s latency contribution in milliseconds
      */
     public static int getLatency() {
-        return (int) Math.round(getNetworkTableEntry("ts"));
+        return (int) Math.round(getNetworkTableEntry("tl"));
     }
 
     /**
@@ -64,7 +64,7 @@ public class CLimelight {
      * @return The pipeline’s minimum latency contribution in milliseconds
      */
     public static int getImageCaptureLatency() {
-        return (int) Math.round(getNetworkTableEntry("ts")) + 11;//See http://docs.limelightvision.io/en/latest/networktables_api.html
+        return (int) Math.round(getNetworkTableEntry("tl")) + 11;//See http://docs.limelightvision.io/en/latest/networktables_api.html
     }
 
     /**
@@ -112,7 +112,14 @@ public class CLimelight {
      * @return The currently selected pipeline number
      */
     public static int getPipeline() {
-        return (int) getNetworkTableEntry("pipeline");
+        return (int) getNetworkTableEntry("getpipe");
+    }
+
+    /**
+     * Sets the Limelight's camMode. (0 = Vision Processing, 1 = Driver Camera (Increases exposure, disables vision processing))
+     */
+    public static void setCamMode(int n) {
+        setNetworkTableEntry("camMode", n);
     }
 
     /**
