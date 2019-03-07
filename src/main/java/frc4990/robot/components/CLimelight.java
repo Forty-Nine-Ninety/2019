@@ -67,6 +67,14 @@ public class CLimelight {
         return (int) Math.round(getNetworkTableEntry("ts")) + 11;//See http://docs.limelightvision.io/en/latest/networktables_api.html
     }
 
+     /**
+     * Sets the Limelight's LED state. 
+     * @param n Settings: 0 = default for pipeline, 1 for off, 2 for blink, 3 for on
+     */
+    public static void setLimelightLedMode(int n) {
+        setNetworkTableEntry("ledMode", n);
+    }
+
     /**
      * Queries the NetworkTable
      * @param s The key to query for
@@ -75,4 +83,16 @@ public class CLimelight {
     private static double getNetworkTableEntry(String s) {
         return NetworkTableInstance.getDefault().getTable("limelight").getEntry(s).getDouble(0);
     }
+
+    /**
+     * Sets a value in the NetworkTable
+     * @param k The key to set
+     * @param s The value to set the key to
+     * @return The value in the NetworkTable
+     */
+    private static void setNetworkTableEntry(String k, double s) {
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry(k).setNumber(s);
+    }
+
+    
 }
