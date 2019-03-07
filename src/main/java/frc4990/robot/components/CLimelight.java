@@ -9,6 +9,47 @@ import edu.wpi.first.networktables.*;
  */
 public class CLimelight {
 
+    public enum LimelightMode {Vision_twoTarget(1), Vision_leftTarget(2), Vision_rightTarget(3), Driver(0);
+    	private int value;
+        
+        LimelightMode(int value) {
+			this.value = value;
+		}
+
+		public int get() {
+				return value;
+        }
+    }
+
+    public static LimelightMode mode = LimelightMode.Driver;
+
+    /**
+     * Get current LimelightMode. 
+     * @return mode LimelightMode {Vision_twoTarget(1), Vision_leftTarget(2), Vision_rightTarget(3), Driver(0)}
+     */
+    public static LimelightMode getMode() {
+        return mode;
+    }
+
+    /**
+     * Set LimelightMode. 
+     * @param n LimelightMode {Vision_twoTarget(1), Vision_leftTarget(2), Vision_rightTarget(3), Driver(0)}
+     */
+    public static void setMode(LimelightMode n) {
+        mode = n;
+        setPipeline(mode.get());
+        switch(mode) {
+            case Vision_twoTarget:
+            case Vision_leftTarget:
+            case Vision_rightTarget:
+                setCamMode(0);
+            case Driver:
+                setCamMode(1);
+            default:
+                return;
+        }
+    }
+
     /**
      * Gets valid target
      * @return True if a valid target is found; false if otherwise.
