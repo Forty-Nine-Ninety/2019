@@ -22,7 +22,7 @@ public class LimelightCorrection extends Command {
 	}
 
 	public void initialize() {
-		CLimelight.setMode(LimelightMode.Vision_twoTarget);
+		CLimelight.setMode(LimelightMode.Vision);
 	}
 
 	public void execute() {

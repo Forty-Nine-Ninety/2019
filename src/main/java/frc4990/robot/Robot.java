@@ -82,7 +82,7 @@ public class Robot extends TimedRobot {
 			autonomusCommand.cancel();
 		}*/
 
-		CLimelight.setDefaultMode(LimelightMode.Vision_twoTarget);
+		CLimelight.setDefaultMode(LimelightMode.Vision);
 		RobotMap.driveTrain.clearStickyFaults();
 		System.out.println("Teleop Init complete");
 	}
@@ -100,7 +100,7 @@ public class Robot extends TimedRobot {
 	public void testInit() {
 		RobotMap.compressor.setClosedLoopControl(true);
 		RobotMap.compressor.start();
-		CLimelight.setDefaultMode(LimelightMode.Vision_twoTarget);
+		CLimelight.setDefaultMode(LimelightMode.Vision);
 		System.out.println("Test Init complete");
 	}
 
