@@ -17,10 +17,10 @@ public class ClimbingSequence extends CommandGroup {
   public ClimbingSequence() {
     addSequential(RobotMap.frontSolenoid.toggleCommand());
     addSequential(new RobotDriveStraight(1, 0.5));
-    addSequential(RobotMap.rearSolenoid.toggleCommand());
+    //addSequential(RobotMap.rearSolenoid.toggleCommand());
     addSequential(RobotMap.frontSolenoid.toggleCommand());
     addSequential(new RobotDriveStraight(2, 0.2));
-    addSequential(RobotMap.rearSolenoid.toggleCommand());
+    //addSequential(RobotMap.rearSolenoid.toggleCommand());
     addSequential(new RobotDriveStraight(0.3, -0.3));
     addSequential(new RobotDriveStraight(1.5, 0.2));
 

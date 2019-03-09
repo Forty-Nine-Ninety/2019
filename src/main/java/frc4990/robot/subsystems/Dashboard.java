@@ -91,7 +91,7 @@ public class Dashboard extends Subsystem{
 
 			//Climbing Pneumatics
 			debugTab.add("Pneumatics/FrontSolenoid", RobotMap.frontSolenoid);
-			debugTab.add("Pneumatics/RearSolenoid", RobotMap.rearSolenoid);
+			//debugTab.add("Pneumatics/RearSolenoid", RobotMap.rearSolenoid);
 
 			//Hatch manipulator
 			debugTab.add("Pneumatics/HatchPneumatic", RobotMap.hatchPneumatic);
