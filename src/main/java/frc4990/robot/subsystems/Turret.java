@@ -127,7 +127,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 				RobotMap.turretTalon.set(ControlMode.PercentOutput, -Math.abs(setSpeed)); //all motion should go counter-clockwise
 			} else if (RobotMap.turretTalon.getPosition() < TurretPoint.Left.get() - 500 && RobotMap.turretTalon.get() != 0) {
 				RobotMap.turretTalon.set(ControlMode.PercentOutput, Math.abs(setSpeed)); //all motion should go clockwise
-			} else if (this.getCurrentCommand() != new PIDTurretTurn(TurretPoint.Safe)) {
+			} else if (RobotMap.turretTalon.getControlMode() != ControlMode.MotionMagic) {
 				RobotMap.turretTalon.set(ControlMode.PercentOutput, setSpeed);
 			}
 		}
