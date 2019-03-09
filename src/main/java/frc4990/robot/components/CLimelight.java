@@ -35,6 +35,8 @@ public class CLimelight extends SendableBase {
     public static Supplier<Pipeline> visionMode = () -> (RobotMap.turret.findNearestTurretPoint() == TurretPoint.Left || 
         RobotMap.turret.findNearestTurretPoint() == TurretPoint.Right) ? Pipeline.Vision_side : Pipeline.Vision_forward;
 
+    public CLimelight() {}
+    
     public static String getStatus() {
         if (mode == LimelightMode.Driver) {
             return "Driver Mode";
@@ -76,7 +78,7 @@ public class CLimelight extends SendableBase {
         }
     }
 
-    public static Boolean inRange() {
+    public static boolean inRange() {
         switch (visionMode.get()) {
             case Vision_forward:
                 return getCrosshairVerticalOffset() < 5; //TODO: Add real values
@@ -308,7 +310,7 @@ public class CLimelight extends SendableBase {
     public void initSendable(SendableBuilder builder) {
         builder.addBooleanProperty("targetNotVisible", () -> !hasValidTarget(), null);
         builder.addBooleanProperty("targetVisible", () -> hasValidTarget(), null);
-        //builder.addBooleanProperty("targetInRange", () -> targetInRange(), null);
+        builder.addBooleanProperty("targetInRange", () -> inRange(), null);
         builder.addStringProperty("status", () -> getStatus(), null);
     }
 }

@@ -1,8 +1,9 @@
 package frc4990.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.InstantCommand;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -10,6 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc4990.robot.OI;
 import frc4990.robot.RobotMap;
+import frc4990.robot.components.CLimelight;
 import frc4990.robot.components.SendableObject;
 
 public class Dashboard extends Subsystem{
@@ -101,10 +103,16 @@ public class Dashboard extends Subsystem{
 
 		} else if (! debug) { //drive
 			System.out.println("Adding Drive Tab Components.");
-			driveTab.add("Scheduler", Scheduler.getInstance()).withSize(2, 3).withPosition(0, 0);
-			driveTab.add("initDebugDashboard", initDebugDashboard);
+			//driveTab.add("Scheduler", Scheduler.getInstance()).withSize(2, 3).withPosition(0, 0);
+			//driveTab.add("initDebugDashboard", initDebugDashboard);
 			
-			driveTab.add("Turret/TurretSensor", RobotMap.turretSensor);
+			driveTab.add("Turret Sensor", RobotMap.turretSensor.get()).withWidget(BuiltInWidgets.kBooleanBox).withSize(2, 1);
+			
+			driveTab.add("Target Not Visible", new SendableObject((BooleanSupplier) () -> (boolean) !CLimelight.hasValidTarget())).withWidget(BuiltInWidgets.kBooleanBox).withSize(3, 1);
+			driveTab.add("Target Visible, Not In Range", new SendableObject((BooleanSupplier) () -> (boolean) CLimelight.hasValidTarget())).withWidget(BuiltInWidgets.kBooleanBox).withSize(3, 1);
+			driveTab.add("Target In Range", new SendableObject((BooleanSupplier) () -> (boolean) CLimelight.inRange())).withWidget(BuiltInWidgets.kBooleanBox).withSize(3, 1);
+			driveTab.add("Limelight Status", new SendableObject((FunctionalInterface) () -> CLimelight.getStatus()));
+
 
 			//driveTab.add("DebugTabComponents", new SendableObject(() -> debugTab.getComponents().size()));
 
