@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc4990.robot.OI;
 import frc4990.robot.RobotMap;
+import frc4990.robot.commands.PIDTurretTurn;
 import frc4990.robot.components.JoystickAnalogButton;
 import frc4990.robot.components.TalonWithMagneticEncoder;
 
@@ -126,7 +127,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 				RobotMap.turretTalon.set(ControlMode.PercentOutput, -Math.abs(setSpeed)); //all motion should go counter-clockwise
 			} else if (RobotMap.turretTalon.getPosition() < TurretPoint.Left.get() - 500 && RobotMap.turretTalon.get() != 0) {
 				RobotMap.turretTalon.set(ControlMode.PercentOutput, Math.abs(setSpeed)); //all motion should go clockwise
-			} else if (setSpeed != 0.0) {
+			} else if (this.getCurrentCommand() != new PIDTurretTurn(TurretPoint.Safe)) {
 				RobotMap.turretTalon.set(ControlMode.PercentOutput, setSpeed);
 			}
 		}
