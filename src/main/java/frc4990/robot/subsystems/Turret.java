@@ -1,5 +1,6 @@
 package frc4990.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 
@@ -18,7 +19,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
     
 	public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
 
-	public enum TurretPoint { Forward(-3200), Left(-12000), Right(5600), Back(14500), Safe(0), BackLeft(-21000), BackRight(14500); 
+	public enum TurretPoint { Forward(22500), Left(14500), Right(-3200), Back(5600), Safe(0); 
 
 		private int value;
     
@@ -118,7 +119,14 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	}
     
     @Override
-		public void periodic() {}
+		public void periodic() {
+			if (RobotMap.turretTalon.getPosition() > TurretPoint.Forward.get() + 500 && RobotMap.turretTalon.get() != 0) {
+				RobotMap.turretTalon.set(ControlMode.PercentOutput, -Math.abs(RobotMap.turretTalon.get())); //all motion should go counter-clockwise
+			}
+			if (RobotMap.turretTalon.getPosition() < TurretPoint.Left.get() - 500 && RobotMap.turretTalon.get() != 0) {
+				RobotMap.turretTalon.set(ControlMode.PercentOutput, Math.abs(RobotMap.turretTalon.get())); //all motion should go clockwise
+			}
+		}
 		
 	protected void initalizeTurretPID() {
 		TalonWithMagneticEncoder talon = RobotMap.turretTalon;
@@ -152,13 +160,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	}
 
 	public double getTarget(TurretPoint turretPoint) {
-		switch(turretPoint) {
-			case Back:
-				return (RobotMap.turretTalon.getPosition() > TurretPoint.Forward.get()) ? 
-					TurretPoint.BackRight.get() : TurretPoint.BackLeft.get(); 
-			default:
-				return turretPoint.get();
-		}
+		return turretPoint.get();
 	}
 
 	public double getMidPoint(TurretPoint pointA, TurretPoint pointB) {
@@ -167,16 +169,14 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 
 	public TurretPoint findNearestTurretPoint() {
 		double encoderPos = RobotMap.turretTalon.getPosition();
-		if (encoderPos < getMidPoint(TurretPoint.BackLeft, TurretPoint.Left)) {
-			return TurretPoint.BackLeft;
-		} else if (encoderPos > getMidPoint(TurretPoint.BackLeft, TurretPoint.Left) && encoderPos < getMidPoint(TurretPoint.Left, TurretPoint.Forward)) {
+		if (encoderPos < getMidPoint(TurretPoint.Left, TurretPoint.Forward)) {
 			return TurretPoint.Left;
 		} else if (encoderPos > getMidPoint(TurretPoint.Left, TurretPoint.Forward) && encoderPos < getMidPoint(TurretPoint.Right, TurretPoint.Forward)) {
 			return TurretPoint.Forward;
-		} else if (encoderPos > getMidPoint(TurretPoint.Right, TurretPoint.Forward) && encoderPos < getMidPoint(TurretPoint.Right, TurretPoint.BackRight)) {
+		} else if (encoderPos > getMidPoint(TurretPoint.Right, TurretPoint.Forward) && encoderPos < getMidPoint(TurretPoint.Right, TurretPoint.Back)) {
 			return TurretPoint.Right;
-		} else if (encoderPos > getMidPoint(TurretPoint.BackRight, TurretPoint.Right)) {
-			return TurretPoint.BackRight;
+		} else if (encoderPos > getMidPoint(TurretPoint.Back, TurretPoint.Right)) {
+			return TurretPoint.Back;
 		} else {
 			return TurretPoint.Safe;
 		}
