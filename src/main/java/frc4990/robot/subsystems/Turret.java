@@ -19,6 +19,8 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
     
 	public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
 
+	public Double setSpeed = 0.0;
+	
 	public enum TurretPoint { Forward(22500), Left(14500), Right(-3200), Back(5600), Safe(0); 
 
 		private int value;
@@ -54,7 +56,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	public Command setTurretSpeed(JoystickAnalogButton axis) { 
 		return new Command("setTurretSpeed", this) {
 			protected void execute() {
-				RobotMap.turret.setSpeed(0.4 * axis.getRawAxis() * axis.getRawAxis() * -Math.signum(axis.getRawAxis()));
+				RobotMap.turret.setSpeed(Math.pow(axis.getRawAxis(), 3.0));
 			}
 
 			@Override
@@ -85,7 +87,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	 */
 
     public void setSpeed(double value) {
-		RobotMap.turretTalon.set(value);
+		setSpeed = value;
     }
     
   /**
@@ -121,10 +123,11 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
     @Override
 		public void periodic() {
 			if (RobotMap.turretTalon.getPosition() > TurretPoint.Forward.get() + 500 && RobotMap.turretTalon.get() != 0) {
-				RobotMap.turretTalon.set(ControlMode.PercentOutput, -Math.abs(RobotMap.turretTalon.get())); //all motion should go counter-clockwise
-			}
-			if (RobotMap.turretTalon.getPosition() < TurretPoint.Left.get() - 500 && RobotMap.turretTalon.get() != 0) {
-				RobotMap.turretTalon.set(ControlMode.PercentOutput, Math.abs(RobotMap.turretTalon.get())); //all motion should go clockwise
+				RobotMap.turretTalon.set(ControlMode.PercentOutput, -Math.abs(setSpeed)); //all motion should go counter-clockwise
+			} else if (RobotMap.turretTalon.getPosition() < TurretPoint.Left.get() - 500 && RobotMap.turretTalon.get() != 0) {
+				RobotMap.turretTalon.set(ControlMode.PercentOutput, Math.abs(setSpeed)); //all motion should go clockwise
+			} else if (setSpeed != 0.0) {
+				RobotMap.turretTalon.set(ControlMode.PercentOutput, setSpeed);
 			}
 		}
 		
