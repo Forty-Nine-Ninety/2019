@@ -16,8 +16,9 @@ public class manualIntakeSequence extends CommandGroup {
    */
   public manualIntakeSequence() {
     //assume turretPneumatic is retracted and hatchPneumatic is extended
-    addSequential(RobotMap.hatchPneumatic.toggleCommand());
-    addSequential(new wait(0.1));
+    RobotMap.hatchPneumatic.open();
+    RobotMap.turretPneumatic.close();
+    addSequential(new wait(0.2));
     addSequential(RobotMap.turretPneumatic.toggleCommand());
     addSequential(new wait(0.2));
     addSequential(RobotMap.hatchPneumatic.toggleCommand());

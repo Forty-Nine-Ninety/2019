@@ -57,7 +57,8 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	public Command setTurretSpeed(JoystickAnalogButton axis) { 
 		return new Command("setTurretSpeed", this) {
 			protected void execute() {
-				RobotMap.turret.setSpeed(Math.pow(axis.getRawAxis(), 3.0));
+				//Add code here
+				setSpeed = Math.pow(axis.getRawAxis(), 3.0);
 			}
 
 			@Override
