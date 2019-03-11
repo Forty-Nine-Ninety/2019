@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc4990.robot.OI;
 import frc4990.robot.RobotMap;
-import frc4990.robot.commands.PIDTurretTurn;
+
 import frc4990.robot.components.JoystickAnalogButton;
 import frc4990.robot.components.TalonWithMagneticEncoder;
 
@@ -124,10 +124,12 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
     
     @Override
 		public void periodic() {
-			if (RobotMap.turretTalon.getPosition() > TurretPoint.Forward.get() + 500 && RobotMap.turretTalon.get() != 0) {
+			if (RobotMap.turretTalon.getPosition() > TurretPoint.Forward.get() - 500 && setSpeed != 0) {
 				RobotMap.turretTalon.set(ControlMode.PercentOutput, -Math.abs(setSpeed)); //all motion should go counter-clockwise
-			} else if (RobotMap.turretTalon.getPosition() < TurretPoint.Left.get() - 500 && RobotMap.turretTalon.get() != 0) {
+				System.out.println("[Turret] motion in danger zone, past FORWARD point");
+			} else if (RobotMap.turretTalon.getPosition() < TurretPoint.Right.get() + 500 && setSpeed != 0) {
 				RobotMap.turretTalon.set(ControlMode.PercentOutput, Math.abs(setSpeed)); //all motion should go clockwise
+				System.out.println("[Turret] motion in danger zone, past RIGHT point");
 			} else if (RobotMap.turretTalon.getControlMode() != ControlMode.MotionMagic) {
 				RobotMap.turretTalon.set(ControlMode.PercentOutput, setSpeed);
 			}
