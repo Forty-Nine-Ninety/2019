@@ -148,6 +148,9 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		talon.configNominalOutputReverse(0, 5);
 		talon.configPeakOutputForward(1, 5);
 		talon.configPeakOutputReverse(-1, 5);
+		talon.configContinuousCurrentLimit(1);
+		talon.configPeakCurrentLimit(0);
+		talon.enableCurrentLimit(true);
 			
 		/* Set Motion Magic gains in slot0 - see documentation */
 		talon.selectProfileSlot(0, 0);
