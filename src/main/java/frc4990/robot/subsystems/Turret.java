@@ -22,7 +22,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 
 	public Double setSpeed = 0.0;
 	
-	public enum TurretPoint { Forward(22500), Left(14500), Right(-3200), Back(5600), Safe(0); 
+	public enum TurretPoint { Forward(22100), Left(13400), Right(-4500), Back(4600), Safe(0); 
 
 		private int value;
     
@@ -36,19 +36,19 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	
 	public Turret() {
     super("Turret");
-		RobotMap.turretTalon.syncPosition();
+		RobotMap.turretTalon.resetEncoder();
 		initalizeTurretPID();
 	}
 
 	@Override
 	public void periodic() {
 		double currentPosition = RobotMap.turretTalon.getPosition();
-		if (currentPosition > TurretPoint.Forward.get() - 500 && setSpeed != 0) {
+		if (currentPosition > 21600 && setSpeed != 0) {
 			RobotMap.turretTalon.set(ControlMode.PercentOutput, -Math.abs(setSpeed)); //all motion should go counter-clockwise
-			System.out.println("[Turret] motion in danger zone, past FORWARD point");
-		} else if (currentPosition < TurretPoint.Right.get() - 500 && setSpeed != 0) {
+			System.out.println("[Turret] motion in danger zone, past FORWARD point, at " + currentPosition);
+		} else if (currentPosition < -6700 && setSpeed != 0) {
 			RobotMap.turretTalon.set(ControlMode.PercentOutput, Math.abs(setSpeed)); //all motion should go clockwise
-			System.out.println("[Turret] motion in danger zone, past RIGHT point");
+			System.out.println("[Turret] motion in danger zone, past RIGHT point, at " + currentPosition);
 		} else if (RobotMap.turretTalon.getControlMode() != ControlMode.MotionMagic) {
 			RobotMap.turretTalon.set(ControlMode.PercentOutput, setSpeed);
 		}
@@ -175,7 +175,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 
 		/* misc other configs */
 		talon.config_IntegralZone(0,80);
-		talon.configAllowableClosedloopError(0, 15);
+		talon.configAllowableClosedloopError(0, 5);
 	}
 
 	public double getTarget(TurretPoint turretPoint) {
