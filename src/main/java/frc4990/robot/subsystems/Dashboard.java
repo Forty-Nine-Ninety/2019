@@ -62,16 +62,16 @@ public class Dashboard extends Subsystem{
 			System.out.println("Adding Debug Tab Components.");
 
 			//Base sensors
-			debugTab.add("Base/PDP", RobotMap.pdp).withWidget(BuiltInWidgets.kPowerDistributionPanel)./*withSize(3, 2).*/withPosition(8, 3);
-			debugTab.add("Base/NavX-MXP-AHRS", RobotMap.ahrs).withWidget(BuiltInWidgets.kGyro)/*.withSize(2, 2)*/;
+			debugTab.add("Base/PDP", RobotMap.pdp);//.withWidget(BuiltInWidgets.kPowerDistributionPanel)./*withSize(3, 2).*/withPosition(8, 3);
+			debugTab.add("Base/NavX-MXP-AHRS", RobotMap.ahrs);//.withWidget(BuiltInWidgets.kGyro)/*.withSize(2, 2)*/;
 			debugTab.add("Base/Compressor", RobotMap.compressor);
 
 			//Drive Train Components
-			debugTab.add("DriveTrain/Left/Encoder", RobotMap.leftFrontDriveTalon).withWidget(BuiltInWidgets.kEncoder)./*withSize(2, 1).*/withPosition(11, 0);
-			debugTab.add("DriveTrain/Right/Encoder", RobotMap.rightFrontDriveTalon).withWidget(BuiltInWidgets.kEncoder)./*withSize(2, 1).*/withPosition(11, 1);
-			debugTab.add("DriveTrain/Left/motorGroup", RobotMap.leftMotorGroup).withWidget(BuiltInWidgets.kSpeedController)./*withSize(2, 1).*/withPosition(11, 2);
-			debugTab.add("DriveTrain/Right/motorGroup", RobotMap.rightMotorGroup).withWidget(BuiltInWidgets.kSpeedController)./*withSize(2, 1).*/withPosition(11, 3);
-			debugTab.add("DifferentialDrive", RobotMap.driveTrain.differentialDrive).withWidget(BuiltInWidgets.kDifferentialDrive).withSize(2, 2).withPosition(11, 4);
+			debugTab.add("DriveTrain/Left/Encoder", RobotMap.leftFrontDriveTalon);//.withWidget(BuiltInWidgets.kEncoder)./*withSize(2, 1).*/withPosition(11, 0);
+			debugTab.add("DriveTrain/Right/Encoder", RobotMap.rightFrontDriveTalon);//.withWidget(BuiltInWidgets.kEncoder)./*withSize(2, 1).*/withPosition(11, 1);
+			debugTab.add("DriveTrain/Left/motorGroup", RobotMap.leftMotorGroup);//.withWidget(BuiltInWidgets.kSpeedController)./*withSize(2, 1).*/withPosition(11, 2);
+			debugTab.add("DriveTrain/Right/motorGroup", RobotMap.rightMotorGroup);//.withWidget(BuiltInWidgets.kSpeedController)./*withSize(2, 1).*/withPosition(11, 3);
+			debugTab.add("DifferentialDrive", RobotMap.driveTrain.differentialDrive);//.withWidget(BuiltInWidgets.kDifferentialDrive).withSize(2, 2).withPosition(11, 4);
 			
 			debugTab.add("DriveAdjust/left", RobotMap.driveTrain.leftSpeedAdjust);
 			debugTab.add("DriveAdjust/right", RobotMap.driveTrain.rightSpeedAdjust);
@@ -103,10 +103,10 @@ public class Dashboard extends Subsystem{
 
 		} else if (! debug) { //drive
 			System.out.println("Adding Drive Tab Components.");
-			//driveTab.add("Scheduler", Scheduler.getInstance()).withSize(2, 3).withPosition(0, 0);
+			//driveTab.add("Scheduler", Scheduler.getInstance()).withSize(2, 3);
 			driveTab.add("initDebugDashboard", initDebugDashboard);
 			
-			driveTab.add("Turret Sensor", RobotMap.turretSensor.get()).withWidget(BuiltInWidgets.kBooleanBox).withSize(2, 1);
+			driveTab.add("Turret Sensor", new SendableObject((BooleanSupplier) () -> RobotMap.turretSensor.get())).withWidget(BuiltInWidgets.kBooleanBox).withSize(2, 1);
 			
 			driveTab.add("Target Not Visible", new SendableObject((BooleanSupplier) () -> (boolean) !CLimelight.hasValidTarget())).withWidget(BuiltInWidgets.kBooleanBox).withSize(3, 1);
 			driveTab.add("Target Visible, Not In Range", new SendableObject((BooleanSupplier) () -> (boolean) CLimelight.hasValidTarget())).withWidget(BuiltInWidgets.kBooleanBox).withSize(3, 1);
