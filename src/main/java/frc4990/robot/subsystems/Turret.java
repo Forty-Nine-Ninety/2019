@@ -39,6 +39,27 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		RobotMap.turretTalon.syncPosition();
 		initalizeTurretPID();
 	}
+
+	@Override
+	public void periodic() {
+		double currentPosition = RobotMap.turretTalon.getPosition();
+		if (currentPosition > TurretPoint.Forward.get() - 500 && setSpeed != 0) {
+			RobotMap.turretTalon.set(ControlMode.PercentOutput, -Math.abs(setSpeed)); //all motion should go counter-clockwise
+			System.out.println("[Turret] motion in danger zone, past FORWARD point");
+		} else if (currentPosition < TurretPoint.Right.get() - 500 && setSpeed != 0) {
+			RobotMap.turretTalon.set(ControlMode.PercentOutput, Math.abs(setSpeed)); //all motion should go clockwise
+			System.out.println("[Turret] motion in danger zone, past RIGHT point");
+		} else if (RobotMap.turretTalon.getControlMode() != ControlMode.MotionMagic) {
+			RobotMap.turretTalon.set(ControlMode.PercentOutput, setSpeed);
+		}
+
+		/*if (RobotMap.turretSensor.get()) {
+			RobotMap.turretTalon.resetEncoder();
+			System.out.println("[Turret] Sensor triggered and turret encoder reset to " + RobotMap.turretTalon.getPosition());
+		}
+		*/
+
+	}
     
     @Override
 	public void setPIDSourceType(PIDSourceType pidSource) {
@@ -110,7 +131,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		
 	public void resetPosition() {
 		RobotMap.turretTalon.resetEncoder();
-		if (RobotMap.turretSensor.get()) {
+		if (!RobotMap.turretSensor.get()) {
 			System.out.println("[Turret position reset] Successfully reset encoder to " + RobotMap.turretTalon.getPosition());
 		} else {
 			System.out.println("[Turret position reset] SENSOR NOT ENGAGED. Reset encoder to: " + RobotMap.turretTalon.getPosition());
@@ -122,26 +143,6 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		this.setDefaultCommand(this.setTurretSpeed(OI.turretTurn));
 	}
     
-    @Override
-	public void periodic() {
-		double currentPosition = RobotMap.turretTalon.getPosition();
-		if (currentPosition > TurretPoint.Forward.get() - 500 && setSpeed != 0) {
-			RobotMap.turretTalon.set(ControlMode.PercentOutput, -Math.abs(setSpeed)); //all motion should go counter-clockwise
-			System.out.println("[Turret] motion in danger zone, past FORWARD point");
-		} else if (currentPosition < TurretPoint.Right.get() + 500 && setSpeed != 0) {
-			RobotMap.turretTalon.set(ControlMode.PercentOutput, Math.abs(setSpeed)); //all motion should go clockwise
-			System.out.println("[Turret] motion in danger zone, past RIGHT point");
-		} else if (RobotMap.turretTalon.getControlMode() != ControlMode.MotionMagic) {
-			RobotMap.turretTalon.set(ControlMode.PercentOutput, setSpeed);
-		}
-
-		/*if (RobotMap.turretSensor.get()) {
-			RobotMap.turretTalon.resetEncoder();
-			System.out.println("[Turret] Sensor triggered and turret encoder reset to " + RobotMap.turretTalon.getPosition());
-		}
-		*/
-
-	}
 	//TODO move these numbers to Constants.java
 	protected void initalizeTurretPID() {
 		TalonWithMagneticEncoder talon = RobotMap.turretTalon;

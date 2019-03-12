@@ -1,6 +1,7 @@
 package frc4990.robot.components;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
@@ -11,6 +12,7 @@ public class SendableObject extends SendableBase {
 
 	private FunctionalInterface supplier;
 	private BooleanSupplier boolSupplier;
+	private DoubleSupplier doubleSupplier;
 	private Boolean hasType = false;
 	/**
 	 * 
@@ -24,6 +26,11 @@ public class SendableObject extends SendableBase {
 
 	public SendableObject(BooleanSupplier bool) {
 		boolSupplier = bool;
+		hasType = true;
+	}
+
+	public SendableObject(DoubleSupplier value) {
+		doubleSupplier = value;
 		hasType = true;
 	}
 
@@ -51,7 +58,11 @@ public class SendableObject extends SendableBase {
 	public void initSendable(SendableBuilder builder) {
 		if(hasType) {
 			try {
+				if (boolSupplier != null) {
 				builder.addBooleanProperty("value", boolSupplier, null);
+				} else if (doubleSupplier != null) {
+					builder.addDoubleProperty("value", doubleSupplier, null);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
