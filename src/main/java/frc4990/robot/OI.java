@@ -114,13 +114,13 @@ public class OI{
 		turnSpeedToggle.toggleWhenPressed(turnSpeedToggle());
 		stickShapingToggle.whenPressed(stickShapingToggle());
 		shiftLeft.whenPressed(new InstantCommand("shiftLeft", () -> {
-			RobotMap.rightMotorGroup.coeff += 25;
-			RobotMap.leftMotorGroup.coeff -= 25;
+			RobotMap.rightMotorGroup.coeff *= 1.009;
+			RobotMap.leftMotorGroup.coeff *= 0.991;
 			System.out.println("[Drive Tuning] right coeff: " + RobotMap.rightMotorGroup.coeff + ", left coeff: " + RobotMap.leftMotorGroup.coeff);
 		}));
 		shiftRight.whenPressed(new InstantCommand("shiftRight", () -> {
-			RobotMap.rightMotorGroup.coeff -= 25;
-			RobotMap.leftMotorGroup.coeff += 25;
+			RobotMap.rightMotorGroup.coeff *= 1.009;
+			RobotMap.leftMotorGroup.coeff *= 0.991;
 			System.out.println("[Drive Tuning] right coeff: " + RobotMap.rightMotorGroup.coeff + ", left coeff: " + RobotMap.leftMotorGroup.coeff);
 		}));
 

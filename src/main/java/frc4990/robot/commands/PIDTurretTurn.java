@@ -3,6 +3,7 @@ package frc4990.robot.commands;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc4990.robot.Constants;
 import frc4990.robot.RobotMap;
 import frc4990.robot.subsystems.Turret.TurretPoint;
 
@@ -33,6 +34,6 @@ public class PIDTurretTurn extends Command {
 	}
 	
 	public boolean isFinished() {
-		return Math.abs(RobotMap.turretTalon.getPosition() - target) < 20;
+		return Math.abs(RobotMap.turretTalon.getPosition() - target) < Constants.TURRET_TURN_ACCURACY;
 	}	
 }

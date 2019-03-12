@@ -28,6 +28,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
 		configTalonPID();
 	}
 
+	//TODO move these constants to Constants.java along with all other PID numbers
 	private void configTalonPID() {
 		RobotMap.leftFrontDriveTalon.configFactoryDefault();
 		RobotMap.rightFrontDriveTalon.configFactoryDefault();
@@ -48,8 +49,8 @@ public class DriveTrain extends Subsystem implements PIDSource {
 		RobotMap.rightFrontDriveTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 5);
 		RobotMap.leftFrontDriveTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 5);
 
-		RobotMap.rightFrontDriveTalon.configClosedloopRamp(0.3, 5);
-		RobotMap.leftFrontDriveTalon.configClosedloopRamp(0.3, 5);
+		//RobotMap.rightFrontDriveTalon.configClosedloopRamp(0.3, 5);
+		//RobotMap.leftFrontDriveTalon.configClosedloopRamp(0.3, 5);
 
 		RobotMap.rightFrontDriveTalon.selectProfileSlot(0, 0);
 		RobotMap.rightFrontDriveTalon.config_kP(0, 0.4, 5); 
@@ -72,12 +73,12 @@ public class DriveTrain extends Subsystem implements PIDSource {
 		RobotMap.leftRearDriveTalon.follow(RobotMap.leftFrontDriveTalon);
 		RobotMap.rightRearDriveTalon.follow(RobotMap.rightFrontDriveTalon);
 
-		RobotMap.leftMotorGroup.coeff = 2600.0; //max = 3300
-		RobotMap.rightMotorGroup.coeff = 2800.0; //max = 3100
+		RobotMap.leftMotorGroup.coeff = (RobotMap.robotSelector.get()) ? 0.88 : 1.0; //2600.0; //max = 3300
+		RobotMap.rightMotorGroup.coeff = (RobotMap.robotSelector.get()) ? 1.0 : 0.85; //2800.0; //max = 3100
 	}
 
 	private void configDifferentialDrive() {
-		differentialDrive.setExpiration(0.3); //sets motor safety to 0.3 seconds. This is a band-aid for the larger issue of the main thread taking more than 20ms to execute.
+		differentialDrive.setExpiration(0.4); //sets motor safety to 0.3 seconds. This is a band-aid for the larger issue of the main thread taking more than 20ms to execute.
 	}
 
 	/**
@@ -98,7 +99,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 */
 
 	public void configOpenloopRamp() {
-		configOpenloopRamp(Dashboard.getConst("DriveTrain/rampDownTime", 0.3));
+		configOpenloopRamp(Dashboard.getConst("DriveTrain/rampDownTime", 0.1));
 	} 
 
 	public void clearStickyFaults() {

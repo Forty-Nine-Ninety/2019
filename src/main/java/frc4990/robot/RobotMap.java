@@ -122,8 +122,8 @@ public class RobotMap {
 		hatchPneumatic = new Pneumatic(pcmCANID, 1);//was 3
 		compressor = new Compressor(pcmCANID);
 
-		leftMotorGroup = new TalonSRXGroup(ControlMode.Velocity, leftFrontDriveTalon); 
-		rightMotorGroup = new TalonSRXGroup(ControlMode.Velocity, rightFrontDriveTalon); 
+		leftMotorGroup = new TalonSRXGroup(ControlMode.PercentOutput, leftFrontDriveTalon); 
+		rightMotorGroup = new TalonSRXGroup(ControlMode.PercentOutput, rightFrontDriveTalon); 
 
     //all subsystems go at the end.
 		

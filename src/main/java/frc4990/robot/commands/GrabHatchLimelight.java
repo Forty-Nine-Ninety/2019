@@ -8,7 +8,7 @@ public class GrabHatchLimelight extends CommandGroup {
 
 	public GrabHatchLimelight() {
 		if (! CLimelight.hasValidTarget()) return;
-		addSequential(new LimelightCorrection(5, RobotMap.turret.findNearestTurretPoint(), 0.5));
+		addSequential(new LimelightCorrection(RobotMap.turret.findNearestTurretPoint(), 0.5));
 		addSequential(new manualIntakeSequence());
 	}
 }

@@ -58,7 +58,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		return new Command("setTurretSpeed", this) {
 			protected void execute() {
 				//Add code here
-				setSpeed = Math.pow(axis.getRawAxis(), 3.0);
+				setSpeed = Math.pow(axis.getRawAxis(), 3.0) * 1 / 4;
 			}
 
 			@Override
@@ -123,18 +123,18 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	}
     
     @Override
-		public void periodic() {
-			if (RobotMap.turretTalon.getPosition() > TurretPoint.Forward.get() - 500 && setSpeed != 0) {
-				RobotMap.turretTalon.set(ControlMode.PercentOutput, -Math.abs(setSpeed)); //all motion should go counter-clockwise
-				System.out.println("[Turret] motion in danger zone, past FORWARD point");
-			} else if (RobotMap.turretTalon.getPosition() < TurretPoint.Right.get() + 500 && setSpeed != 0) {
-				RobotMap.turretTalon.set(ControlMode.PercentOutput, Math.abs(setSpeed)); //all motion should go clockwise
-				System.out.println("[Turret] motion in danger zone, past RIGHT point");
-			} else if (RobotMap.turretTalon.getControlMode() != ControlMode.MotionMagic) {
-				RobotMap.turretTalon.set(ControlMode.PercentOutput, setSpeed);
-			}
+	public void periodic() {
+		if (RobotMap.turretTalon.getPosition() > TurretPoint.Forward.get() - 500 && setSpeed != 0) {
+			RobotMap.turretTalon.set(ControlMode.PercentOutput, -Math.abs(setSpeed)); //all motion should go counter-clockwise
+			System.out.println("[Turret] motion in danger zone, past FORWARD point");
+		} else if (RobotMap.turretTalon.getPosition() < TurretPoint.Right.get() + 500 && setSpeed != 0) {
+			RobotMap.turretTalon.set(ControlMode.PercentOutput, Math.abs(setSpeed)); //all motion should go clockwise
+			System.out.println("[Turret] motion in danger zone, past RIGHT point");
+		} else if (RobotMap.turretTalon.getControlMode() != ControlMode.MotionMagic) {
+			RobotMap.turretTalon.set(ControlMode.PercentOutput, setSpeed);
 		}
-		
+	}
+	//TODO move these numbers to Constants.java
 	protected void initalizeTurretPID() {
 		TalonWithMagneticEncoder talon = RobotMap.turretTalon;
 		talon.configFactoryDefault();

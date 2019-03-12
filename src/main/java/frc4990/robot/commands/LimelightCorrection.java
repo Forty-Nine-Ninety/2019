@@ -1,6 +1,7 @@
 package frc4990.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc4990.robot.Constants;
 import frc4990.robot.RobotMap;
 import frc4990.robot.subsystems.Turret.TurretPoint;
 import frc4990.robot.components.CLimelight;
@@ -9,14 +10,12 @@ import frc4990.robot.subsystems.DriveTrain;
 
 public class LimelightCorrection extends Command {
 
-	private int accuracy;
 	private double kP = -0.1, kPD = -0.1;
 	private double speed;
 	private TurretPoint target;
 
-	public LimelightCorrection(int a, TurretPoint target, double s) {
+	public LimelightCorrection(TurretPoint target, double s) {
 		requires(RobotMap.driveTrain);
-		accuracy = a;
 		speed = s;
 		//requires(RobotMap.driveTrain);
 	}
@@ -28,7 +27,7 @@ public class LimelightCorrection extends Command {
 	public void execute() {
 		double hError = CLimelight.getCrosshairHorizontalOffset() * -1, dError = CLimelight.getCrosshairVerticalOffset() * -1;
 		double speedL = speed, speedR = speed;
-        if (hError > accuracy) {
+        if (hError > Constants.LIMELIGHT_ACCURACY) {
             switch(target) {
 				case Forward:
 					speedL += dError * kPD;
@@ -48,7 +47,7 @@ public class LimelightCorrection extends Command {
 					break;
 			}
         }
-        else if (hError < -1 * accuracy) {
+        else if (hError < -1 * Constants.LIMELIGHT_ACCURACY) {
             switch(target) {
 				case Forward:
 					speedL -= dError * kPD;
@@ -81,7 +80,7 @@ public class LimelightCorrection extends Command {
 	}
 	
 	public boolean isFinished() {
-		return Math.abs(CLimelight.getCrosshairHorizontalOffset()) < accuracy;
+		return Math.abs(CLimelight.getCrosshairHorizontalOffset()) < Constants.LIMELIGHT_ACCURACY;
 	}
 
 	private static double clamp(double val, double min, double max) {
