@@ -51,8 +51,8 @@ public class Dashboard extends Subsystem{
 	 */
 	public Dashboard() {
 		System.out.println("Starting Initializing Dashboard.");
-		addDashboardTab(false);
-		addDashboardTab(true);
+		addDashboardTab(false); //drive tab
+		//addDashboardTab(true); //debug tab
 		System.out.println("Done Initializing Dashboard.");
 	}
 
@@ -104,7 +104,7 @@ public class Dashboard extends Subsystem{
 		} else if (! debug) { //drive
 			System.out.println("Adding Drive Tab Components.");
 			//driveTab.add("Scheduler", Scheduler.getInstance()).withSize(2, 3).withPosition(0, 0);
-			//driveTab.add("initDebugDashboard", initDebugDashboard);
+			driveTab.add("initDebugDashboard", initDebugDashboard);
 			
 			driveTab.add("Turret Sensor", RobotMap.turretSensor.get()).withWidget(BuiltInWidgets.kBooleanBox).withSize(2, 1);
 			
