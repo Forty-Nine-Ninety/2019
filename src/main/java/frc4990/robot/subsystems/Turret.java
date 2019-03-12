@@ -124,15 +124,23 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
     
     @Override
 	public void periodic() {
-		if (RobotMap.turretTalon.getPosition() > TurretPoint.Forward.get() - 500 && setSpeed != 0) {
+		double currentPosition = RobotMap.turretTalon.getPosition();
+		if (currentPosition > TurretPoint.Forward.get() - 500 && setSpeed != 0) {
 			RobotMap.turretTalon.set(ControlMode.PercentOutput, -Math.abs(setSpeed)); //all motion should go counter-clockwise
 			System.out.println("[Turret] motion in danger zone, past FORWARD point");
-		} else if (RobotMap.turretTalon.getPosition() < TurretPoint.Right.get() + 500 && setSpeed != 0) {
+		} else if (currentPosition < TurretPoint.Right.get() + 500 && setSpeed != 0) {
 			RobotMap.turretTalon.set(ControlMode.PercentOutput, Math.abs(setSpeed)); //all motion should go clockwise
 			System.out.println("[Turret] motion in danger zone, past RIGHT point");
 		} else if (RobotMap.turretTalon.getControlMode() != ControlMode.MotionMagic) {
 			RobotMap.turretTalon.set(ControlMode.PercentOutput, setSpeed);
 		}
+
+		/*if (RobotMap.turretSensor.get()) {
+			RobotMap.turretTalon.resetEncoder();
+			System.out.println("[Turret] Sensor triggered and turret encoder reset to " + RobotMap.turretTalon.getPosition());
+		}
+		*/
+
 	}
 	//TODO move these numbers to Constants.java
 	protected void initalizeTurretPID() {
