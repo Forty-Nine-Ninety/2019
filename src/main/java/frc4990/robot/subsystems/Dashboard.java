@@ -106,7 +106,9 @@ public class Dashboard extends Subsystem{
 			//driveTab.add("Scheduler", Scheduler.getInstance()).withSize(2, 3);
 			driveTab.add("initDebugDashboard", initDebugDashboard);
 			
-			driveTab.add("Turret Sensor", new SendableObject(RobotMap.turretSensor)).withWidget(BuiltInWidgets.kBooleanBox).withSize(2, 1);
+			driveTab.add("Turret Reset Position", new SendableObject(RobotMap.turretSensor)).withWidget(BuiltInWidgets.kBooleanBox).withSize(2, 1);
+			driveTab.add("Turret Sensor A", new SendableObject((BooleanSupplier) () -> (boolean) RobotMap.turretSensorA.get())).withWidget(BuiltInWidgets.kBooleanBox).withSize(1, 1);
+			driveTab.add("Turret Sensor B", new SendableObject((BooleanSupplier) () -> (boolean) RobotMap.turretSensorB.get())).withWidget(BuiltInWidgets.kBooleanBox).withSize(1, 1);
 			driveTab.add("Turret Position", new SendableObject((FunctionalInterface) () -> RobotMap.turretTalon.getPosition()));
 			
 			driveTab.add("Target Not Visible", new SendableObject((BooleanSupplier) () -> (boolean) !CLimelight.hasValidTarget())).withWidget(BuiltInWidgets.kBooleanBox).withSize(3, 1);
