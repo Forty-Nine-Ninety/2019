@@ -59,6 +59,9 @@ public class RobotMap {
 	public static final double differentialDriveExpiration = 0.4;
 	public static final double rampDownTime = 0.1;
 
+	public static final double LimelightCorrectionkP = -0.1;
+	public static final double LimelightCorrectionkPD = -0.1;
+
 	//Driver Station Inputs
 	public static F310Gamepad driveGamepad = new F310Gamepad(0);
 	public static F310Gamepad opGamepad = new F310Gamepad(1);

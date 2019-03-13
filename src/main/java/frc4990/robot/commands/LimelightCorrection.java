@@ -8,8 +8,6 @@ import frc4990.robot.components.CLimelight.LimelightMode;
 import frc4990.robot.subsystems.DriveTrain;
 
 public class LimelightCorrection extends Command {
-
-	private double kP = -0.1, kPD = -0.1;
 	private double speed;
 	private TurretPoint target;
 
@@ -23,9 +21,12 @@ public class LimelightCorrection extends Command {
 		CLimelight.setMode(LimelightMode.Vision);
 	}
 
-	public void execute() {
+	public void execute() {//TODO fix this
 		double hError = CLimelight.getCrosshairHorizontalOffset() * -1, dError = CLimelight.getCrosshairVerticalOffset() * -1;
 		double speedL = speed, speedR = speed;
+
+		
+		/*
         if (hError > RobotMap.LIMELIGHT_ACCURACY) {
             switch(target) {
 				case Forward:
@@ -66,6 +67,7 @@ public class LimelightCorrection extends Command {
 					break;
 			}
 		}
+		*/
 		DriveTrain.setSpeed(clamp(speedL, -1, 1), clamp(speedR, -1, 1));
 	}
 	
