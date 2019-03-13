@@ -23,6 +23,7 @@ import frc4990.robot.components.F310Gamepad.Axis;
 import frc4990.robot.components.F310Gamepad.Buttons;
 import frc4990.robot.components.F310Gamepad.POV;
 import frc4990.robot.components.CLimelight;
+import frc4990.robot.components.InstantCommandRunDisabled;
 import frc4990.robot.components.JoystickAnalogButton;
 import frc4990.robot.subsystems.Dashboard;
 import frc4990.robot.subsystems.Turret.TurretPoint;
@@ -138,7 +139,7 @@ public class OI{
 		turretRight.toggleWhenActive(new PIDTurretTurn(TurretPoint.Right));
 		turretBack.toggleWhenActive(new PIDTurretTurn(TurretPoint.Back));
 		turretSafe.toggleWhenActive(new PIDTurretTurn(TurretPoint.Safe));
-		turretReset.whenPressed(new InstantCommand(() -> RobotMap.turret.resetPosition()));
+		turretReset.whenPressed(new InstantCommandRunDisabled(() -> RobotMap.turret.resetPosition()));
     
 		//Hatch
 		turretPneumatic.whenPressed(RobotMap.turretPneumatic.toggleCommand());
