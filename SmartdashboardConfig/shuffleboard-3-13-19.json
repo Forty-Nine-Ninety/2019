@@ -10,25 +10,6 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "0,0": {
-            "size": [
-              6,
-              5
-            ],
-            "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://limelight",
-              "_title": "Limelight",
-              "Crosshair/Show crosshair": true,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": false,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
-            }
-          },
           "6,2": {
             "size": [
               5,
@@ -63,9 +44,9 @@
               ]
             }
           },
-          "10,0": {
+          "9,0": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -85,7 +66,7 @@
               "_title": "Shuffleboard/Drive/Limelight Status/value"
             }
           },
-          "9,0": {
+          "8,0": {
             "size": [
               1,
               1
@@ -103,6 +84,51 @@
                   "Colors/Color when false": "#FFFFFFFF"
                 }
               ]
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Drive/Turret Sensor A/value",
+              "_title": "Shuffleboard/Drive/Turret Sensor A/value",
+              "Colors/Color when true": "#FFFFFFFF",
+              "Colors/Color when false": "#B3661AFF"
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Drive/Turret Sensor B/value",
+              "_title": "Shuffleboard/Drive/Turret Sensor B/value",
+              "Colors/Color when true": "#FFFFFFFF",
+              "Colors/Color when false": "#B34D1AFF"
+            }
+          },
+          "0,0": {
+            "size": [
+              6,
+              5
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://limelight",
+              "_title": "limelight",
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": false,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
             }
           }
         }
