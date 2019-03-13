@@ -7,6 +7,8 @@
 
 package frc4990.robot;
 
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
@@ -54,7 +56,10 @@ public class RobotMap {
 
 	//Turret
 	public static TalonWithMagneticEncoder turretTalon;
-	public static DigitalInput turretSensor;
+	public static DigitalInput turretSensorA;
+	public static DigitalInput turretSensorB;
+	public static BooleanSupplier turretSensor;
+
 
 	//Climbing pneumatics
 	public static Pneumatic frontSolenoid;
@@ -97,7 +102,8 @@ public class RobotMap {
 			rightRearDriveTalon = new WPI_TalonSRX(34);
 
 			turretTalon = new TalonWithMagneticEncoder(35);
-			turretSensor = new DigitalInput(0);
+			turretSensorA = new DigitalInput(0);
+			turretSensorB = new DigitalInput(1);
 
 		} else { //competition bot
 			System.out.println("I am the *COMP* bot.");
@@ -124,6 +130,8 @@ public class RobotMap {
 
 		leftMotorGroup = new TalonSRXGroup(ControlMode.PercentOutput, leftFrontDriveTalon); 
 		rightMotorGroup = new TalonSRXGroup(ControlMode.PercentOutput, rightFrontDriveTalon); 
+
+		turretSensor = () -> !turretSensorA.get() && !turretSensorB.get();
 
     //all subsystems go at the end.
 		

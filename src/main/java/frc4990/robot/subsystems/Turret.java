@@ -43,7 +43,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	@Override
 	public void periodic() {
 		double currentPosition = RobotMap.turretTalon.getPosition();
-		if (currentPosition > 21600 && setSpeed != 0) {
+		if (currentPosition > 22200 && setSpeed != 0) {
 			RobotMap.turretTalon.set(ControlMode.PercentOutput, -Math.abs(setSpeed)); //all motion should go counter-clockwise
 			System.out.println("[Turret] motion in danger zone, past FORWARD point, at " + currentPosition);
 		} else if (currentPosition < -6700 && setSpeed != 0) {
@@ -53,11 +53,11 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 			RobotMap.turretTalon.set(ControlMode.PercentOutput, setSpeed);
 		}
 
-		/*if (RobotMap.turretSensor.get()) {
+		if (RobotMap.turretSensor.getAsBoolean()) {
 			RobotMap.turretTalon.resetEncoder();
 			System.out.println("[Turret] Sensor triggered and turret encoder reset to " + RobotMap.turretTalon.getPosition());
 		}
-		*/
+		
 
 	}
     
@@ -131,7 +131,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		
 	public void resetPosition() {
 		RobotMap.turretTalon.resetEncoder();
-		if (!RobotMap.turretSensor.get()) {
+		if (RobotMap.turretSensor.getAsBoolean()) {
 			System.out.println("[Turret position reset] Successfully reset encoder to " + RobotMap.turretTalon.getPosition());
 		} else {
 			System.out.println("[Turret position reset] SENSOR NOT ENGAGED. Reset encoder to: " + RobotMap.turretTalon.getPosition());
@@ -165,17 +165,17 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		talon.selectProfileSlot(0, 0);
 		talon.config_kF(0, 0.553, 5);
 		talon.config_kP(0, 0.7, 5);
-		talon.config_kI(0, 0.003, 5);
+		talon.config_kI(0, 0.005, 5);
 		talon.config_kD(0, 4, 5);
 
 		/* Set acceleration and vcruise velocity - see documentation */
 		talon.configMotionCruiseVelocity(1600, 5);
 		talon.configMotionAcceleration(1800, 5);
-		talon.configMotionSCurveStrength(2);
+		talon.configMotionSCurveStrength(4);
 
 		/* misc other configs */
 		talon.config_IntegralZone(0,80);
-		talon.configAllowableClosedloopError(0, 5);
+		talon.configAllowableClosedloopError(0, 3);
 	}
 
 	public double getTarget(TurretPoint turretPoint) {
