@@ -36,6 +36,29 @@ import frc4990.robot.subsystems.Turret;
 
 public class RobotMap {
 
+	//constants
+
+	public static final int LIMELIGHT_ACCURACY = 5;
+	public static final double DRIVETRAIN_WIDTH = (23d + 7d / 8d) / 12d;
+	public static final int TURRET_TURN_ACCURACY = 20;
+	public static final int TALON_TIMEOUT_MS = 5;
+
+	public static final double driveStraight_kP = 0.4;
+	public static final double driveStraight_kI = 0.0;
+	public static final double driveStraight_kD = 0.1;
+	public static final double driveStraight_kF = 0.5;
+	public static final int driveStraight_IZone = 50;
+	public static final double driveStraight_PeakOutput = 1.0;
+	public static final int driveStraight_AllowableError = 0;
+
+	public static final double driveStraight_comp_leftCoeff = 1.0;
+	public static final double driveStraight_comp_rightCoeff = 0.85;
+	public static final double driveStraight_practice_leftCoeff = 0.88;
+	public static final double driveStraight_practice_rightCoeff = 1.0;
+
+	public static final double differentialDriveExpiration = 0.4;
+	public static final double rampDownTime = 0.1;
+
 	//Driver Station Inputs
 	public static F310Gamepad driveGamepad = new F310Gamepad(0);
 	public static F310Gamepad opGamepad = new F310Gamepad(1);

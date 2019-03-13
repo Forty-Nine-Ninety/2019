@@ -38,47 +38,47 @@ public class DriveTrain extends Subsystem implements PIDSource {
 		RobotMap.leftFrontDriveTalon.setSensorPhase(true);
 		RobotMap.rightFrontDriveTalon.setSensorPhase(true);
 
-		RobotMap.rightFrontDriveTalon.configNeutralDeadband(0.001, 5);
-		RobotMap.leftFrontDriveTalon.configNeutralDeadband(0.001, 5);
+		RobotMap.rightFrontDriveTalon.configNeutralDeadband(0.001, RobotMap.TALON_TIMEOUT_MS);
+		RobotMap.leftFrontDriveTalon.configNeutralDeadband(0.001, RobotMap.TALON_TIMEOUT_MS);
 
-		RobotMap.leftFrontDriveTalon.configPeakOutputForward(+1.0, 5);
-		RobotMap.leftFrontDriveTalon.configPeakOutputReverse(-1.0, 5);
-		RobotMap.rightFrontDriveTalon.configPeakOutputForward(+1.0, 5);
-		RobotMap.rightFrontDriveTalon.configPeakOutputReverse(-1.0, 5);
+		RobotMap.leftFrontDriveTalon.configPeakOutputForward(+1.0, RobotMap.TALON_TIMEOUT_MS);
+		RobotMap.leftFrontDriveTalon.configPeakOutputReverse(-1.0, RobotMap.TALON_TIMEOUT_MS);
+		RobotMap.rightFrontDriveTalon.configPeakOutputForward(+1.0, RobotMap.TALON_TIMEOUT_MS);
+		RobotMap.rightFrontDriveTalon.configPeakOutputReverse(-1.0, RobotMap.TALON_TIMEOUT_MS);
 
-		RobotMap.rightFrontDriveTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 5);
-		RobotMap.leftFrontDriveTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 5);
+		RobotMap.rightFrontDriveTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, RobotMap.TALON_TIMEOUT_MS);
+		RobotMap.leftFrontDriveTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, RobotMap.TALON_TIMEOUT_MS);
 
-		//RobotMap.rightFrontDriveTalon.configClosedloopRamp(0.3, 5);
-		//RobotMap.leftFrontDriveTalon.configClosedloopRamp(0.3, 5);
+		//RobotMap.rightFrontDriveTalon.configClosedloopRamp(0.3, RobotMap.TALON_TIMEOUT_MS);
+		//RobotMap.leftFrontDriveTalon.configClosedloopRamp(0.3, RobotMap.TALON_TIMEOUT_MS);
 
 		RobotMap.rightFrontDriveTalon.selectProfileSlot(0, 0);
-		RobotMap.rightFrontDriveTalon.config_kP(0, 0.4, 5); 
-		RobotMap.rightFrontDriveTalon.config_kI(0, 0, 5); 
-		RobotMap.rightFrontDriveTalon.config_kD(0, 0.1, 5); 
-		RobotMap.rightFrontDriveTalon.config_kF(0, 0.5, 5);
-		RobotMap.rightFrontDriveTalon.config_IntegralZone(0, 50, 5); 
-		RobotMap.rightFrontDriveTalon.configClosedLoopPeakOutput(0, 1.0, 5); 
-		RobotMap.rightFrontDriveTalon.configAllowableClosedloopError(0, 0, 5); 
+		RobotMap.rightFrontDriveTalon.config_kP(0, RobotMap.driveStraight_kP, RobotMap.TALON_TIMEOUT_MS); 
+		RobotMap.rightFrontDriveTalon.config_kI(0, RobotMap.driveStraight_kI, RobotMap.TALON_TIMEOUT_MS); 
+		RobotMap.rightFrontDriveTalon.config_kD(0, RobotMap.driveStraight_kD, RobotMap.TALON_TIMEOUT_MS); 
+		RobotMap.rightFrontDriveTalon.config_kF(0, RobotMap.driveStraight_kF, RobotMap.TALON_TIMEOUT_MS);
+		RobotMap.rightFrontDriveTalon.config_IntegralZone(0, RobotMap.driveStraight_IZone, RobotMap.TALON_TIMEOUT_MS); 
+		RobotMap.rightFrontDriveTalon.configClosedLoopPeakOutput(0, RobotMap.driveStraight_PeakOutput, RobotMap.TALON_TIMEOUT_MS); 
+		RobotMap.rightFrontDriveTalon.configAllowableClosedloopError(0, RobotMap.driveStraight_AllowableError, RobotMap.TALON_TIMEOUT_MS); 
 
 		RobotMap.leftFrontDriveTalon.selectProfileSlot(0, 0);
-		RobotMap.leftFrontDriveTalon.config_kP(0, 0.4, 5); 
-		RobotMap.leftFrontDriveTalon.config_kI(0, 0, 5); 
-		RobotMap.leftFrontDriveTalon.config_kD(0, 0.1, 5); 
-		RobotMap.leftFrontDriveTalon.config_kF(0, 0.5, 5); 
-		RobotMap.leftFrontDriveTalon.config_IntegralZone(0, 50, 5); 
-		RobotMap.leftFrontDriveTalon.configClosedLoopPeakOutput(0, 1.0, 5); 
-		RobotMap.leftFrontDriveTalon.configAllowableClosedloopError(0, 0, 5); 
+		RobotMap.leftFrontDriveTalon.config_kP(0, RobotMap.driveStraight_kP, RobotMap.TALON_TIMEOUT_MS); 
+		RobotMap.leftFrontDriveTalon.config_kI(0, RobotMap.driveStraight_kI, RobotMap.TALON_TIMEOUT_MS); 
+		RobotMap.leftFrontDriveTalon.config_kD(0, RobotMap.driveStraight_kD, RobotMap.TALON_TIMEOUT_MS); 
+		RobotMap.leftFrontDriveTalon.config_kF(0, RobotMap.driveStraight_kF, RobotMap.TALON_TIMEOUT_MS); 
+		RobotMap.leftFrontDriveTalon.config_IntegralZone(0, RobotMap.driveStraight_IZone, RobotMap.TALON_TIMEOUT_MS); 
+		RobotMap.leftFrontDriveTalon.configClosedLoopPeakOutput(0, RobotMap.driveStraight_PeakOutput, RobotMap.TALON_TIMEOUT_MS); 
+		RobotMap.leftFrontDriveTalon.configAllowableClosedloopError(0, RobotMap.driveStraight_AllowableError, RobotMap.TALON_TIMEOUT_MS); 
 
 		RobotMap.leftRearDriveTalon.follow(RobotMap.leftFrontDriveTalon);
 		RobotMap.rightRearDriveTalon.follow(RobotMap.rightFrontDriveTalon);
 
-		RobotMap.leftMotorGroup.coeff = (RobotMap.robotSelector.get()) ? 0.88 : 1.0; //2600.0; //max = 3300
-		RobotMap.rightMotorGroup.coeff = (RobotMap.robotSelector.get()) ? 1.0 : 0.85; //2800.0; //max = 3100
+		RobotMap.leftMotorGroup.coeff = (RobotMap.robotSelector.get()) ? RobotMap.driveStraight_practice_leftCoeff : RobotMap.driveStraight_comp_leftCoeff; //2600.0; //max = 3300
+		RobotMap.rightMotorGroup.coeff = (RobotMap.robotSelector.get()) ? RobotMap.driveStraight_practice_rightCoeff : RobotMap.driveStraight_comp_rightCoeff; //2800.0; //max = 3100
 	}
 
 	private void configDifferentialDrive() {
-		differentialDrive.setExpiration(0.4); //sets motor safety to 0.3 seconds. This is a band-aid for the larger issue of the main thread taking more than 20ms to execute.
+		differentialDrive.setExpiration(RobotMap.differentialDriveExpiration); //sets motor safety to 0.3 seconds. This is a band-aid for the larger issue of the main thread taking more than 20ms to execute.
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 */
 
 	public void configOpenloopRamp() {
-		configOpenloopRamp(Dashboard.getConst("DriveTrain/rampDownTime", 0.1));
+		configOpenloopRamp(RobotMap.rampDownTime);
 	} 
 
 	public void clearStickyFaults() {

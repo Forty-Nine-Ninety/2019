@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc4990.robot.Constants;
 import frc4990.robot.RobotMap;
 import frc4990.robot.subsystems.Dashboard;
 import frc4990.robot.subsystems.DriveTrain;
@@ -72,8 +71,8 @@ public class GyroTurn extends Command implements PIDOutput {
 			double radius = Dashboard.getConst("gyroTurn/turnRadius", 0);
 			double ratio;
 			if (radius < 0) {
-				radius += Constants.DRIVETRAIN_WIDTH / 2;
-				ratio = radius / (radius + Constants.DRIVETRAIN_WIDTH);
+				radius += RobotMap.DRIVETRAIN_WIDTH / 2;
+				ratio = radius / (radius + RobotMap.DRIVETRAIN_WIDTH);
 				if (Math.abs(ratio) < 1) {
 					DriveTrain.setSpeed(maxSpeed, ratio * maxSpeed);
 				}
@@ -82,8 +81,8 @@ public class GyroTurn extends Command implements PIDOutput {
 				}
 			}
 			else if (radius > 0) {
-				radius -= Constants.DRIVETRAIN_WIDTH / 2;
-				ratio = radius / (radius + Constants.DRIVETRAIN_WIDTH);
+				radius -= RobotMap.DRIVETRAIN_WIDTH / 2;
+				ratio = radius / (radius + RobotMap.DRIVETRAIN_WIDTH);
 				if (Math.abs(ratio) < 1) {
 					DriveTrain.setSpeed(ratio * maxSpeed, maxSpeed);
 				}

@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
-import frc4990.robot.Constants;
+import frc4990.robot.RobotMap;
 
 public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource, Sendable {
 
@@ -49,7 +49,7 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
         public TalonWithMagneticEncoder(int CANID) {
             super(CANID);
             configSelectedFeedbackSensor((defaultSensorMode.get() == 0) ? FeedbackDevice.CTRE_MagEncoder_Absolute : 
-              FeedbackDevice.CTRE_MagEncoder_Relative, 0, Constants.TALON_TIMEOUT_MS);
+              FeedbackDevice.CTRE_MagEncoder_Relative, 0, RobotMap.TALON_TIMEOUT_MS);
             syncPosition();
         }
 
@@ -80,9 +80,9 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
        * @return the ErrorCode
        */
       public ErrorCode setPosition(SensorMode mode, int sensorPos) {
-        return (mode == defaultSensorMode) ?  this.setSelectedSensorPosition(sensorPos, 0, Constants.TALON_TIMEOUT_MS) : 
-          (mode == SensorMode.Absolute) ? this.getSensorCollection().setPulseWidthPosition(sensorPos, Constants.TALON_TIMEOUT_MS) : 
-          this.getSensorCollection().setQuadraturePosition(sensorPos, Constants.TALON_TIMEOUT_MS);
+        return (mode == defaultSensorMode) ?  this.setSelectedSensorPosition(sensorPos, 0, RobotMap.TALON_TIMEOUT_MS) : 
+          (mode == SensorMode.Absolute) ? this.getSensorCollection().setPulseWidthPosition(sensorPos, RobotMap.TALON_TIMEOUT_MS) : 
+          this.getSensorCollection().setQuadraturePosition(sensorPos, RobotMap.TALON_TIMEOUT_MS);
       }
 
        /**
