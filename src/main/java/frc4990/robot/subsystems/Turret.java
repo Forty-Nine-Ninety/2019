@@ -143,7 +143,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		this.setDefaultCommand(this.setTurretSpeed(OI.turretTurn));
 	}
     
-	//TODO move these numbers to Constants.java
+	//move these numbers to Constants section of RobotMap
 	protected void initalizeTurretPID() {
 		TalonWithMagneticEncoder talon = RobotMap.turretTalon;
 		talon.configFactoryDefault();

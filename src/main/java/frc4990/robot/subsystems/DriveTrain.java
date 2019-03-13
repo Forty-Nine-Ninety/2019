@@ -28,7 +28,6 @@ public class DriveTrain extends Subsystem implements PIDSource {
 		configTalonPID();
 	}
 
-	//TODO move these constants to Constants.java along with all other PID numbers
 	private void configTalonPID() {
 		RobotMap.leftFrontDriveTalon.configFactoryDefault();
 		RobotMap.rightFrontDriveTalon.configFactoryDefault();

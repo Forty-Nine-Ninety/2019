@@ -81,9 +81,9 @@ public class CLimelight extends SendableBase {
     public static boolean inRange() {
         switch (visionMode.get()) {
             case Vision_forward:
-                return getCrosshairVerticalOffset() < 5; //TODO: Add real values
+                return getCrosshairVerticalOffset() < 5; //Add real values
             case Vision_side:
-                return getCrosshairVerticalOffset() < 4; //TODO: Add real values
+                return getCrosshairVerticalOffset() < 4; //Add real values
             default:
                 return false;
         }
