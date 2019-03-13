@@ -12,11 +12,12 @@
         "tiles": {
           "0,0": {
             "size": [
-              5,
+              6,
               5
             ],
             "content": {
               "_type": "Camera Stream",
+              "_source0": "camera_server://limelight",
               "_title": "Limelight",
               "Crosshair/Show crosshair": true,
               "Crosshair/Crosshair color": "#FFFFFFFF",
@@ -28,10 +29,10 @@
               "imageHeight": -1
             }
           },
-          "5,1": {
+          "6,2": {
             "size": [
-              6,
-              4
+              5,
+              3
             ],
             "content": {
               "_type": "List Layout",
@@ -73,9 +74,9 @@
               "_title": "Shuffleboard/Drive/Turret Position/value"
             }
           },
-          "5,0": {
+          "6,1": {
             "size": [
-              4,
+              5,
               1
             ],
             "content": {
