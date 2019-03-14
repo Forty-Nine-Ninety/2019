@@ -9,6 +9,7 @@ package frc4990.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc4990.robot.RobotMap;
+import frc4990.robot.subsystems.Turret.TurretPoint;
 
 public class manualOutakeSequence extends CommandGroup {
    /**
@@ -21,6 +22,8 @@ public class manualOutakeSequence extends CommandGroup {
     addSequential(new wait(0.3));
     addSequential(RobotMap.turretPneumatic.retract());
     addSequential(new wait(0.1));
-    addSequential(RobotMap.hatchPneumatic.retract());
+    if (RobotMap.turret.findNearestTurretPoint() == TurretPoint.Back || RobotMap.turret.findNearestTurretPoint() == TurretPoint.Forward) {
+      addSequential(RobotMap.hatchPneumatic.retract());
+    }
   }
 }
