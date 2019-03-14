@@ -21,16 +21,16 @@ public class LimelightCorrection extends Command {
 		CLimelight.setMode(LimelightMode.Vision);
 	}
 
-	public void execute() {//TODO fix this
+	public void execute() {
 		double hError = CLimelight.getCrosshairHorizontalOffset() * -1, dError = CLimelight.getCrosshairVerticalOffset() * -1;
-		double speedL = 0, speedR = 0;
+		double speedL = RobotMap.LimelightCorrectionSpeed, speedR = RobotMap.LimelightCorrectionSpeed;
 
 		switch(target) {
 			case Forward:
 			case Back:
 				if (Math.abs(hError) > RobotMap.LIMELIGHT_ACCURACY) {
-					speedL = RobotMap.LimelightCorrectionkPD * dError + hError * RobotMap.LimelightCorrectionkP + RobotMap.LimelightCorrectionMin;
-					speedR = -1 * (RobotMap.LimelightCorrectionkPD * dError + hError * RobotMap.LimelightCorrectionkP + RobotMap.LimelightCorrectionMin);
+					speedL += RobotMap.LimelightCorrectionkPD * dError + hError * RobotMap.LimelightCorrectionkP;
+					speedR += -1 * (RobotMap.LimelightCorrectionkPD * dError + hError * RobotMap.LimelightCorrectionkP);
 				}
 				break;
 			case Left:
@@ -50,7 +50,7 @@ public class LimelightCorrection extends Command {
 		}
 		else if (target == TurretPoint.Right) {
 			speedL *= -1;
-			speedR = speedL;
+			speedR = speedL;																																																								
 		}
 		/*
         if (hError > RobotMap.LIMELIGHT_ACCURACY) {

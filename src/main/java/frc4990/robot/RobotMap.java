@@ -38,7 +38,7 @@ public class RobotMap {
 
 	//constants
 
-	public static final int LIMELIGHT_ACCURACY = 5;
+	public static final int LIMELIGHT_ACCURACY = 2;//TODO change this
 	public static final double DRIVETRAIN_WIDTH = (23d + 7d / 8d) / 12d;
 	public static final int TURRET_TURN_ACCURACY = 20;
 	public static final int TALON_TIMEOUT_MS = 5;
@@ -59,6 +59,7 @@ public class RobotMap {
 	public static final double differentialDriveExpiration = 0.4;
 	public static final double rampDownTime = 0.1;
 
+	//TODO tune these values
 	public static final double LimelightCorrectionkP = -0.1;
 	public static final double LimelightCorrectionkPD = -0.1;
 	public static final double LimelightCorrectionMin = 0.05;
