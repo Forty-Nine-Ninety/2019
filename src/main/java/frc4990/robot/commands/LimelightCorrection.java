@@ -13,6 +13,7 @@ public class LimelightCorrection extends Command {
 	public LimelightCorrection(TurretPoint target) {
 		requires(RobotMap.driveTrain);
 		//requires(RobotMap.driveTrain);
+		this.target = target;
 	}
 
 	public void initialize() {
