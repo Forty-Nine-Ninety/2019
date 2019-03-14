@@ -67,7 +67,7 @@ public class OI{
 	public static Button turretReset = RobotMap.opGamepad.getPOVButton(POV.east);
 
 
-	public static Button turretPneumatic = RobotMap.opGamepad.getPOVButton(POV.northWest);
+	public static JoystickAnalogButton turretPneumatic = RobotMap.opGamepad.getAxis(Axis.rightJoystickY);
 	public static POVButton hatchToggle = RobotMap.opGamepad.getPOVButton(POV.south);
 
 	public static Button manualIntakeSequence = RobotMap.opGamepad.getButton(Buttons.leftBumper);
