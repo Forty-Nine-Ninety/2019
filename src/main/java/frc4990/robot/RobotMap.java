@@ -61,6 +61,8 @@ public class RobotMap {
 
 	public static final double LimelightCorrectionkP = -0.1;
 	public static final double LimelightCorrectionkPD = -0.1;
+	public static final double LimelightCorrectionMin = 0.05;
+	public static final double LimelightCorrectionSpeed = 0.25;
 
 	//Driver Station Inputs
 	public static F310Gamepad driveGamepad = new F310Gamepad(0);

@@ -23,9 +23,35 @@ public class LimelightCorrection extends Command {
 
 	public void execute() {//TODO fix this
 		double hError = CLimelight.getCrosshairHorizontalOffset() * -1, dError = CLimelight.getCrosshairVerticalOffset() * -1;
-		double speedL = speed, speedR = speed;
+		double speedL = 0, speedR = 0;
 
-		
+		switch(target) {
+			case Forward:
+			case Back:
+				if (Math.abs(hError) > RobotMap.LIMELIGHT_ACCURACY) {
+					speedL = RobotMap.LimelightCorrectionkPD * dError + hError * RobotMap.LimelightCorrectionkP + RobotMap.LimelightCorrectionMin;
+					speedR = -1 * (RobotMap.LimelightCorrectionkPD * dError + hError * RobotMap.LimelightCorrectionkP + RobotMap.LimelightCorrectionMin);
+				}
+				break;
+			case Left:
+			case Right:
+				if (Math.abs(hError) > RobotMap.LIMELIGHT_ACCURACY) {
+					if (hError < 0) {speedL = RobotMap.LimelightCorrectionSpeed * -1; speedR = speedL;};
+					speedL += hError * RobotMap.LimelightCorrectionkP;
+					speedR += hError * RobotMap.LimelightCorrectionkP;
+				}
+				break;
+		}
+
+		if (target == TurretPoint.Back) {
+			double temp = speedL;
+			speedL = speedR * -1;
+			speedR = temp * -1;
+		}
+		else if (target == TurretPoint.Right) {
+			speedL *= -1;
+			speedR = speedL;
+		}
 		/*
         if (hError > RobotMap.LIMELIGHT_ACCURACY) {
             switch(target) {
@@ -81,7 +107,7 @@ public class LimelightCorrection extends Command {
 	}
 	
 	public boolean isFinished() {
-		return Math.abs(CLimelight.getCrosshairHorizontalOffset()) < RobotMap.LIMELIGHT_ACCURACY;
+		return Math.abs(CLimelight.getCrosshairHorizontalOffset()) <= RobotMap.LIMELIGHT_ACCURACY;
 	}
 
 	private static double clamp(double val, double min, double max) {
