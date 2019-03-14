@@ -29,12 +29,12 @@ public class Pneumatic extends Subsystem {
 		return new InstantCommand("TogglePneumatic", this, () -> this.toggle());
 	}
 
-	public void open() {
-		solenoid.set(true);
+	public InstantCommand extend() {
+		return new InstantCommand(() -> solenoid.set(true));
 	}
 
-	public void close() {
-		solenoid.set(false);
+	public InstantCommand retract() {
+		return new InstantCommand(() -> solenoid.set(false));
 	}
 
 	public void clearStickyFaults() {

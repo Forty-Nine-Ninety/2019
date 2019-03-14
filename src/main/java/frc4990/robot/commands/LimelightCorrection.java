@@ -4,21 +4,19 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc4990.robot.RobotMap;
 import frc4990.robot.subsystems.Turret.TurretPoint;
 import frc4990.robot.components.CLimelight;
-import frc4990.robot.components.CLimelight.LimelightMode;
+import frc4990.robot.components.CLimelight.Pipeline;
 import frc4990.robot.subsystems.DriveTrain;
 
 public class LimelightCorrection extends Command {
-	private double speed;
 	private TurretPoint target;
 
-	public LimelightCorrection(TurretPoint target, double s) {
+	public LimelightCorrection(TurretPoint target) {
 		requires(RobotMap.driveTrain);
-		speed = s;
 		//requires(RobotMap.driveTrain);
 	}
 
 	public void initialize() {
-		CLimelight.setMode(LimelightMode.Vision);
+		CLimelight.setPipeline(Pipeline.Vision.get());
 	}
 
 	public void execute() {
@@ -40,6 +38,9 @@ public class LimelightCorrection extends Command {
 					speedL += hError * RobotMap.LimelightCorrectionkP;
 					speedR += hError * RobotMap.LimelightCorrectionkP;
 				}
+				break;
+			case Safe:
+			default:
 				break;
 		}
 
@@ -99,7 +100,7 @@ public class LimelightCorrection extends Command {
 	
 	public void end() {
 		DriveTrain.setSpeed(0);
-		CLimelight.setMode(CLimelight.defaultMode);
+		CLimelight.setPipeline(Pipeline.Driver.get());
 	}
 	
 	public void interrupted() {

@@ -1,13 +1,9 @@
 package frc4990.robot.components;
 
-import java.util.function.Supplier;
-
 import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
-import frc4990.robot.RobotMap;
-import frc4990.robot.subsystems.Turret.TurretPoint;
 
 /**
  * Wrapper class for Limelight
@@ -16,9 +12,8 @@ import frc4990.robot.subsystems.Turret.TurretPoint;
  */
 public class CLimelight extends SendableBase {
 
-    public enum LimelightMode {Vision, Driver}
     public enum Pipeline {
-        Vision_forward(1), Vision_side(2), Driver(0);
+        Vision(1), Driver(0);
         private int value;
 
         Pipeline(int value) {
@@ -30,15 +25,10 @@ public class CLimelight extends SendableBase {
         }
     }
 
-    public static LimelightMode mode = LimelightMode.Driver;
-    public static LimelightMode defaultMode = LimelightMode.Driver;
-    public static Supplier<Pipeline> visionMode = () -> (RobotMap.turret.findNearestTurretPoint() == TurretPoint.Left || 
-        RobotMap.turret.findNearestTurretPoint() == TurretPoint.Right) ? Pipeline.Vision_side : Pipeline.Vision_forward;
-
     public CLimelight() {}
     
     public static String getStatus() {
-        if (mode == LimelightMode.Driver) {
+        if (getPipeline() == Pipeline.Driver.get()) {
             return "Driver Mode";
         } else {
             if (hasValidTarget()) {
@@ -52,41 +42,9 @@ public class CLimelight extends SendableBase {
             }
         }
     }
-    /**
-     * Get current LimelightMode.
-     * 
-     * @return mode LimelightMode {Vision_forward(1), Vision_side(2), Driver(0)}
-     */
-    public static LimelightMode getMode() {
-        return mode;
-    }
-
-    /**
-     * Set LimelightMode.
-     * 
-     * @param n LimelightMode {Vision_twoTarget(1), Vision_leftTarget(2),
-     *          Vision_rightTarget(3), Driver(0)}
-     */
-    public static void setMode(LimelightMode n) {
-        mode = n;
-        if (mode == LimelightMode.Driver) {
-            setCamMode(1);
-            setPipeline(Pipeline.Driver);
-        } else {
-            setCamMode(0);
-            setPipeline(visionMode.get());
-        }
-    }
 
     public static boolean inRange() {
-        switch (visionMode.get()) {
-            case Vision_forward:
-                return getCrosshairVerticalOffset() < 5; //Add real values
-            case Vision_side:
-                return getCrosshairVerticalOffset() < 4; //Add real values
-            default:
-                return false;
-        }
+        return getCrosshairVerticalOffset() < 0; //Add real value
     }
 
     /**
@@ -94,23 +52,9 @@ public class CLimelight extends SendableBase {
      */
 
     public static InstantCommand toggleMode() {
-        return new InstantCommand(() -> setMode(
-                (getMode() == LimelightMode.Driver) ? LimelightMode.Vision : LimelightMode.Driver));
+        return new InstantCommand(() -> setPipeline(
+                (getPipeline() == Pipeline.Driver.get()) ? Pipeline.Vision : Pipeline.Driver));
     }
-
-    /**
-     * Toggles between two target and driver LimelightModes.
-     */
-    public static InstantCommand toggleDefaultMode() {
-        return new InstantCommand(() -> setDefaultMode(
-                (getMode() == LimelightMode.Driver) ? LimelightMode.Vision : LimelightMode.Driver));
-    }
-
-    public static void setDefaultMode(LimelightMode n) {
-        defaultMode = n;
-        setMode(n);
-    }
-
     /**
      * Gets valid target
      * 

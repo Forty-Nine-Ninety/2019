@@ -16,13 +16,11 @@ public class manualOutakeSequence extends CommandGroup {
    */
   public manualOutakeSequence() {
     //assume turretPneumatic is retracted and hatchPneumatic is extended
-    RobotMap.turretPneumatic.close();
-    RobotMap.hatchPneumatic.close();
-    addSequential(RobotMap.turretPneumatic.toggleCommand());
-    addSequential(new wait(0.2));
-    addSequential(RobotMap.hatchPneumatic.toggleCommand());
-    addSequential(new wait(0.2));
-    addSequential(RobotMap.turretPneumatic.toggleCommand());
-    addSequential(RobotMap.hatchPneumatic.toggleCommand());
+    addSequential(RobotMap.hatchPneumatic.extend());
+    addSequential(RobotMap.turretPneumatic.extend());
+    addSequential(new wait(0.3));
+    addSequential(RobotMap.turretPneumatic.retract());
+    addSequential(new wait(0.1));
+    addSequential(RobotMap.hatchPneumatic.retract());
   }
 }

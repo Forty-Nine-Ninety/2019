@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc4990.robot.components.CLimelight;
-import frc4990.robot.components.CLimelight.LimelightMode;
+import frc4990.robot.components.CLimelight.Pipeline;
 
 //This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that was the Freshmen Union of 2018
 
@@ -52,7 +52,7 @@ public class Robot extends TimedRobot {
 			autonomusCommand.cancel();
 		}*/
 
-		CLimelight.setDefaultMode(LimelightMode.Driver);
+		CLimelight.setPipeline(Pipeline.Driver.get());
 		System.out.println("Disabled Init complete");
 	}
 
@@ -64,7 +64,7 @@ public class Robot extends TimedRobot {
 		/*autonomusCommand = new AutonomusCommand();
 		autonomusCommand.start();
 		*/
-		CLimelight.setDefaultMode(LimelightMode.Driver);
+		CLimelight.setPipeline(Pipeline.Driver.get());
 		System.out.println("Auto Init complete");
 	}
 
@@ -82,7 +82,7 @@ public class Robot extends TimedRobot {
 			autonomusCommand.cancel();
 		}*/
 
-		CLimelight.setDefaultMode(LimelightMode.Vision);
+		CLimelight.setPipeline(Pipeline.Driver.get());
 		RobotMap.driveTrain.clearStickyFaults();
 		System.out.println("Teleop Init complete");
 	}
@@ -100,7 +100,7 @@ public class Robot extends TimedRobot {
 	public void testInit() {
 		RobotMap.compressor.setClosedLoopControl(true);
 		RobotMap.compressor.start();
-		CLimelight.setDefaultMode(LimelightMode.Vision);
+		CLimelight.setPipeline(Pipeline.Driver.get());
 		System.out.println("Test Init complete");
 	}
 

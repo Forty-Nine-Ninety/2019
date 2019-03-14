@@ -10,7 +10,7 @@ public class PlaceHatchLimelight extends CommandGroup {
 		System.out.println("Limelight looking for target...");
 		if (! CLimelight.hasValidTarget()) return;
 		System.out.println("Target found.  Placing...");
-		addSequential(new LimelightCorrection(RobotMap.turret.findNearestTurretPoint(), 0.5));
+		addSequential(new LimelightCorrection(RobotMap.turret.findNearestTurretPoint()));
 		addSequential(new manualOutakeSequence());
 	}
 }
