@@ -17,14 +17,19 @@ public class PlaceHatchLimelight extends CommandGroup {
 		addSequential(new PrintCommand("Limelight looking for target..."));
 		addSequential(new ConditionalCommand(
 			//on TRUE
-			new CommandChain(
-				new PrintCommand("Target found.  Placing..."),
-				new LimelightCorrection(RobotMap.turret.findNearestTurretPoint()), 
-				new manualOutakeSequence()),
+			new CommandGroup() {
+				public CommandGroup() {
+					addSequential(new PrintCommand("Target found.  Placing..."));
+					addSequential(new LimelightCorrection(RobotMap.turret.findNearestTurretPoint())); 
+					addSequential(new manualOutakeSequence());
+				}
+			}),
 			//on FALSE
-			new CommandChain(
-				new PrintCommand("Target NOT FOUND."),
-				new InstantCommand(() -> CLimelight.setPipeline(Pipeline.Driver.get())))){
+			new CommandChain() {
+				public CommandGroup() {
+					addSequential(new PrintCommand("Target NOT FOUND."));
+					addSequential(new InstantCommand(() -> CLimelight.setPipeline(Pipeline.Driver.get()));
+				}) {
 		
 			@Override
 			protected boolean condition() {

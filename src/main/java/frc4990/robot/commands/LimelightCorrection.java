@@ -50,10 +50,12 @@ public class LimelightCorrection extends Command {
 			speedL = speedR * -1;
 			speedR = temp * -1;
 		}
-		else if (target == TurretPoint.Right) {
+		else if (target == TurretPoint.Left) {
 			speedL *= -1;
 			speedR = speedL;																																																								
 		}
+
+		System.out.println("[DEBUG] " + hError + " " + dError);
 		/*
         if (hError > RobotMap.LIMELIGHT_ACCURACY) {
             switch(target) {
@@ -100,6 +102,7 @@ public class LimelightCorrection extends Command {
 	}
 	
 	public void end() {
+		System.out.println("Done");
 		DriveTrain.setSpeed(0);
 		CLimelight.setPipeline(Pipeline.Driver.get());
 	}
