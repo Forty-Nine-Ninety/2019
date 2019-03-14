@@ -1,7 +1,5 @@
 package frc4990.robot.commands;
 
-import com.chopshop166.chopshoplib.commands.CommandChain;
-
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import edu.wpi.first.wpilibj.command.InstantCommand;
@@ -17,24 +15,20 @@ public class PlaceHatchLimelight extends CommandGroup {
 		addSequential(new PrintCommand("Limelight looking for target..."));
 		addSequential(new ConditionalCommand(
 			//on TRUE
-			new CommandGroup() {
-				public CommandGroup() {
-					addSequential(new PrintCommand("Target found.  Placing..."));
-					addSequential(new LimelightCorrection(RobotMap.turret.findNearestTurretPoint())); 
-					addSequential(new manualOutakeSequence());
-				}
-			}),
+			new CommandGroup() {{
+				addSequential(new PrintCommand("Target found.  Placing..."));
+				addSequential(new LimelightCorrection(RobotMap.turret.findNearestTurretPoint())); 
+				addSequential(new manualOutakeSequence());
+			}},
 			//on FALSE
-			new CommandChain() {
-				public CommandGroup() {
-					addSequential(new PrintCommand("Target NOT FOUND."));
-					addSequential(new InstantCommand(() -> CLimelight.setPipeline(Pipeline.Driver.get()));
-				}) {
-		
-			@Override
-			protected boolean condition() {
-				return CLimelight.hasValidTarget();
-			}
+			new CommandGroup() {{
+				addSequential(new PrintCommand("Target NOT FOUND."));
+				addSequential(new InstantCommand(() -> CLimelight.setPipeline(Pipeline.Driver.get())));
+			}}) {
+				@Override
+				protected boolean condition() {
+					return CLimelight.hasValidTarget();
+				}
 		});
 	}
 }
