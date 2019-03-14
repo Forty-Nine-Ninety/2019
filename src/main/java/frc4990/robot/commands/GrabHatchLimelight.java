@@ -7,7 +7,9 @@ import frc4990.robot.components.CLimelight;
 public class GrabHatchLimelight extends CommandGroup {
 
 	public GrabHatchLimelight() {
+		System.out.println("Limelight looking for target...");
 		if (! CLimelight.hasValidTarget()) return;
+		System.out.println("Target found.  Placing...");
 		addSequential(new LimelightCorrection(RobotMap.turret.findNearestTurretPoint()));
 		addSequential(new manualIntakeSequence());
 	}
