@@ -5,5 +5,5 @@ package griffin.subsystems;
  * @author MajikalExplosions
  */
 public class Pneumatic extends GSubsystem {
-    
+    //TODO you know what to do.
 }

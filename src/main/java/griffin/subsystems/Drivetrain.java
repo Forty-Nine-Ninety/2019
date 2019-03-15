@@ -5,5 +5,5 @@ package griffin.subsystems;
  * @author MajikalExplosions
  */
 public class Drivetrain extends GSubsystem {
-    
+    //TODO you know what to do.
 }

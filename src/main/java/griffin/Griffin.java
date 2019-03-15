@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import edu.wpi.first.wpilibj.command.Scheduler;
+import griffin.subsystems.GController;
 import griffin.subsystems.GSubsystem;
 import griffin.util.GameMode;
 
@@ -11,14 +12,14 @@ import griffin.util.GameMode;
  * 
  * @author MajikalExplosions
  * @version 0.1.0
- * @see <a href="http://google.com">Neither here nor there.</a>
+ * @see <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Neither here nor there.</a>
  */
 public class Griffin {
 
     private static ArrayList<Griffin> griffins = new ArrayList<>();
     
     private HashMap<String, GSubsystem> subsystems;
-    private HashMap<String, GSubsystem> controllers;
+    private HashMap<String, GController> controllers;
 
     /**
      * Creates a new Griffin object
@@ -50,6 +51,7 @@ public class Griffin {
     }
 
     //Subsystems
+    //TODO think about switching all those GSubsystem references to strings and using Class.forName(<classname>).newInstance() or something similar
 
     /**
      * Returns the subsystem with key k
@@ -88,7 +90,7 @@ public class Griffin {
      * @param k The key of the controller
      * @return The controller with key k
      */
-    public GSubsystem getController(String k) {
+    public GController getController(String k) {
         return controllers.get(k);
     }
 
@@ -98,7 +100,7 @@ public class Griffin {
      * @param controller The controller to add
      * @return True when the controller was successfully added, false if not
      */
-    public boolean addController(String key, GSubsystem controller) {
+    public boolean addController(String key, GController controller) {
         if (containsController(key)) return false;
         controllers.put(key, controller);
         return true;

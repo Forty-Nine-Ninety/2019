@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
  * @author MajikalExplosions
  */
 public class GCommand extends Command {
-
+    //TODO figure out what code all commands have in common
     public GCommand() {}
 
     @Override

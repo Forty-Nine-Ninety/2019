@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * @author MajikalExplosions
  */
 public class GSubsystem extends Subsystem {
-
+	//TODO figure out what all subsystems have in common.
 	public GSubsystem() {}
 
 	@Override
