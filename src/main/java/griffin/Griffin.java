@@ -125,12 +125,13 @@ public class Griffin {
         System.out.println("[Griffin] Initialized " + m.toString());
         switch(m) {
             case Disabled:
+                Scheduler.getInstance().removeAll();
                 break;
-            case Autonomous:
+            case Autonomous://TODO add auto command
                 break;
-            case Teleop:
+            case Teleop://TODO add teleop command
                 break;
-            case Test:
+            case Test://TODO add test command
                 break;
         }
     }
@@ -142,7 +143,6 @@ public class Griffin {
     public void periodic(GameMode m) {
         switch(m) {
             case Disabled:
-                Scheduler.getInstance().removeAll();
                 break;
             case Autonomous:
                 Scheduler.getInstance().run();
