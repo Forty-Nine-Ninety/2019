@@ -1,4 +1,4 @@
-package griffin;
+package griffin.util;
 
 /**
  * Home for constants and PID variables
@@ -6,5 +6,7 @@ package griffin;
  */
 public class Constants {
     
+    //Put constants and PID vars here, preferably with some form of organization.
+
     public Constants() {}
 }
