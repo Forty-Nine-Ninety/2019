@@ -169,7 +169,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		talon.config_kD(0, 4, 5);
 
 		/* Set acceleration and vcruise velocity - see documentation */
-		talon.configMotionCruiseVelocity(1600, 5);
+		talon.configMotionCruiseVelocity(1800, 5); //was 1600
 		talon.configMotionAcceleration(1800, 5);
 		talon.configMotionSCurveStrength(4);
 
