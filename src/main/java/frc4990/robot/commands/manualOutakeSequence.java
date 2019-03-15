@@ -8,6 +8,8 @@
 package frc4990.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.ConditionalCommand;
+import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc4990.robot.RobotMap;
 import frc4990.robot.subsystems.Turret.TurretPoint;
 
@@ -22,8 +24,17 @@ public class manualOutakeSequence extends CommandGroup {
     addSequential(new wait(0.3));
     addSequential(RobotMap.turretPneumatic.retract());
     addSequential(new wait(0.1));
-    if (RobotMap.turret.findNearestTurretPoint() == TurretPoint.Back || RobotMap.turret.findNearestTurretPoint() == TurretPoint.Forward) {
-      addSequential(RobotMap.hatchPneumatic.retract());
-    }
+    //only move hatch grabber up if facing forward or back 
+    //addSequential(RobotMap.hatchPneumatic.retract());
+    addSequential(new ConditionalCommand(RobotMap.hatchPneumatic.retract(), 
+      new PrintCommand("[ManualOutakeSequence] not retracting, on side")){
+
+      @Override
+      protected boolean condition() {
+        return RobotMap.turret.findNearestTurretPoint() == TurretPoint.Back || 
+          RobotMap.turret.findNearestTurretPoint() == TurretPoint.Forward;
+      }
+
+    });
   }
 }
