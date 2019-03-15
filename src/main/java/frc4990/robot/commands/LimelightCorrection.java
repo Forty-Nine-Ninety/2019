@@ -2,30 +2,65 @@ package frc4990.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc4990.robot.RobotMap;
-import frc4990.robot.commands.PIDTurretTurn.TurretPoint;
+import frc4990.robot.subsystems.Turret.TurretPoint;
 import frc4990.robot.components.CLimelight;
+import frc4990.robot.components.CLimelight.Pipeline;
 import frc4990.robot.subsystems.DriveTrain;
 
 public class LimelightCorrection extends Command {
-
-	private int accuracy;
-	private double kP = -0.1, kPD = -0.1;
-	private double speed;
 	private TurretPoint target;
 
-	public LimelightCorrection(int a, TurretPoint target, double s) {
+	public LimelightCorrection(TurretPoint target) {
 		requires(RobotMap.driveTrain);
-		accuracy = a;
-		speed = s;
 		//requires(RobotMap.driveTrain);
+		this.target = target;
 	}
 
-	public void initialize() {}
+	public void initialize() {
+		CLimelight.setPipeline(Pipeline.Vision.get());
+	}
 
 	public void execute() {
 		double hError = CLimelight.getCrosshairHorizontalOffset() * -1, dError = CLimelight.getCrosshairVerticalOffset() * -1;
-		double speedL = speed, speedR = speed;
-        if (hError > accuracy) {
+		double speedL = RobotMap.LimelightCorrectionSpeed, speedR = RobotMap.LimelightCorrectionSpeed;
+
+		switch(target) {
+			case Forward:
+			case Back:
+				if (Math.abs(hError) > RobotMap.LIMELIGHT_ACCURACY) {
+					speedL += RobotMap.LimelightCorrectionkPD * dError + hError * RobotMap.LimelightCorrectionkP;
+					speedR += -1 * (RobotMap.LimelightCorrectionkPD * dError + hError * RobotMap.LimelightCorrectionkP);
+				}
+				break;
+			case Left:
+			case Right:
+				if (Math.abs(hError) > RobotMap.LIMELIGHT_ACCURACY) {
+					if (hError < 0) {
+						speedL = RobotMap.LimelightCorrectionSpeed * -1;
+						speedR = speedL;
+					}
+					speedL += hError * RobotMap.LimelightCorrectionkP;
+					speedR += hError * RobotMap.LimelightCorrectionkP;
+				}
+				break;
+			case Safe:
+			default:
+				break;
+		}
+
+		if (target == TurretPoint.Forward) {
+			double temp = speedL;
+			speedL = speedR * -1;
+			speedR = temp * -1;
+		}
+		else if (target == TurretPoint.Left) {
+			speedL *= -1;
+			speedR = speedL;																																																				
+		}
+
+		System.out.println("[DEBUG] " + hError + " " + dError);
+		/*
+        if (hError > RobotMap.LIMELIGHT_ACCURACY) {
             switch(target) {
 				case Forward:
 					speedL += dError * kPD;
@@ -45,7 +80,7 @@ public class LimelightCorrection extends Command {
 					break;
 			}
         }
-        else if (hError < -1 * accuracy) {
+        else if (hError < -1 * RobotMap.LIMELIGHT_ACCURACY) {
             switch(target) {
 				case Forward:
 					speedL -= dError * kPD;
@@ -65,11 +100,14 @@ public class LimelightCorrection extends Command {
 					break;
 			}
 		}
+		*/
 		DriveTrain.setSpeed(clamp(speedL, -1, 1), clamp(speedR, -1, 1));
 	}
 	
 	public void end() {
+		System.out.println("Done");
 		DriveTrain.setSpeed(0);
+		CLimelight.setPipeline(Pipeline.Driver.get());
 	}
 	
 	public void interrupted() {
@@ -77,7 +115,7 @@ public class LimelightCorrection extends Command {
 	}
 	
 	public boolean isFinished() {
-		return Math.abs(CLimelight.getCrosshairHorizontalOffset()) < accuracy;
+		return Math.abs(CLimelight.getCrosshairHorizontalOffset()) <= RobotMap.LIMELIGHT_ACCURACY;
 	}
 
 	private static double clamp(double val, double min, double max) {

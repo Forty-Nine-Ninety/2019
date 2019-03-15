@@ -17,7 +17,7 @@ public class TeleopDriveTrainController extends Command {
 	
 	public enum StickShapingMode { SquaredThrottle, DifferentialDrive }
 	
-	public static StickShapingMode stickShapingMode = StickShapingMode.SquaredThrottle;	
+	public static StickShapingMode stickShapingMode = StickShapingMode.DifferentialDrive;	
 
 	public static double currentThrottleMultiplier = 1.0;
 
@@ -51,7 +51,7 @@ public class TeleopDriveTrainController extends Command {
 					
 				} else if (throttle != 0 && turnSteepness == 0) { //go forward
 					if (driveMode != DriveMode.STRAIGHT) { //changed modes
-						RobotMap.ahrs.reset();
+						//RobotMap.ahrs.reset();
 					}
 					driveMode = DriveMode.STRAIGHT;
 					DriveTrain.setSpeed(throttle, throttle);
@@ -69,7 +69,7 @@ public class TeleopDriveTrainController extends Command {
 					DriveTrain.setSpeed(0, 0);
 				}
 				break;
-			case DifferentialDrive://New!  but there is no code.
+			case DifferentialDrive: //New for 2019
 				DriveTrain.curvatureDrive(
 					OI.throttle.getRawAxis() * currentThrottleMultiplier, 
 					OI.turnSteepness.getRawAxis() * currentTurnSteepnessMultiplier, true);

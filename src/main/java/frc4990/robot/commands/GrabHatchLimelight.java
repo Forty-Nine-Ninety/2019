@@ -8,9 +8,9 @@ import frc4990.robot.RobotMap;
 import frc4990.robot.components.CLimelight;
 import frc4990.robot.components.CLimelight.Pipeline;
 
-public class PlaceHatchLimelight extends CommandGroup {
+public class GrabHatchLimelight extends CommandGroup {
 
-	public PlaceHatchLimelight() {
+	public GrabHatchLimelight() {
 		addSequential(new InstantCommand(() -> CLimelight.setPipeline(Pipeline.Vision.get())));
 		addSequential(new PrintCommand("Limelight looking for target..."));
 		addSequential(new ConditionalCommand(
@@ -18,7 +18,7 @@ public class PlaceHatchLimelight extends CommandGroup {
 			new CommandGroup() {{
 				addSequential(new PrintCommand("Target found.  Placing..."));
 				addSequential(new LimelightCorrection(RobotMap.turret.findNearestTurretPoint())); 
-				addSequential(new manualOutakeSequence());
+				addSequential(new manualIntakeSequence());
 			}},
 			//on FALSE
 			new CommandGroup() {{

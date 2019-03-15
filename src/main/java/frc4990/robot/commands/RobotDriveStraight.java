@@ -13,23 +13,20 @@ public class RobotDriveStraight extends Command {
 	public RobotDriveStraight(double time) {
 		requires(RobotMap.driveTrain);
 		RobotDriveStraight.targetTime = time;
-		//requires(RobotMap.driveTrain);
 	}
 	
 	public RobotDriveStraight(double time, double speed) {
 		requires(RobotMap.driveTrain);
 		RobotDriveStraight.targetTime = time;
 		this.speed = speed;
-		//requires(RobotMap.driveTrain);
 	}
 
 	public RobotDriveStraight() {
 		requires(RobotMap.driveTrain);
-		//requires(RobotMap.driveTrain);
 	}
 
 	public void initialize() {
-		System.out.println("Initalizing GyroStraight with time " + RobotDriveStraight.targetTime);
+		System.out.println("Initalizing Simple Drive Straight with time " + RobotDriveStraight.targetTime);
 		RobotMap.driveTrain.resetDistanceTraveled();
 		DriveTrain.setSpeed(speed);
 	}

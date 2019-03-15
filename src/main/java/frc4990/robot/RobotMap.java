@@ -7,20 +7,22 @@
 
 package frc4990.robot;
 
+import java.util.function.BooleanSupplier;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import frc4990.robot.components.F310Gamepad;
+import frc4990.robot.components.TalonSRXGroup;
 import frc4990.robot.components.TalonWithMagneticEncoder;
+import frc4990.robot.components.TalonWithMagneticEncoder.SensorMode;
 import frc4990.robot.subsystems.Dashboard;
 import frc4990.robot.subsystems.DriveTrain;
-import frc4990.robot.subsystems.HatchClaw;
 import frc4990.robot.subsystems.Pneumatic;
 import frc4990.robot.subsystems.Turret;
 
@@ -33,6 +35,35 @@ import frc4990.robot.subsystems.Turret;
  */
 
 public class RobotMap {
+
+	//constants
+
+	public static final double LIMELIGHT_ACCURACY = 0.5;//change this
+	public static final double DRIVETRAIN_WIDTH = (23d + 7d / 8d) / 12d;
+	public static final int TURRET_TURN_ACCURACY = 20;
+	public static final int TALON_TIMEOUT_MS = 5;
+
+	public static final double driveStraight_kP = 0.4;
+	public static final double driveStraight_kI = 0.0;
+	public static final double driveStraight_kD = 0.1;
+	public static final double driveStraight_kF = 0.5;
+	public static final int driveStraight_IZone = 50;
+	public static final double driveStraight_PeakOutput = 1.0;
+	public static final int driveStraight_AllowableError = 0;
+
+	public static final double driveStraight_comp_leftCoeff = 1.0;
+	public static final double driveStraight_comp_rightCoeff = 0.85;
+	public static final double driveStraight_practice_leftCoeff = 0.88;
+	public static final double driveStraight_practice_rightCoeff = 1.0;
+
+	public static final double differentialDriveExpiration = 0.4;
+	public static final double rampDownTime = 0.1;
+
+	//tune these values
+	public static final double LimelightCorrectionkP = 0.01;
+	public static final double LimelightCorrectionkPD = 0.01;
+	public static final double LimelightCorrectionMin = 0.05;
+	public static final double LimelightCorrectionSpeed = 0.1;
 
 	//Driver Station Inputs
 	public static F310Gamepad driveGamepad = new F310Gamepad(0);
@@ -49,27 +80,26 @@ public class RobotMap {
 	public static WPI_TalonSRX leftRearDriveTalon;
 	public static TalonWithMagneticEncoder rightFrontDriveTalon;
 	public static WPI_TalonSRX rightRearDriveTalon;
-	public static SpeedControllerGroup leftMotorGroup;
-	public static SpeedControllerGroup rightMotorGroup;
+	public static TalonSRXGroup leftMotorGroup;
+	public static TalonSRXGroup rightMotorGroup;
 
 	//Turret
 	public static TalonWithMagneticEncoder turretTalon;
-	public static DigitalInput turretSensorLeft;
-	public static DigitalInput turretSensorMiddle;
-	public static DigitalInput turretSensorRight;
+	public static DigitalInput turretSensorA;
+	public static DigitalInput turretSensorB;
+	public static BooleanSupplier turretSensor;
+
 
 	//Climbing pneumatics
 	public static Pneumatic frontSolenoid;
-	public static Pneumatic rearSolenoid;
+	//public static Pneumatic rearSolenoid;
 
 	//HatchClaw
 	public static Pneumatic hatchPneumatic;
-	public static WPI_TalonSRX hatchMotor;
-	public static Counter hatchMotorCounter;
+	public static Pneumatic turretPneumatic;
 
 	//Subsystems
 	public static DriveTrain driveTrain;
-	public static HatchClaw hatchClaw;
 	public static Turret turret;
 	public static Dashboard dashboard;
 
@@ -90,27 +120,23 @@ public class RobotMap {
 
 		if (robotSelector.get()) { //practice bot
 			System.out.println("I am the *PRACTICE* bot.");
-      //all port bindings that are only true for the practice robot. (PDP = 2, PCM = 12, Talons = 30 through 40)
+      //all port bindings that are only true for the practice robot. (PDP = 2, PCM = 12, Talons = 31 through 40)
 
 			pcmCANID = 12;
 			pdp = new PowerDistributionPanel(2);
 
-			leftFrontDriveTalon = new TalonWithMagneticEncoder(31);
+			leftFrontDriveTalon = new TalonWithMagneticEncoder(31, SensorMode.Relative);
 			leftRearDriveTalon = new WPI_TalonSRX(32);
-			rightFrontDriveTalon = new TalonWithMagneticEncoder(33);
+			rightFrontDriveTalon = new TalonWithMagneticEncoder(33, SensorMode.Relative);
 			rightRearDriveTalon = new WPI_TalonSRX(34);
 
 			turretTalon = new TalonWithMagneticEncoder(35);
-			turretSensorLeft = new DigitalInput(0);
-			turretSensorMiddle = new DigitalInput(1);
-			turretSensorRight = new DigitalInput(2);
-
-			hatchMotor = new WPI_TalonSRX(36);
-			hatchMotorCounter = new Counter(3);
+			turretSensorA = new DigitalInput(0);
+			turretSensorB = new DigitalInput(1);
 
 		} else { //competition bot
 			System.out.println("I am the *COMP* bot.");
-       //all port bindings that are only true for the competition robot. (PDP = 1, PCM = 11, Talons = 20 through 30)
+       //all port bindings that are only true for the competition robot. (PDP = 1, PCM = 11, Talons = 21 through 30)
 			
 			pcmCANID = 11;
 			pdp = new PowerDistributionPanel(1);
@@ -121,28 +147,24 @@ public class RobotMap {
 			rightRearDriveTalon = new WPI_TalonSRX(24);
 
 			turretTalon = new TalonWithMagneticEncoder(25);
-			turretSensorLeft = new DigitalInput(0);
-			turretSensorMiddle = new DigitalInput(1);
-			turretSensorRight = new DigitalInput(2);
-
-			hatchMotor = new WPI_TalonSRX(26);
-			hatchMotorCounter = new Counter(3);
 		}
 
 		//all port bindings that are dependent on robot-specific port bindings.
     
 		frontSolenoid = new Pneumatic(pcmCANID, 0);
-		rearSolenoid = new Pneumatic(pcmCANID, 1);
-		hatchPneumatic = new Pneumatic(pcmCANID, 2);
+		//rearSolenoid = new Pneumatic(pcmCANID, 1);
+		turretPneumatic = new Pneumatic(pcmCANID, 2);
+		hatchPneumatic = new Pneumatic(pcmCANID, 1);//was 3
 		compressor = new Compressor(pcmCANID);
 
-		leftMotorGroup = new SpeedControllerGroup(leftFrontDriveTalon, leftRearDriveTalon);
-		rightMotorGroup = new SpeedControllerGroup(rightFrontDriveTalon, rightRearDriveTalon);
-    
+		leftMotorGroup = new TalonSRXGroup(ControlMode.PercentOutput, leftFrontDriveTalon); 
+		rightMotorGroup = new TalonSRXGroup(ControlMode.PercentOutput, rightFrontDriveTalon); 
+
+		turretSensor = () -> !turretSensorA.get() && !turretSensorB.get();
+
     //all subsystems go at the end.
 		
 		turret = new Turret();
-		hatchClaw = new HatchClaw();
 		driveTrain = new DriveTrain();
 		dashboard = new Dashboard();
 	
