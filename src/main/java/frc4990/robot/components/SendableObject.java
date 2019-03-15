@@ -1,5 +1,8 @@
 package frc4990.robot.components;
 
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
@@ -8,6 +11,9 @@ import frc4990.robot.subsystems.Dashboard.FunctionalInterface;
 public class SendableObject extends SendableBase {
 
 	private FunctionalInterface supplier;
+	private BooleanSupplier boolSupplier;
+	private DoubleSupplier doubleSupplier;
+	private Boolean hasType = false;
 	/**
 	 * 
 	 * @param data The Supplier<?> you want to store
@@ -16,6 +22,16 @@ public class SendableObject extends SendableBase {
 
 	public SendableObject(FunctionalInterface data) {
 		this.supplier = data;
+	}
+
+	public SendableObject(BooleanSupplier bool) {
+		boolSupplier = bool;
+		hasType = true;
+	}
+
+	public SendableObject(DoubleSupplier value) {
+		doubleSupplier = value;
+		hasType = true;
 	}
 
 	public double getDouble() {
@@ -40,6 +56,17 @@ public class SendableObject extends SendableBase {
 
 	@Override
 	public void initSendable(SendableBuilder builder) {
+		if(hasType) {
+			try {
+				if (boolSupplier != null) {
+				builder.addBooleanProperty("value", boolSupplier, null);
+				} else if (doubleSupplier != null) {
+					builder.addDoubleProperty("value", doubleSupplier, null);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
 		try {
 			if (supplier.get().getClass() == boolean.class) {
 					builder.addBooleanProperty("value", this::getBoolean, null);
@@ -60,5 +87,6 @@ public class SendableObject extends SendableBase {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
 	}
 }

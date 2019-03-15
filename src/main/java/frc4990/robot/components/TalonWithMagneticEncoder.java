@@ -8,10 +8,9 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import frc4990.robot.RobotMap;
 
 public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource, Sendable {
-
-    private int timeoutMs = 3;
 
     private PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
 
@@ -50,7 +49,7 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
         public TalonWithMagneticEncoder(int CANID) {
             super(CANID);
             configSelectedFeedbackSensor((defaultSensorMode.get() == 0) ? FeedbackDevice.CTRE_MagEncoder_Absolute : 
-              FeedbackDevice.CTRE_MagEncoder_Relative, 0, timeoutMs);
+              FeedbackDevice.CTRE_MagEncoder_Relative, 0, RobotMap.TALON_TIMEOUT_MS);
             syncPosition();
         }
 
@@ -81,9 +80,9 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
        * @return the ErrorCode
        */
       public ErrorCode setPosition(SensorMode mode, int sensorPos) {
-        return (mode == defaultSensorMode) ?  this.setSelectedSensorPosition(sensorPos, 0, timeoutMs) : 
-          (mode == SensorMode.Absolute) ? this.getSensorCollection().setPulseWidthPosition(sensorPos, timeoutMs) : 
-          this.getSensorCollection().setQuadraturePosition(sensorPos, timeoutMs);
+        return (mode == defaultSensorMode) ?  this.setSelectedSensorPosition(sensorPos, 0, RobotMap.TALON_TIMEOUT_MS) : 
+          (mode == SensorMode.Absolute) ? this.getSensorCollection().setPulseWidthPosition(sensorPos, RobotMap.TALON_TIMEOUT_MS) : 
+          this.getSensorCollection().setQuadraturePosition(sensorPos, RobotMap.TALON_TIMEOUT_MS);
       }
 
        /**
@@ -153,10 +152,10 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
     @Override
     public void initSendable(SendableBuilder builder) {
       builder.addDoubleProperty("Encoder Speed", this::getRate, null);
-      builder.addDoubleProperty("Encoder Distance", this::getPosition, null);
-      builder.addDoubleProperty("Commanded Speed", this::get, null);
-      super.initSendable(builder);
-      builder.setSmartDashboardType(""); //to use read-only table view
+      builder.addDoubleProperty("Encoder Position", this::getPosition, (double position) -> this.setPosition((int) position));
+      builder.addDoubleProperty("Value", this::get, this::set);
+      builder.setSmartDashboardType("");
+      builder.setSafeState(this::stopMotor);
     }
 
     @Override
@@ -166,5 +165,5 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
         } else {
             return getPosition();
         }
-	}
-    }
+	  }
+}

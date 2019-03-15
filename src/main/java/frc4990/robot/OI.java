@@ -10,16 +10,23 @@ package frc4990.robot;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import edu.wpi.first.wpilibj.command.InstantCommand;
-import frc4990.robot.commands.PIDTurretTurn.TurretPoint;
+import edu.wpi.first.wpilibj.command.PrintCommand;
+import frc4990.robot.commands.ClimbingSequence;
+import frc4990.robot.commands.GrabHatchLimelight;
 import frc4990.robot.commands.PIDTurretTurn;
+import frc4990.robot.commands.PlaceHatchLimelight;
 import frc4990.robot.commands.TeleopDriveTrainController;
 import frc4990.robot.commands.TeleopDriveTrainController.StickShapingMode;
+import frc4990.robot.commands.manualIntakeSequence;
+import frc4990.robot.commands.manualOutakeSequence;
 import frc4990.robot.components.F310Gamepad.Axis;
 import frc4990.robot.components.F310Gamepad.Buttons;
 import frc4990.robot.components.F310Gamepad.POV;
+import frc4990.robot.components.CLimelight;
+import frc4990.robot.components.InstantCommandRunDisabled;
 import frc4990.robot.components.JoystickAnalogButton;
 import frc4990.robot.subsystems.Dashboard;
-import frc4990.robot.subsystems.HatchClaw;
+import frc4990.robot.subsystems.Turret.TurretPoint;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -29,9 +36,28 @@ import frc4990.robot.subsystems.HatchClaw;
  */
 public class OI{
 
+	// Drive Gamepad
 	public static JoystickAnalogButton throttle = RobotMap.driveGamepad.getAxis(Axis.leftJoystickY);
 	public static JoystickAnalogButton turnSteepness = RobotMap.driveGamepad.getAxis(Axis.rightJoystickX);
 
+	public static Button frontPneumatics = RobotMap.driveGamepad.getButton(Buttons.rightBumper);
+	public static Button rearPneumatics = RobotMap.driveGamepad.getButton(Buttons.leftBumper);
+
+	public static Button climbingSequence = RobotMap.driveGamepad.getButton(Buttons.a);
+
+	public static Button compressorToggle = RobotMap.driveGamepad.getButton(Buttons.start);
+
+	public static Button driveSpeedToggle = RobotMap.driveGamepad.getButton(Buttons.x);
+	public static Button turnSpeedToggle = RobotMap.driveGamepad.getButton(Buttons.b);
+
+	public static JoystickAnalogButton shiftRight = RobotMap.driveGamepad.getAxis(Axis.rightTrigger);
+	public static JoystickAnalogButton shiftLeft = RobotMap.driveGamepad.getAxis(Axis.leftTrigger);
+
+	public static Button stickShapingToggle = RobotMap.driveGamepad.getButton(Buttons.y);
+
+	public static Button driveControllerCheck = RobotMap.driveGamepad.getButton(Buttons.back);
+
+	// OP Gamepad
 	public static JoystickAnalogButton turretTurn = RobotMap.opGamepad.getAxis(Axis.leftJoystickX);
 	public static Button turretForward = RobotMap.opGamepad.getButton(Buttons.y);
 	public static Button turretLeft = RobotMap.opGamepad.getButton(Buttons.x);
@@ -41,22 +67,18 @@ public class OI{
 	public static Button turretReset = RobotMap.opGamepad.getPOVButton(POV.east);
 
 
-	public static JoystickAnalogButton hatchPneumatic = RobotMap.opGamepad.getAxis(Axis.rightJoystickX);
-	public static POVButton hatchMotorUp = RobotMap.opGamepad.getPOVButton(POV.north);
-	public static POVButton hatchMotorDown = RobotMap.opGamepad.getPOVButton(POV.south);
+	public static JoystickAnalogButton turretPneumatic = RobotMap.opGamepad.getAxis(Axis.rightJoystickY);
+	public static POVButton hatchToggle = RobotMap.opGamepad.getPOVButton(POV.south);
 
 	public static Button manualIntakeSequence = RobotMap.opGamepad.getButton(Buttons.leftBumper);
 	public static Button manualOutakeSequence = RobotMap.opGamepad.getButton(Buttons.rightBumper);
+
 	public static JoystickAnalogButton limelightIntakeSequence = RobotMap.opGamepad.getAxis(Axis.leftTrigger);
 	public static JoystickAnalogButton limelightOutakeSequence = RobotMap.opGamepad.getAxis(Axis.rightTrigger);
 
-	public static Button frontPneumatics = RobotMap.driveGamepad.getButton(Buttons.rightBumper);
-	public static Button rearPneumatics = RobotMap.driveGamepad.getButton(Buttons.leftBumper);
-	public static JoystickAnalogButton climbSequence = RobotMap.driveGamepad.getAxis(Axis.rightTrigger);
+	public static Button limelightLight = RobotMap.opGamepad.getPOVButton(POV.west);
+	public static POVButton limelightToggle = RobotMap.opGamepad.getPOVButton(POV.north);
 
-	public static Button compressorToggle = RobotMap.driveGamepad.getButton(Buttons.start);
-
-	public static Button driveControllerCheck = RobotMap.driveGamepad.getButton(Buttons.back);
 	public static Button opControllerCheck = RobotMap.opGamepad.getButton(Buttons.back);
 	
 	/* Controller Mapping:
@@ -89,33 +111,54 @@ public class OI{
 	public OI() {
 
 		//drivetrain
-		RobotMap.driveGamepad.getButton(Buttons.x).toggleWhenPressed(driveSpeedToggle());
-		RobotMap.driveGamepad.getButton(Buttons.b).toggleWhenPressed(turnSpeedToggle());
-		RobotMap.driveGamepad.getButton(Buttons.y).whenPressed(stickShapingToggle());
+		driveSpeedToggle.toggleWhenPressed(driveSpeedToggle());
+		turnSpeedToggle.toggleWhenPressed(turnSpeedToggle());
+		stickShapingToggle.whenPressed(stickShapingToggle());
+		/*shiftLeft.whenPressed(new InstantCommand("shiftLeft", () -> {
+			RobotMap.rightMotorGroup.coeff *= 1.009;
+			RobotMap.leftMotorGroup.coeff *= 0.991;
+			System.out.println("[Drive Tuning] right coeff: " + RobotMap.rightMotorGroup.coeff + ", left coeff: " + RobotMap.leftMotorGroup.coeff);
+		}));
+		shiftRight.whenPressed(new InstantCommand("shiftRight", () -> {
+			RobotMap.rightMotorGroup.coeff *= 1.009;
+			RobotMap.leftMotorGroup.coeff *= 0.991;
+			System.out.println("[Drive Tuning] right coeff: " + RobotMap.rightMotorGroup.coeff + ", left coeff: " + RobotMap.leftMotorGroup.coeff);
+		}));*/
 
-		//controller check (not needed)
-		driveControllerCheck.toggleWhenPressed(new InstantCommand("DriveControllerCheck", () -> System.out.println("START pressed on Drive Gamepad.")));
-		opControllerCheck.toggleWhenPressed(new InstantCommand("OPControllerCheck", () -> System.out.println("START pressed on OP Gamepad.")));
+		//Limelight
+		limelightLight.whenActive(new InstantCommand(() -> CLimelight.toggleLedMode()));
+
+		//controller check (not needed, but useful)
+		driveControllerCheck.toggleWhenPressed(new PrintCommand("START pressed on Drive Gamepad."));
+		opControllerCheck.toggleWhenPressed(new PrintCommand("START pressed on OP Gamepad."));
 
 		//turret
-		//turretTurn.whileHeld(RobotMap.turret.setTurretSpeed(turretTurn.getRawAxis()));
+		//turretTurn is used in default command for Turret subsystem.
 		turretForward.toggleWhenActive(new PIDTurretTurn(TurretPoint.Forward));
 		turretLeft.toggleWhenActive(new PIDTurretTurn(TurretPoint.Left));
 		turretRight.toggleWhenActive(new PIDTurretTurn(TurretPoint.Right));
 		turretBack.toggleWhenActive(new PIDTurretTurn(TurretPoint.Back));
 		turretSafe.toggleWhenActive(new PIDTurretTurn(TurretPoint.Safe));
-		turretReset.whenActive(new InstantCommand(() -> RobotMap.turretTalon.resetEncoder()));
+		turretReset.whenPressed(new InstantCommandRunDisabled(() -> RobotMap.turret.resetPosition()));
     
 		//Hatch
-		hatchPneumatic.whenPressed(RobotMap.hatchPneumatic.toggleCommand());
-		hatchMotorUp.whileHeld(HatchClaw.move(0.8, 2));
-		hatchMotorDown.whileHeld(HatchClaw.move(-0.8, 2));
-		
+		turretPneumatic.whenPressed(RobotMap.turretPneumatic.toggleCommand());
+		limelightToggle.whenPressed(CLimelight.toggleMode());
+		hatchToggle.whenPressed(new InstantCommand(() -> RobotMap.hatchPneumatic.toggle()));
 
 		//Pneumatics
 		frontPneumatics.whenPressed(RobotMap.frontSolenoid.toggleCommand());
-		rearPneumatics.whenPressed(RobotMap.rearSolenoid.toggleCommand());
+		//rearPneumatics.whenPressed(RobotMap.rearSolenoid.toggleCommand());
 		compressorToggle.whenPressed(compressorToggle());
+
+		//routines/sequences
+		manualIntakeSequence.toggleWhenPressed(new manualIntakeSequence());
+		manualOutakeSequence.toggleWhenPressed(new manualOutakeSequence());
+
+		limelightOutakeSequence.toggleWhenPressed(new PlaceHatchLimelight());
+		limelightOutakeSequence.toggleWhenPressed(new GrabHatchLimelight());
+
+		climbingSequence.toggleWhenPressed(new ClimbingSequence());
 	}
 	
 	public static InstantCommand stickShapingToggle() {
