@@ -84,7 +84,7 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
           (mode == SensorMode.Absolute) ? this.getSensorCollection().setPulseWidthPosition(sensorPos, RobotMap.TALON_TIMEOUT_MS) : 
           this.getSensorCollection().setQuadraturePosition(sensorPos, RobotMap.TALON_TIMEOUT_MS);
       }
-
+      
        /**
        * Gets the current count. Returns the current count on the Encoder.
        *
