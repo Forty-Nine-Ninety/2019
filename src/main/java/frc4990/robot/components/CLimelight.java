@@ -52,7 +52,7 @@ public class CLimelight extends SendableBase {
     }
 
     public static boolean tooClose() {
-        return getCrosshairVerticalOffset() < -3; //todo set too close value
+        return getCrosshairVerticalOffset() < -1; //todo set too close value
     }
 
     /**

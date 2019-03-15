@@ -18,6 +18,7 @@ public class LimelightCorrection extends Command {
 
 	public void initialize() {
 		CLimelight.setPipeline(Pipeline.Vision.get());
+		RobotMap.driveTrain.configOpenloopRamp(0);
 	}
 
 	public void execute() {
@@ -65,6 +66,7 @@ public class LimelightCorrection extends Command {
 	
 	public void end() {
 		System.out.println("Done");
+		RobotMap.driveTrain.configOpenloopRamp();
 		DriveTrain.setSpeed(0);
 		CLimelight.setPipeline(Pipeline.Driver.get());
 	}

@@ -38,7 +38,7 @@ public class RobotMap {
 
 	//constants
 
-	public static final double LIMELIGHT_ACCURACY = 0.5;//change this
+	public static final double LIMELIGHT_ACCURACY = 0.15;//change this
 	public static final double DRIVETRAIN_WIDTH = (23d + 7d / 8d) / 12d;
 	public static final int TURRET_TURN_ACCURACY = 20;
 	public static final int TALON_TIMEOUT_MS = 5;
@@ -60,10 +60,10 @@ public class RobotMap {
 	public static final double rampDownTime = 0.1;
 
 	//tune these values
-	public static final double LimelightCorrectionkP = 0.01;
+	public static final double LimelightCorrectionkP = 0.025;
 	public static final double LimelightCorrectionkPD = 0.01;
-	public static final double LimelightCorrectionMin = 0.05;
-	public static final double LimelightCorrectionSpeed = 0.1;
+	public static final double LimelightCorrectionMin = 0.03;
+	public static final double LimelightCorrectionSpeed = LimelightCorrectionMin;
 
 	//Driver Station Inputs
 	public static F310Gamepad driveGamepad = new F310Gamepad(0);

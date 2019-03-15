@@ -1,6 +1,5 @@
 package frc4990.robot.commands;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import frc4990.robot.OI;
 import frc4990.robot.RobotMap;
@@ -149,7 +148,7 @@ public class TeleopDriveTrainController extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return !DriverStation.getInstance().isOperatorControl();
+		return false;//!DriverStation.getInstance().isOperatorControl() && !DriverStation.getInstance().isAutonomous();
 	}
 	
 	@Override

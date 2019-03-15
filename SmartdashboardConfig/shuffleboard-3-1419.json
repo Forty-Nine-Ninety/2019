@@ -10,40 +10,6 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "6,2": {
-            "size": [
-              5,
-              3
-            ],
-            "content": {
-              "_type": "List Layout",
-              "_title": "Limelight Status",
-              "Layout/Label position": "HIDDEN",
-              "_children": [
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///Shuffleboard/Drive/Target In Range/value",
-                  "_title": "Shuffleboard/Drive/Target In Range/value",
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#FFFFFFFF"
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///Shuffleboard/Drive/Target Visible, Not In Range/value",
-                  "_title": "Shuffleboard/Drive/Target Visible, Not In Range/value",
-                  "Colors/Color when true": "#FFFF00FF",
-                  "Colors/Color when false": "#FFFFFFFF"
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///Shuffleboard/Drive/Target Not Visible/value",
-                  "_title": "Shuffleboard/Drive/Target Not Visible/value",
-                  "Colors/Color when true": "#800000FF",
-                  "Colors/Color when false": "#FFFFFFFF"
-                }
-              ]
-            }
-          },
           "9,0": {
             "size": [
               2,
@@ -55,9 +21,9 @@
               "_title": "Shuffleboard/Drive/Turret Position/value"
             }
           },
-          "6,1": {
+          "7,1": {
             "size": [
-              5,
+              4,
               1
             ],
             "content": {
@@ -66,7 +32,7 @@
               "_title": "Shuffleboard/Drive/Limelight Status/value"
             }
           },
-          "7,0": {
+          "8,0": {
             "size": [
               1,
               1
@@ -79,7 +45,7 @@
               "Colors/Color when false": "#B3661AFF"
             }
           },
-          "6,0": {
+          "7,0": {
             "size": [
               1,
               1
@@ -111,17 +77,78 @@
               "imageHeight": -1
             }
           },
-          "8,0": {
+          "6,0": {
             "size": [
               1,
               1
             ],
             "content": {
+              "_type": "Large Text",
+              "_source0": "network_table:///Shuffleboard/Drive/HatchPneumatic/value",
+              "_title": "Shuffleboard/Drive/HatchPneumatic/value"
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Large Text",
+              "_source0": "network_table:///Shuffleboard/Drive/TurretPneumatic/value",
+              "_title": "Shuffleboard/Drive/Turret Position/value"
+            }
+          },
+          "6,2": {
+            "size": [
+              5,
+              1
+            ],
+            "content": {
               "_type": "Boolean Box",
-              "_source0": "network_table:///Shuffleboard/Drive/Turret Reset Position/value",
-              "_title": "/Shuffleboard/Drive/Turret Reset Position/value",
+              "_source0": "network_table:///Shuffleboard/Drive/Target Not Visible/value",
+              "_title": "Shuffleboard/Drive/Target Not Visible/value",
+              "Colors/Color when true": "#800000FF",
+              "Colors/Color when false": "#FFFFFFFF"
+            }
+          },
+          "6,4": {
+            "size": [
+              5,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Drive/Target In Range/value",
+              "_title": "Shuffleboard/Drive/Target In Range/value",
               "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
+              "Colors/Color when false": "#FFFFFFFF"
+            }
+          },
+          "6,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Drive/Target Visible, too CLOSE/value",
+              "_title": "Shuffleboard/Drive/Target Visible, too CLOSE/value",
+              "Colors/Color when true": "#0000FFFF",
+              "Colors/Color when false": "#FFFFFFFF"
+            }
+          },
+          "9,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Drive/Target Visible, too FAR/value",
+              "_title": "Shuffleboard/Drive/Target Visible, too FAR/value",
+              "Colors/Color when true": "#E6804DFF",
+              "Colors/Color when false": "#FFFFFFFF"
             }
           }
         }
@@ -241,6 +268,18 @@
             }
           }
         }
+      }
+    },
+    {
+      "title": "Tab 4",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {}
       }
     }
   ],
