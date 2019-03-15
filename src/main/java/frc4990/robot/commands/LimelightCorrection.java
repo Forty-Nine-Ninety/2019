@@ -35,7 +35,10 @@ public class LimelightCorrection extends Command {
 			case Left:
 			case Right:
 				if (Math.abs(hError) > RobotMap.LIMELIGHT_ACCURACY) {
-					if (hError < 0) {speedL = RobotMap.LimelightCorrectionSpeed * -1; speedR = speedL;};
+					if (hError < 0) {
+						speedL = RobotMap.LimelightCorrectionSpeed * -1;
+						speedR = speedL;
+					}
 					speedL += hError * RobotMap.LimelightCorrectionkP;
 					speedR += hError * RobotMap.LimelightCorrectionkP;
 				}
