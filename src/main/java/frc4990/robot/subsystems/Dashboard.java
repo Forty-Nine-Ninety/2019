@@ -112,7 +112,8 @@ public class Dashboard extends Subsystem{
 			driveTab.add("Turret Position", new SendableObject((FunctionalInterface) () -> RobotMap.turretTalon.getPosition()));
 			
 			driveTab.add("Target Not Visible", new SendableObject((BooleanSupplier) () -> (boolean) !CLimelight.hasValidTarget())).withWidget(BuiltInWidgets.kBooleanBox).withSize(3, 1);
-			driveTab.add("Target Visible, Not In Range", new SendableObject((BooleanSupplier) () -> (boolean) CLimelight.hasValidTarget() && !CLimelight.inRange())).withWidget(BuiltInWidgets.kBooleanBox).withSize(3, 1);
+			driveTab.add("Target Visible, too FAR", new SendableObject((BooleanSupplier) () -> (boolean) CLimelight.hasValidTarget() && CLimelight.tooFar())).withWidget(BuiltInWidgets.kBooleanBox).withSize(3, 1);
+			driveTab.add("Target Visible, too CLOSE", new SendableObject((BooleanSupplier) () -> (boolean) CLimelight.hasValidTarget() && !CLimelight.tooFar())).withWidget(BuiltInWidgets.kBooleanBox).withSize(3, 1);
 			driveTab.add("Target In Range", new SendableObject((BooleanSupplier) () -> (boolean) CLimelight.inRange())).withWidget(BuiltInWidgets.kBooleanBox).withSize(3, 1);
 			driveTab.add("Limelight Status", new SendableObject((FunctionalInterface) () -> CLimelight.getStatus()));
 

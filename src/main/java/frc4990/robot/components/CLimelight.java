@@ -44,7 +44,15 @@ public class CLimelight extends SendableBase {
     }
 
     public static boolean inRange() {
-        return getCrosshairVerticalOffset() < 0; //Add real value
+        return !tooFar() && !tooClose();
+    }
+
+    public static boolean tooFar() {
+        return getCrosshairVerticalOffset() > 0; 
+    }
+
+    public static boolean tooClose() {
+        return getCrosshairVerticalOffset() < -3; //todo set too close value
     }
 
     /**
