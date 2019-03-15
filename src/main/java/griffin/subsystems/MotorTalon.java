@@ -5,15 +5,14 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import griffin.util.Constants;
 
 /**
- * Subsystem that controls an individual Talon
+ * Class that controls an individual talon
  * 
  * @author MajikalExplosions
  */
 public class MotorTalon extends WPI_TalonSRX {
-    //TODO you know what to do.
 
     /**
-     * Initialize MagneticEncoder.
+     * Initializes talon
      * @param can CAN bus ID of Talon (0 to 63)
      */
     public MotorTalon(int can) {
@@ -22,7 +21,7 @@ public class MotorTalon extends WPI_TalonSRX {
     }
     //TODO make sure this comment is correct
     /**
-     * Configures the talon with Constants and parameters
+     * Configures the talon with constants and parameters
      * @param inverted Whether the motor is inverted or not
      * @param phase Whether the output will be inverted or not
      */
