@@ -79,7 +79,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		return new Command("setTurretSpeed", this) {
 			protected void execute() {
 				//Add code here
-				setSpeed = Math.pow(axis.getRawAxis(), 3.0) * 1 / 4;
+				setSpeed = Math.pow(axis.getRawAxis(), 3.0) * 1 / 6;
 			}
 
 			@Override
@@ -157,7 +157,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		talon.configNominalOutputReverse(0, 5);
 		talon.configPeakOutputForward(1, 5);
 		talon.configPeakOutputReverse(-1, 5);
-		talon.configContinuousCurrentLimit(1);
+		talon.configContinuousCurrentLimit(2);
 		talon.configPeakCurrentLimit(0);
 		talon.enableCurrentLimit(true);
 			

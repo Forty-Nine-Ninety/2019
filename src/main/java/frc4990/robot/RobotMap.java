@@ -92,7 +92,7 @@ public class RobotMap {
 
 	//Climbing pneumatics
 	public static Pneumatic frontSolenoid;
-	//public static Pneumatic rearSolenoid;
+	public static Pneumatic rearSolenoid;
 
 	//HatchClaw
 	public static Pneumatic hatchPneumatic;
@@ -138,23 +138,25 @@ public class RobotMap {
 			System.out.println("I am the *COMP* bot.");
        //all port bindings that are only true for the competition robot. (PDP = 1, PCM = 11, Talons = 21 through 30)
 			
-			pcmCANID = 11;
+			pcmCANID = 12;
 			pdp = new PowerDistributionPanel(1);
 
-			leftFrontDriveTalon = new TalonWithMagneticEncoder(21);
+			leftFrontDriveTalon = new TalonWithMagneticEncoder(21, SensorMode.Relative);
 			leftRearDriveTalon = new WPI_TalonSRX(22);
-			rightFrontDriveTalon = new TalonWithMagneticEncoder(23);
+			rightFrontDriveTalon = new TalonWithMagneticEncoder(23, SensorMode.Relative);
 			rightRearDriveTalon = new WPI_TalonSRX(24);
 
 			turretTalon = new TalonWithMagneticEncoder(25);
+			turretSensorA = new DigitalInput(0);
+			turretSensorB = new DigitalInput(1);
 		}
 
 		//all port bindings that are dependent on robot-specific port bindings.
     
-		frontSolenoid = new Pneumatic(pcmCANID, 0);
-		//rearSolenoid = new Pneumatic(pcmCANID, 1);
-		turretPneumatic = new Pneumatic(pcmCANID, 2);
-		hatchPneumatic = new Pneumatic(pcmCANID, 1);//was 3
+		frontSolenoid = new Pneumatic(pcmCANID, 2);
+		rearSolenoid = new Pneumatic(pcmCANID, 1);
+		turretPneumatic = new Pneumatic(pcmCANID, 0);
+		hatchPneumatic = new Pneumatic(pcmCANID, 3);//was 3
 		compressor = new Compressor(pcmCANID);
 
 		leftMotorGroup = new TalonSRXGroup(ControlMode.PercentOutput, leftFrontDriveTalon); 

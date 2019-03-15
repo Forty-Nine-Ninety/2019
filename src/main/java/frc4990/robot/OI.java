@@ -148,7 +148,7 @@ public class OI{
 
 		//Pneumatics
 		frontPneumatics.whenPressed(RobotMap.frontSolenoid.toggleCommand());
-		//rearPneumatics.whenPressed(RobotMap.rearSolenoid.toggleCommand());
+		rearPneumatics.whenPressed(RobotMap.rearSolenoid.toggleCommand());
 		compressorToggle.whenPressed(compressorToggle());
 
 		//routines/sequences
