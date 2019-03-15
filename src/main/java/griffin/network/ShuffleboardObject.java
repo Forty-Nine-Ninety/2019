@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * Basic wrapper for {@link edu.wpi.first.wpilibj.SendableBase}
- * 
  * @author MajikalExplosions
  */
 public class ShuffleboardObject extends SendableBase {

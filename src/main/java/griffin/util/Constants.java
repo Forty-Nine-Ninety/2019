@@ -1,5 +1,7 @@
 package griffin.util;
 
+import edu.wpi.first.wpilibj.PIDSourceType;
+
 /**
  * Home for constants and PID variables. Also acts as a configuration file for Griffin.
  * @author MajikalExplosions
@@ -17,6 +19,9 @@ public class Constants {
     public static final double TALON_kI = 0;
     public static final double TALON_kD = 0.1;
     public static final double TALON_kF = 0.5;
+
+    public static final TalonEncoderMode TALON_DEFAULT_SENSOR_MODE = TalonEncoderMode.Absolute;
+    public static final PIDSourceType TALON_DEFAULT_PID_SOURCE_TYPE = PIDSourceType.kDisplacement;
 
     //Put custom constants and PID vars here, preferably with some form of organization.
 

@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.Joystick;
 
 /**
  * Base class for subsystems
- * 
  * @author MajikalExplosions
  */
 public class GController extends Joystick {

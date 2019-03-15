@@ -6,7 +6,6 @@ import griffin.util.Constants;
 
 /**
  * Class that controls an individual talon
- * 
  * @author MajikalExplosions
  */
 public class MotorTalon extends WPI_TalonSRX {

@@ -9,7 +9,7 @@ import griffin.subsystems.GSubsystem;
 import griffin.util.GameMode;
 
 /**
- * 
+ * Pretty-ish slightly more user and non-programmer friendly wrapper for WPILib
  * @author MajikalExplosions
  * @version 0.1.0
  * @see <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Neither here nor there.</a>

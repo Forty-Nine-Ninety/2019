@@ -79,7 +79,7 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
        *
        * @return the ErrorCode
        */
-      public ErrorCode setPosition(SensorMode mode, int sensorPos) {
+      public ErrorCode setPosition(SensorMode mode, int sensorPos) {//TODO fix this mess, or at least add comments
         return (mode == defaultSensorMode) ?  this.setSelectedSensorPosition(sensorPos, 0, RobotMap.TALON_TIMEOUT_MS) : 
           (mode == SensorMode.Absolute) ? this.getSensorCollection().setPulseWidthPosition(sensorPos, RobotMap.TALON_TIMEOUT_MS) : 
           this.getSensorCollection().setQuadraturePosition(sensorPos, RobotMap.TALON_TIMEOUT_MS);
