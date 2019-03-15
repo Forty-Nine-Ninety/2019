@@ -81,6 +81,7 @@ public class F310Gamepad extends Joystick {
 			case leftTrigger:    return new JoystickAnalogButton(this, 2, 0.01);
 			case rightTrigger:   return new JoystickAnalogButton(this, 3, 0.01);
 			case rightJoystickX: return new JoystickAnalogButton(this, 4, 0.0391);
+			case rightJoystickY: return new JoystickAnalogButton(this, 5, 0.01);
 			default: return new JoystickAnalogButton(this, axis.get());
 	}}
 

@@ -99,7 +99,7 @@ public class Dashboard extends Subsystem{
 
 			//Turret
 			debugTab.add("Turret/TurretMotor", RobotMap.turretTalon);
-			debugTab.add("Turret/TurretSensor", RobotMap.turretSensor);
+			debugTab.add("Turret/TurretSensor", new SendableObject(RobotMap.turretSensor));
 
 		} else if (! debug) { //drive
 			System.out.println("Adding Drive Tab Components.");

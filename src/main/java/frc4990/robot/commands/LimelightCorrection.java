@@ -45,14 +45,14 @@ public class LimelightCorrection extends Command {
 				break;
 		}
 
-		if (target == TurretPoint.Back) {
+		if (target == TurretPoint.Forward) {
 			double temp = speedL;
 			speedL = speedR * -1;
 			speedR = temp * -1;
 		}
 		else if (target == TurretPoint.Left) {
 			speedL *= -1;
-			speedR = speedL;																																																								
+			speedR = speedL;																																																				
 		}
 
 		System.out.println("[DEBUG] " + hError + " " + dError);
