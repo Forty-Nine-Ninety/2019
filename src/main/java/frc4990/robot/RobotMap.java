@@ -61,7 +61,7 @@ public class RobotMap {
 
 	//tune these values
 	public static final double LimelightCorrectionkP = 0.025;
-	public static final double LimelightCorrectionkPH = 0.5;//TODO tune this thing at some point?
+	public static final double LimelightCorrectionkPH = 0.1;//TODO tune this thing at some point?
 	public static final double LimelightCorrectionMin = 0.03;
 	public static final double LimelightCorrectionSpeed = LimelightCorrectionMin;
 
