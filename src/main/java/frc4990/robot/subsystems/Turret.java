@@ -23,7 +23,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	public Double setSpeed = 0.0;
 	public boolean controlDisabled;
 	
-	public enum TurretPoint { Forward(22100), Left(13400), Right(-4500), Back(4600), Safe(0); 
+	public enum TurretPoint { Back(22100), Right(13400), Left(-4500), Forward(4600), Safe(0); 
 
 		private int value;
     

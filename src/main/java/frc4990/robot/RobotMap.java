@@ -51,10 +51,10 @@ public class RobotMap {
 	public static final double driveStraight_PeakOutput = 1.0;
 	public static final int driveStraight_AllowableError = 0;
 
-	public static final double driveStraight_comp_leftCoeff = 1.0;
-	public static final double driveStraight_comp_rightCoeff = 0.85;
-	public static final double driveStraight_practice_leftCoeff = 0.88;
-	public static final double driveStraight_practice_rightCoeff = 1.0;
+	public static final double driveStraight_comp_rightCoeff = 1.0;
+	public static final double driveStraight_comp_leftCoeff = 0.85;
+	public static final double driveStraight_practice_rightCoeff = 0.88;
+	public static final double driveStraight_practice_leftCoeff = 1.0;
 
 	public static final double differentialDriveExpiration = 0.4;
 	public static final double rampDownTime = 0.1;
@@ -141,10 +141,10 @@ public class RobotMap {
 			pcmCANID = 12;
 			pdp = new PowerDistributionPanel(1);
 
-			leftFrontDriveTalon = new TalonWithMagneticEncoder(21, SensorMode.Relative);
-			leftRearDriveTalon = new WPI_TalonSRX(22);
-			rightFrontDriveTalon = new TalonWithMagneticEncoder(23, SensorMode.Relative);
-			rightRearDriveTalon = new WPI_TalonSRX(24);
+			leftFrontDriveTalon = new TalonWithMagneticEncoder(23, SensorMode.Relative);
+			leftRearDriveTalon = new WPI_TalonSRX(24);
+			rightFrontDriveTalon = new TalonWithMagneticEncoder(21, SensorMode.Relative);
+			rightRearDriveTalon = new WPI_TalonSRX(22);
 
 			turretTalon = new TalonWithMagneticEncoder(25);
 			turretSensorA = new DigitalInput(0);

@@ -35,10 +35,12 @@ public class DriveTrain extends Subsystem implements PIDSource {
 		RobotMap.leftFrontDriveTalon.configFactoryDefault();
 		RobotMap.rightFrontDriveTalon.configFactoryDefault();
 
-		RobotMap.leftFrontDriveTalon.setInverted(false);
-		RobotMap.rightFrontDriveTalon.setInverted(false);
-		RobotMap.leftFrontDriveTalon.setSensorPhase(true);
-		RobotMap.rightFrontDriveTalon.setSensorPhase(true);
+		RobotMap.leftFrontDriveTalon.setInverted(true);
+		RobotMap.rightFrontDriveTalon.setInverted(true);
+		RobotMap.leftRearDriveTalon.setInverted(true);
+		RobotMap.rightRearDriveTalon.setInverted(true);
+		RobotMap.leftFrontDriveTalon.setSensorPhase(false);
+		RobotMap.rightFrontDriveTalon.setSensorPhase(false);
 
 		RobotMap.rightFrontDriveTalon.configNeutralDeadband(0.001, RobotMap.TALON_TIMEOUT_MS);
 		RobotMap.leftFrontDriveTalon.configNeutralDeadband(0.001, RobotMap.TALON_TIMEOUT_MS);
