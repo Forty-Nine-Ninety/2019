@@ -3,8 +3,10 @@ package frc4990.robot;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc4990.robot.commands.PIDTurretTurn;
 import frc4990.robot.components.CLimelight;
 import frc4990.robot.components.CLimelight.Pipeline;
+import frc4990.robot.subsystems.Turret.TurretPoint;
 
 //This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that was the Freshmen Union of 2018
 
@@ -65,6 +67,7 @@ public class Robot extends TimedRobot {
 		autonomusCommand.start();
 		*/
 		CLimelight.setPipeline(Pipeline.Driver.get());
+		if (Math.abs(RobotMap.turretTalon.getPosition()) < 500) Scheduler.getInstance().add(new PIDTurretTurn(TurretPoint.Forward));
 		System.out.println("Auto Init complete");
 	}
 
