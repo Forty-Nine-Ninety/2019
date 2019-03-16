@@ -11,58 +11,48 @@ import frc4990.robot.subsystems.DriveTrain;
 
 public class LimelightDetection extends Command {
 
-	private boolean vision;
 	private boolean isDone;
 
 	public LimelightDetection() {
 		requires(RobotMap.driveTrain);
 		//requires(RobotMap.driveTrain);
-		isDone = false;
 	}
 
 	public void initialize() {
+		System.out.println("[Debug] Initializing.");
 		RobotMap.driveTrain.configOpenloopRamp(0);
 		CLimelight.setPipeline(Pipeline.Vision);
 		isDone = false;
 	}
 
 	public void execute() {
-		if (! vision) return;//If it's on camera mode
-		RobotMap.turret.controlDisabled = true;
 		if (! CLimelight.hasValidTarget()) {
-			System.out.println("[Debug] No valid target.");
-			RobotMap.turret.setTurretSpeed(0);
+			System.out.println("[Debug] No valid target in frame.");
 			return;//If no target is found
 		}
-		else {
-			//Seek
-			System.out.println("[Debug] Seeking");
-			double hError = CLimelight.getCrosshairHorizontalOffset() * -1;
-			if (Math.abs(hError) > RobotMap.LIMELIGHT_ACCURACY) {
-				//horizontal (turret) error
-				RobotMap.turret.setSpeed(clamp(hError * RobotMap.LimelightCorrectionkPH, -1, 1));
-			}
+		//This code will only run if there's a valid target.
+		System.out.println("[Debug] Seeking target.");
+
+		RobotMap.turret.controlDisabled = true;
+		double hError = CLimelight.getCrosshairHorizontalOffset() * -1;
+		if (Math.abs(hError) > RobotMap.LIMELIGHT_ACCURACY) {
+			//horizontal (turret) error
+			RobotMap.turret.setSpeed(clamp(hError * RobotMap.LimelightCorrectionkPH, -1, 1));
+			System.out.println("[Debug] Correcting turret: " + hError);
 		}
-		if (CLimelight.inRange() && RobotMap.turret.findNearestTurretPoint() == TurretPoint.Forward) {
-			
+		else if (CLimelight.inRange()/* && RobotMap.turret.findNearestTurretPoint() == TurretPoint.Forward*/) {
+			System.out.println("[Debug] Running Outake: " + hError);
 			RobotMap.driveTrain.controlDisabled = true;//If limelight has target then take over control of drivetrain
 			DriveTrain.setSpeed(0);
-			double hError = CLimelight.getCrosshairHorizontalOffset() * -1;
-			System.out.println("[Debug] Running Outake: " + hError);
-			if (Math.abs(hError) > RobotMap.LIMELIGHT_ACCURACY) {
-				//horizontal (turret) error
-				RobotMap.turret.setSpeed(clamp(hError * RobotMap.LimelightCorrectionkPH, -1, 1));
-			}
-			else {
-				if (CLimelight.detectionMode == DetectionMode.Intake) Scheduler.getInstance().add(new manualIntakeSequence());
-				else Scheduler.getInstance().add(new manualOutakeSequence());
-				isDone = true;
-			}
+			if (CLimelight.detectionMode == DetectionMode.Intake) Scheduler.getInstance().add(new manualIntakeSequence());
+			else Scheduler.getInstance().add(new manualOutakeSequence());
+			isDone = true;
+			end();
 		}
 	}
 	
 	public void end() {
-		System.out.println("Done");
+		System.out.println("[Debug] Done.");
 		RobotMap.driveTrain.configOpenloopRamp();
 		DriveTrain.setSpeed(0);
 		CLimelight.setPipeline(Pipeline.Driver.get());
@@ -71,6 +61,7 @@ public class LimelightDetection extends Command {
 	}
 	
 	public void interrupted() {
+		System.out.println("[Debug] Interrupted.");
 		end();
 	}
 	
