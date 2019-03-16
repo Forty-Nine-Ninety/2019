@@ -1,6 +1,7 @@
 package frc4990.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import frc4990.robot.RobotMap;
 import frc4990.robot.subsystems.Turret.TurretPoint;
 import frc4990.robot.components.CLimelight;
@@ -29,8 +30,13 @@ public class LimelightCorrection extends Command {
 			case Forward:
 			case Back:
 				if (Math.abs(hError) > RobotMap.LIMELIGHT_ACCURACY) {
-					speedL += RobotMap.LimelightCorrectionkPD * dError + hError * RobotMap.LimelightCorrectionkP;
-					speedR += -1 * (RobotMap.LimelightCorrectionkPD * dError + hError * RobotMap.LimelightCorrectionkP);
+					//horizontal (turret) error
+					RobotMap.turret.setSpeed(clamp(hError * RobotMap.LimelightCorrectionkPH, -1, 1));
+				}
+				else if (Math.abs(dError) > RobotMap.LIMELIGHT_ACCURACY) {//Because the horizontal offset changes depending on the turret's rotation...right? If not using an if instead of an else if would be faster.
+					//distance error
+					speedL += dError * RobotMap.LimelightCorrectionkP;
+					speedR += dError * RobotMap.LimelightCorrectionkP;
 				}
 				break;
 			case Left:
