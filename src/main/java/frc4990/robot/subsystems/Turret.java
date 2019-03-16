@@ -81,7 +81,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		return new Command("setTurretSpeed", this) {
 			protected void execute() {
 				//Add code here
-				if (controlDisabled) return;//because the computer now has control
+				//if (controlDisabled) return;//because the computer now has control
 				setSpeed = Math.pow(axis.getRawAxis(), 3.0) * 1 / 6;
 			}
 
