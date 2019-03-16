@@ -175,9 +175,9 @@ public class OI{
 	public static InstantCommand driveSpeedToggle() {
 		return new InstantCommand("DriveSpeedToggle", (Runnable) () -> {
 			TeleopDriveTrainController.currentThrottleMultiplier = TeleopDriveTrainController.currentThrottleMultiplier == 
-				Dashboard.getConst("DriveDpiToggle/lowThrottleMultiplier", 0.3) ? 
+				0.3 ? 
 				TeleopDriveTrainController.currentThrottleMultiplier = Dashboard.getConst("DriveDpiToggle/defaultThrottleMultiplier", 1.0) : 
-				Dashboard.getConst("DriveDpiToggle/lowThrottleMultiplier", 0.3);
+				0.3;
 			System.out.println("Throttle Speed: " + TeleopDriveTrainController.currentThrottleMultiplier + "x");
 		});
 	}

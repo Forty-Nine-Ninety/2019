@@ -14,8 +14,7 @@ public class LimelightDetection extends Command {
 	private boolean isDone;
 
 	public LimelightDetection() {
-		requires(RobotMap.driveTrain);
-		//requires(RobotMap.driveTrain);
+		
 	}
 
 	public void initialize() {
@@ -30,19 +29,22 @@ public class LimelightDetection extends Command {
 		if (! CLimelight.hasValidTarget()) {//If no target found
 			System.out.println("[Debug] No valid target in frame.");
 			RobotMap.turret.controlDisabled = false;
+			RobotMap.driveTrain.controlDisabled = false;
 			return;
 		}
 		//This code will only run if there's a valid target.
 		System.out.println("[Debug] Seeking target.");
 
 		RobotMap.turret.controlDisabled = true;
-		double hError = CLimelight.getCrosshairHorizontalOffset() * -1;
+		double hError = CLimelight.getCrosshairHorizontalOffset();
 		if (Math.abs(hError) > RobotMap.LIMELIGHT_ACCURACY) {//Follow the target.
 			//horizontal (turret) error
 			RobotMap.turret.setSpeed(clamp(hError * RobotMap.LimelightCorrectionkPH, -1, 1));
 			System.out.println("[Debug] Correcting turret: " + hError);
+			RobotMap.driveTrain.controlDisabled = false;
 		}
-		else if (CLimelight.inRange()/* && RobotMap.turret.findNearestTurretPoint() == TurretPoint.Forward*/) {//Limelight is facing target and said target is close enough
+		/*  Maybe enable this in the future but it doesn't work rn
+		else if (CLimelight.inRange()) {//Limelight is facing target and said target is close enough
 			System.out.println("[Debug] Running Outake: " + hError);
 			RobotMap.driveTrain.controlDisabled = true;//If limelight has target then take over control of drivetrain
 			DriveTrain.setSpeed(0);
@@ -50,6 +52,7 @@ public class LimelightDetection extends Command {
 			else Scheduler.getInstance().add(new manualOutakeSequence());
 			isDone = true;
 		}
+		*/
 	}
 	
 	public void end() {
