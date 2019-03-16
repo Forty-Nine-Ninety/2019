@@ -21,6 +21,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
 
 	public Double setSpeed = 0.0;
+	public boolean controlDisabled;
 	
 	public enum TurretPoint { Forward(22100), Left(13400), Right(-4500), Back(4600), Safe(0); 
 
@@ -38,6 +39,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
     super("Turret");
 		RobotMap.turretTalon.resetEncoder();
 		initalizeTurretPID();
+		controlDisabled = false;
 	}
 
 	@Override
@@ -79,6 +81,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		return new Command("setTurretSpeed", this) {
 			protected void execute() {
 				//Add code here
+				if (controlDisabled) return;//because the computer now has control
 				setSpeed = Math.pow(axis.getRawAxis(), 3.0) * 1 / 6;
 			}
 

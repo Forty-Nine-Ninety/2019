@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc4990.robot.commands.ClimbingSequence;
 import frc4990.robot.commands.GrabHatchLimelight;
+import frc4990.robot.commands.LimelightDetection;
 import frc4990.robot.commands.PIDTurretTurn;
 import frc4990.robot.commands.PlaceHatchLimelight;
 import frc4990.robot.commands.TeleopDriveTrainController;
@@ -25,6 +26,7 @@ import frc4990.robot.components.F310Gamepad.POV;
 import frc4990.robot.components.CLimelight;
 import frc4990.robot.components.InstantCommandRunDisabled;
 import frc4990.robot.components.JoystickAnalogButton;
+import frc4990.robot.components.CLimelight.DetectionMode;
 import frc4990.robot.subsystems.Dashboard;
 import frc4990.robot.subsystems.Turret.TurretPoint;
 
@@ -73,8 +75,8 @@ public class OI{
 	public static Button manualIntakeSequence = RobotMap.opGamepad.getButton(Buttons.leftBumper);
 	public static Button manualOutakeSequence = RobotMap.opGamepad.getButton(Buttons.rightBumper);
 
-	public static JoystickAnalogButton limelightIntakeSequence = RobotMap.opGamepad.getAxis(Axis.leftTrigger);
-	public static JoystickAnalogButton limelightOutakeSequence = RobotMap.opGamepad.getAxis(Axis.rightTrigger);
+	public static JoystickAnalogButton limelightIntakeToggle = RobotMap.opGamepad.getAxis(Axis.leftTrigger);
+	public static JoystickAnalogButton limelightOutakeToggle = RobotMap.opGamepad.getAxis(Axis.rightTrigger);
 
 	public static Button limelightLight = RobotMap.opGamepad.getPOVButton(POV.west);
 	public static POVButton limelightToggle = RobotMap.opGamepad.getPOVButton(POV.north);
@@ -143,7 +145,7 @@ public class OI{
     
 		//Hatch
 		turretPneumatic.whenPressed(RobotMap.turretPneumatic.toggleCommand());
-		limelightToggle.whenPressed(CLimelight.toggleMode());
+		limelightToggle.toggleWhenPressed(new LimelightDetection());
 		hatchToggle.whenPressed(new InstantCommand(() -> RobotMap.hatchPneumatic.toggle()));
 
 		//Pneumatics
@@ -155,8 +157,8 @@ public class OI{
 		manualIntakeSequence.toggleWhenPressed(new manualIntakeSequence());
 		manualOutakeSequence.toggleWhenPressed(new manualOutakeSequence());
 
-		limelightOutakeSequence.toggleWhenPressed(new PlaceHatchLimelight());
-		limelightOutakeSequence.toggleWhenPressed(new GrabHatchLimelight());
+		limelightOutakeToggle.toggleWhenPressed(new InstantCommand(() -> CLimelight.detectionMode = DetectionMode.Outake));
+		limelightIntakeToggle.toggleWhenPressed(new InstantCommand(() -> CLimelight.detectionMode = DetectionMode.Intake));
 
 		climbingSequence.toggleWhenPressed(new ClimbingSequence());
 	}

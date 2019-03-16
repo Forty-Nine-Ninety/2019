@@ -37,7 +37,7 @@ public class TeleopDriveTrainController extends Command {
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public void execute() {
-
+		if (RobotMap.driveTrain.controlDisabled) return;//If robot has control of drivetrain
 		switch (stickShapingMode) {
 			case SquaredThrottle://Another one that we tried.
 				throttle = getSquaredThrottle(OI.throttle.getRawAxis() * currentThrottleMultiplier);

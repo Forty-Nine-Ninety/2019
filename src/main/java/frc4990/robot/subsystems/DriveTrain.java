@@ -14,6 +14,8 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
 	public DifferentialDrive differentialDrive = new DifferentialDrive(RobotMap.leftMotorGroup, RobotMap.rightMotorGroup);
 
+	public boolean controlDisabled;
+
 	public double leftSpeedAdjust = 1;//(RobotMap.robotSelector.get()) ? 0.88 : 1.0;
 	public double rightSpeedAdjust = 1;//(RobotMap.robotSelector.get()) ? 1.0 : 0.85;
 
@@ -26,6 +28,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
 		configOpenloopRamp();
 		configDifferentialDrive();
 		configTalonPID();
+		controlDisabled = false;
 	}
 
 	private void configTalonPID() {

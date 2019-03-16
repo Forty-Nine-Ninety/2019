@@ -10,16 +10,19 @@ import frc4990.robot.subsystems.DriveTrain;
 
 public class LimelightCorrection extends Command {
 	private TurretPoint target;
+	private boolean isDone;
 
 	public LimelightCorrection(TurretPoint target) {
 		requires(RobotMap.driveTrain);
 		//requires(RobotMap.driveTrain);
 		this.target = target;
+		isDone = false;
 	}
 
 	public void initialize() {
 		CLimelight.setPipeline(Pipeline.Vision.get());
 		RobotMap.driveTrain.configOpenloopRamp(0);
+		isDone = false;
 	}
 
 	public void execute() {
@@ -38,6 +41,9 @@ public class LimelightCorrection extends Command {
 					speedL += dError * RobotMap.LimelightCorrectionkP;
 					speedR += dError * RobotMap.LimelightCorrectionkP;
 				}
+				else {
+					isDone = true;
+				}
 				break;
 			case Left:
 			case Right:
@@ -48,6 +54,9 @@ public class LimelightCorrection extends Command {
 					}
 					speedL += hError * RobotMap.LimelightCorrectionkP;
 					speedR += hError * RobotMap.LimelightCorrectionkP;
+				}
+				else {
+					isDone = true;
 				}
 				break;
 			case Safe:
@@ -82,7 +91,7 @@ public class LimelightCorrection extends Command {
 	}
 	
 	public boolean isFinished() {
-		return Math.abs(CLimelight.getCrosshairHorizontalOffset()) <= RobotMap.LIMELIGHT_ACCURACY;
+		return isDone;
 	}
 
 	private static double clamp(double val, double min, double max) {

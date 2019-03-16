@@ -25,6 +25,13 @@ public class CLimelight extends SendableBase {
         }
     }
 
+    public enum DetectionMode {
+        Intake,
+        Outake
+    }
+
+    public static DetectionMode detectionMode = DetectionMode.Intake;
+
     public CLimelight() {}
     
     public static String getStatus() {
@@ -205,7 +212,7 @@ public class CLimelight extends SendableBase {
      * @param pipeline Pipeline enum.
      */
 
-    private static void setPipeline(Pipeline pipeline) {
+    public static void setPipeline(Pipeline pipeline) {
         setPipeline(pipeline.get());
     }
 
