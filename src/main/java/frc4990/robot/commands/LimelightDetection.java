@@ -26,8 +26,10 @@ public class LimelightDetection extends Command {
 	}
 
 	public void execute() {
+		System.out.println("[Debug] Robot Control Disabled - Turret:" + RobotMap.turret.controlDisabled + " DriveTrain:" + RobotMap.driveTrain.controlDisabled);
 		if (! CLimelight.hasValidTarget()) {
 			System.out.println("[Debug] No valid target in frame.");
+			RobotMap.turret.controlDisabled = false;
 			return;//If no target is found
 		}
 		//This code will only run if there's a valid target.
@@ -47,7 +49,6 @@ public class LimelightDetection extends Command {
 			if (CLimelight.detectionMode == DetectionMode.Intake) Scheduler.getInstance().add(new manualIntakeSequence());
 			else Scheduler.getInstance().add(new manualOutakeSequence());
 			isDone = true;
-			end();
 		}
 	}
 	
