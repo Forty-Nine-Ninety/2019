@@ -21,6 +21,7 @@ public class manualIntakeSequence extends CommandGroup {
     addSequential(new wait(0.2));
     addSequential(RobotMap.hatchPneumatic.retract());
     addSequential(new wait(0.3));
-		addSequential(RobotMap.turretPneumatic.retract());
+    addSequential(RobotMap.turretPneumatic.retract());
+    addSequential(new ReturnDriverControlsCommand());
   }
 }

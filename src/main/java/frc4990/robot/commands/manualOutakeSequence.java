@@ -21,6 +21,7 @@ public class manualOutakeSequence extends CommandGroup {
     addSequential(new wait(0.3));
     addSequential(RobotMap.turretPneumatic.retract());
     addSequential(new wait(0.1));
+    addSequential(new ReturnDriverControlsCommand());
     //only move hatch grabber up if facing forward or back 
     //addSequential(RobotMap.hatchPneumatic.retract());
     /*addSequential(new ConditionalCommand(RobotMap.hatchPneumatic.retract(), 
