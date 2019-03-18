@@ -2,7 +2,6 @@ package frc4990.robot.components;
 
 import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.SendableBase;
-import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
@@ -60,22 +59,6 @@ public class CLimelight extends SendableBase {
 
     public static boolean tooClose() {
         return getCrosshairVerticalOffset() < -1; //todo set too close value
-    }
-
-    /**
-     * Toggles between two target and driver LimelightModes.
-     */
-
-    public static InstantCommand toggleMode() {
-        return new InstantCommand(() -> setPipeline(
-                (getPipeline() == Pipeline.Driver.get()) ? Pipeline.Vision : Pipeline.Driver));
-    }
-
-    /**
-     * Sets the pipeline mode
-     */
-    public static InstantCommand setMode(Pipeline p) {
-        return new InstantCommand(() -> setPipeline(p));
     }
 
     /**
