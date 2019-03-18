@@ -70,19 +70,21 @@ public class OI{
 
 
 	public static JoystickAnalogButton turretPneumatic = RobotMap.opGamepad.getAxis(Axis.rightJoystickY);
-	public static POVButton hatchToggle = RobotMap.opGamepad.getPOVButton(POV.south);
 
 	public static Button manualIntakeSequence = RobotMap.opGamepad.getButton(Buttons.leftBumper);
 	public static Button manualOutakeSequence = RobotMap.opGamepad.getButton(Buttons.rightBumper);
 
-	public static JoystickAnalogButton limelightIntakeToggle = RobotMap.opGamepad.getAxis(Axis.leftTrigger);
+	public static JoystickAnalogButton hatchToggle = RobotMap.opGamepad.getAxis(Axis.leftTrigger);
 	public static JoystickAnalogButton limelightOutakeToggle = RobotMap.opGamepad.getAxis(Axis.rightTrigger);
 
 	public static Button limelightLight = RobotMap.opGamepad.getPOVButton(POV.west);
-	public static POVButton limelightToggle = RobotMap.opGamepad.getPOVButton(POV.north);
+	public static POVButton limelightToggle1 = RobotMap.opGamepad.getPOVButton(POV.north);
+	public static POVButton limelightToggle2 = RobotMap.opGamepad.getPOVButton(POV.south);
 
 	public static Button opControllerCheck = RobotMap.opGamepad.getButton(Buttons.back);
 	
+
+	private static LimelightDetection ld = new LimelightDetection();
 	/* Controller Mapping:
 		Drive Train: (drive controller)
 		    Joysticks 1 and 2: forward/backward and turn left/right
@@ -145,7 +147,10 @@ public class OI{
     
 		//Hatch
 		turretPneumatic.whenPressed(RobotMap.turretPneumatic.toggleCommand());
-		limelightToggle.toggleWhenPressed(new LimelightDetection());
+
+		limelightToggle1.toggleWhenPressed(ld);
+		limelightToggle2.toggleWhenPressed(ld);
+
 		hatchToggle.whenPressed(new InstantCommand(() -> RobotMap.hatchPneumatic.toggle()));
 
 		//Pneumatics
@@ -158,7 +163,7 @@ public class OI{
 		manualOutakeSequence.toggleWhenPressed(new manualOutakeSequence());
 
 		limelightOutakeToggle.toggleWhenPressed(new InstantCommand(() -> CLimelight.detectionMode = DetectionMode.Outake));
-		limelightIntakeToggle.toggleWhenPressed(new InstantCommand(() -> CLimelight.detectionMode = DetectionMode.Intake));
+		//limelightIntakeToggle.toggleWhenPressed(new InstantCommand(() -> CLimelight.detectionMode = DetectionMode.Intake));
 
 		climbingSequence.toggleWhenPressed(new ClimbingSequence());
 	}
@@ -185,8 +190,7 @@ public class OI{
 	public static InstantCommand turnSpeedToggle() {
 		return new InstantCommand("TurnSpeedToggle", (Runnable) () -> {
 			TeleopDriveTrainController.currentTurnSteepnessMultiplier = TeleopDriveTrainController.currentTurnSteepnessMultiplier == 
-				Dashboard.getConst("TurnSpeedToggle/lowTurnMultiplier", 0.6) ? Dashboard.getConst("DriveDpiToggle/defaultTurnSpeedMultiplier", 1.0) : 
-				Dashboard.getConst("TurnSpeedToggle/lowTurnMultiplier", 0.6);
+				0.3 ? 0.6 : 0.3;
 			System.out.println("Turn Speed: " + TeleopDriveTrainController.currentTurnSteepnessMultiplier + "x");
 		});
 	}

@@ -70,6 +70,14 @@ public class CLimelight extends SendableBase {
         return new InstantCommand(() -> setPipeline(
                 (getPipeline() == Pipeline.Driver.get()) ? Pipeline.Vision : Pipeline.Driver));
     }
+
+    /**
+     * Sets the pipeline mode
+     */
+    public static InstantCommand setMode(Pipeline p) {
+        return new InstantCommand(() -> setPipeline(p));
+    }
+
     /**
      * Gets valid target
      * 

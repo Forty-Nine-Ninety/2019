@@ -67,7 +67,7 @@ public class Robot extends TimedRobot {
 		autonomusCommand.start();
 		*/
 		CLimelight.setPipeline(Pipeline.Driver.get());
-		if (Math.abs(RobotMap.turretTalon.getPosition()) < 500) Scheduler.getInstance().add(new PIDTurretTurn(TurretPoint.Forward));
+		if (Math.abs(RobotMap.turretTalon.getPosition()) < 1000) { Scheduler.getInstance().add(new PIDTurretTurn(TurretPoint.Forward)); }
 		System.out.println("Auto Init complete");
 	}
 

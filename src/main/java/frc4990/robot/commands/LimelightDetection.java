@@ -11,25 +11,21 @@ import frc4990.robot.subsystems.DriveTrain;
 
 public class LimelightDetection extends Command {
 
-	private boolean isDone;
-
 	public LimelightDetection() {
 		
 	}
 
 	public void initialize() {
 		System.out.println("[Debug] Initializing.");
-		RobotMap.driveTrain.configOpenloopRamp(0);
 		CLimelight.setPipeline(Pipeline.Vision);
-		isDone = false;
+		CLimelight.setLedMode(0);
 	}
 
 	public void execute() {
-		System.out.println("[Debug] Robot Control Disabled - Turret:" + RobotMap.turret.controlDisabled + " DriveTrain:" + RobotMap.driveTrain.controlDisabled);
 		if (! CLimelight.hasValidTarget()) {//If no target found
 			System.out.println("[Debug] No valid target in frame.");
 			RobotMap.turret.controlDisabled = false;
-			RobotMap.driveTrain.controlDisabled = false;
+			//RobotMap.driveTrain.controlDisabled = false;
 			return;
 		}
 		//This code will only run if there's a valid target.
@@ -41,7 +37,7 @@ public class LimelightDetection extends Command {
 			//horizontal (turret) error
 			RobotMap.turret.setSpeed(clamp(hError * RobotMap.LimelightCorrectionkPH, -1, 1));
 			System.out.println("[Debug] Correcting turret: " + hError);
-			RobotMap.driveTrain.controlDisabled = false;
+			//RobotMap.driveTrain.controlDisabled = false;
 		}
 		/*  Maybe enable this in the future but it doesn't work rn
 		else if (CLimelight.inRange()) {//Limelight is facing target and said target is close enough
@@ -57,8 +53,6 @@ public class LimelightDetection extends Command {
 	
 	public void end() {
 		System.out.println("[Debug] Done.");
-		RobotMap.driveTrain.configOpenloopRamp();
-		DriveTrain.setSpeed(0);
 		CLimelight.setPipeline(Pipeline.Driver.get());
 		Scheduler.getInstance().add(new ReturnDriverControlsCommand());
 	}
@@ -69,7 +63,7 @@ public class LimelightDetection extends Command {
 	}
 	
 	public boolean isFinished() {
-		return isDone;
+		return false;
 	}
 
 	private static double clamp(double val, double min, double max) {

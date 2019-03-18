@@ -23,7 +23,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	public Double setSpeed = 0.0;
 	public boolean controlDisabled;
 	
-	public enum TurretPoint { Back(22100), Right(13400), Left(-4500), Forward(4600), Safe(0); 
+	public enum TurretPoint { Back(22000), Right(13500), Left(-4500), Forward(4500), Safe(0); 
 
 		private int value;
     
@@ -45,12 +45,12 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	@Override
 	public void periodic() {
 		double currentPosition = RobotMap.turretTalon.getPosition();
-		if (currentPosition > 22200 && setSpeed != 0) {
+		if (currentPosition > 22500 && setSpeed != 0) {
 			RobotMap.turretTalon.set(ControlMode.PercentOutput, -Math.abs(setSpeed)); //all motion should go counter-clockwise
-			System.out.println("[Turret] motion in danger zone, past FORWARD point, at " + currentPosition);
+			System.out.println("[Turret] motion in danger zone, past BACK point, at " + currentPosition);
 		} else if (currentPosition < -6700 && setSpeed != 0) {
 			RobotMap.turretTalon.set(ControlMode.PercentOutput, Math.abs(setSpeed)); //all motion should go clockwise
-			System.out.println("[Turret] motion in danger zone, past RIGHT point, at " + currentPosition);
+			System.out.println("[Turret] motion in danger zone, past LEFT point, at " + currentPosition);
 		} else if (RobotMap.turretTalon.getControlMode() != ControlMode.MotionMagic) {
 			RobotMap.turretTalon.set(ControlMode.PercentOutput, setSpeed);
 		}
