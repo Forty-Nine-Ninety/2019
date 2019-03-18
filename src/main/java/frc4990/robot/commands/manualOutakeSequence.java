@@ -8,6 +8,7 @@
 package frc4990.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc4990.robot.RobotMap;
 
 public class manualOutakeSequence extends CommandGroup {
@@ -21,7 +22,10 @@ public class manualOutakeSequence extends CommandGroup {
     addSequential(new wait(0.3));
     addSequential(RobotMap.turretPneumatic.retract());
     addSequential(new wait(0.1));
-    addSequential(new ReturnDriverControlsCommand());
+    addSequential(new InstantCommand(() -> {
+			RobotMap.turret.controlDisabled = false;
+        RobotMap.driveTrain.controlDisabled = false;
+		}));
     //only move hatch grabber up if facing forward or back 
     //addSequential(RobotMap.hatchPneumatic.retract());
     /*addSequential(new ConditionalCommand(RobotMap.hatchPneumatic.retract(), 

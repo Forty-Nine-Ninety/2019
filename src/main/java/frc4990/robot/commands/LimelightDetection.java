@@ -1,6 +1,7 @@
 package frc4990.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc4990.robot.RobotMap;
 import frc4990.robot.components.CLimelight;
@@ -51,7 +52,10 @@ public class LimelightDetection extends Command {
 	public void end() {
 		System.out.println("[Debug] Done.");
 		CLimelight.setPipeline(Pipeline.Driver.get());
-		Scheduler.getInstance().add(new ReturnDriverControlsCommand());
+		Scheduler.getInstance().add(new InstantCommand(() -> {
+			RobotMap.turret.controlDisabled = false;
+        RobotMap.driveTrain.controlDisabled = false;
+		}));
 	}
 	
 	public void interrupted() {
