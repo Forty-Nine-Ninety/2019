@@ -13,6 +13,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.*;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -72,6 +74,7 @@ public class RobotMap {
 	//Sensors
 	public static PowerDistributionPanel pdp;
 	public static AHRS ahrs;
+	public static UsbCamera camera;
 	public static Compressor compressor;
 	public static int pcmCANID;
 
@@ -114,7 +117,7 @@ public class RobotMap {
     //all port bindings or empty constuctors that stay the same for the pratice & real robots.
 
 		ahrs = new AHRS(SPI.Port.kMXP);
-
+		//camera = CameraServer.getInstance().startAutomaticCapture();
 		driveGamepad = new F310Gamepad(0);
 		opGamepad = new F310Gamepad(1);
 
