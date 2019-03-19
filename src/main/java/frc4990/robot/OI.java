@@ -75,7 +75,7 @@ public class OI{
 	public static JoystickAnalogButton hatchToggle = RobotMap.opGamepad.getAxis(Axis.leftTrigger);
 	public static JoystickAnalogButton limelightOutakeToggle = RobotMap.opGamepad.getAxis(Axis.rightTrigger);
 
-	public static Button limelightLight = RobotMap.opGamepad.getPOVButton(POV.west);
+	public static Button limelightPiPMode = RobotMap.opGamepad.getPOVButton(POV.west);
 	public static POVButton limelightToggle1 = RobotMap.opGamepad.getPOVButton(POV.north);
 	public static POVButton limelightToggle2 = RobotMap.opGamepad.getPOVButton(POV.south);
 
@@ -128,7 +128,7 @@ public class OI{
 		}));*/
 
 		//Limelight
-		limelightLight.whenActive(new InstantCommand(() -> CLimelight.toggleLedMode()));
+		limelightPiPMode.whenActive(new InstantCommand(() -> CLimelight.togglePiPMode()));
 
 		//controller check (not needed, but useful)
 		driveControllerCheck.toggleWhenPressed(new PrintCommand("START pressed on Drive Gamepad."));

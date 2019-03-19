@@ -24,6 +24,19 @@ public class CLimelight extends SendableBase {
         }
     }
 
+    public enum PIPMode {
+        SideBySide(0), Vision(1), Driver(2);
+        private int value;
+
+        PIPMode(int value) {
+            this.value = value;
+        }
+
+        public int get() {
+            return value;
+        }
+    }
+
     public enum DetectionMode {
         Intake,
         Outake
@@ -167,6 +180,14 @@ public class CLimelight extends SendableBase {
         }
     }
 
+    public static void togglePiPMode() {
+        if (getPiPMode() == PIPMode.Driver.get()) {
+            setPiPMode(PIPMode.Vision.get());
+        } else {
+            setPiPMode(PIPMode.Driver.get());
+        }
+    }
+
     /**
      * Sets the Limelight's Picture-in-picture state.
      * 
@@ -186,15 +207,6 @@ public class CLimelight extends SendableBase {
      */
     public static int getPiPMode() {
         return (int) getNetworkTableEntry("stream");
-    }
-
-    /**
-     * Toggles the Limelight's PiP Mode. 0 => 1, 1 => 2, 2 => 0 (0 = default side by
-     * side, 1 = PiP Main, 2 = PiP Secondary)
-     */
-
-    public static void togglePiPMode() {
-        setNetworkTableEntry("stream", (getPiPMode() + 1) % 3);
     }
 
     /**
