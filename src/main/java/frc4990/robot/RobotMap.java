@@ -40,6 +40,8 @@ public class RobotMap {
 
 	public static final double LIMELIGHT_ACCURACY = 0.25;//change this
 	public static final double DRIVETRAIN_WIDTH = (23d + 7d / 8d) / 12d;
+	public static final double wheelDiameter = 6.0; //inches
+	public static final double maxVelocity = 10.0; //feet per second
 	public static final int TURRET_TURN_ACCURACY = 20;
 	public static final int TALON_TIMEOUT_MS = 5;
 

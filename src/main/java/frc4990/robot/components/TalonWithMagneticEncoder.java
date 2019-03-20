@@ -14,6 +14,8 @@ public class TalonWithMagneticEncoder extends WPI_TalonSRX implements PIDSource,
 
     private PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
 
+    public static final int ticksPerRevolution = 4096;
+
  
 /**
  * | Parameter            | Absolute Mode (SensorMode 0)      | Relative Mode (SensorMode 1)      |
