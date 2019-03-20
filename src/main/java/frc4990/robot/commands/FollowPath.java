@@ -22,9 +22,9 @@ public class FollowPath extends Command {
 
   private EncoderFollower leftFollower, rightFollower;
   private Trajectory leftTrajectory, rightTrajectory;
+  private int pathInverted = 1;
 
   public FollowPath(String pathName) {
-    
     try {
       rightTrajectory = PathfinderFRC.getTrajectory(pathName + ".left"); //inverted left/right per http://wpilib.screenstepslive.com/s/currentCS/m/84338/l/1021631-integrating-path-following-into-a-robot-program
       leftTrajectory = PathfinderFRC.getTrajectory(pathName + ".right");
@@ -41,7 +41,11 @@ public class FollowPath extends Command {
     
     leftFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / RobotMap.maxVelocity, 0); //todo: configure PID/VA constents
     rightFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / RobotMap.maxVelocity, 0); //todo: configure PID/VA constents
+  }
 
+  public FollowPath(String pathName, boolean inverted) {
+    this(pathName);
+    pathInverted = inverted ? -1 : 1;
   }
 
   // Called just before this Command runs the first time
@@ -58,7 +62,7 @@ public class FollowPath extends Command {
     double desired_heading = Pathfinder.r2d(leftFollower.getHeading());
     double heading_difference = Pathfinder.boundHalfDegrees(desired_heading - heading);
     double turn =  0.8 * (-1.0/80.0) * heading_difference;
-    DriveTrain.setSpeed(left_speed + turn, right_speed - turn);
+    DriveTrain.setSpeed((left_speed + turn) * pathInverted, (right_speed - turn) * pathInverted);
   }
 
   // Make this return true when this Command no longer needs to run execute()
