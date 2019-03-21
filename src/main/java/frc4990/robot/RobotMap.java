@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSource.ConnectionStrategy;
 import edu.wpi.first.cameraserver.*;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -117,7 +118,10 @@ public class RobotMap {
     //all port bindings or empty constuctors that stay the same for the pratice & real robots.
 
 		ahrs = new AHRS(SPI.Port.kMXP);
-		//camera = CameraServer.getInstance().startAutomaticCapture();
+		camera = CameraServer.getInstance().startAutomaticCapture();
+		camera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+		camera.setResolution(176, 144);
+		camera.setFPS(20);
 		driveGamepad = new F310Gamepad(0);
 		opGamepad = new F310Gamepad(1);
 
