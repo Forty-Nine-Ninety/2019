@@ -102,6 +102,9 @@ public class RobotMap {
 	public static Pneumatic hatchPneumatic;
 	public static Pneumatic turretPneumatic;
 
+	//Cargo roller
+	public static WPI_TalonSRX cargoTalon;
+
 	//Subsystems
 	public static DriveTrain driveTrain;
 	public static Turret turret;
@@ -141,6 +144,8 @@ public class RobotMap {
 			turretSensorA = new DigitalInput(0);
 			turretSensorB = new DigitalInput(1);
 
+			cargoTalon = new WPI_TalonSRX(36);
+
 		} else { //competition bot
 			System.out.println("I am the *COMP* bot.");
        //all port bindings that are only true for the competition robot. (PDP = 1, PCM = 11, Talons = 21 through 30)
@@ -156,6 +161,8 @@ public class RobotMap {
 			turretTalon = new TalonWithMagneticEncoder(25);
 			turretSensorA = new DigitalInput(0);
 			turretSensorB = new DigitalInput(1);
+
+			cargoTalon = new WPI_TalonSRX(26);
 		}
 
 		//all port bindings that are dependent on robot-specific port bindings.

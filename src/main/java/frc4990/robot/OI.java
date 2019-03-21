@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc4990.robot.commands.ClimbingSequence;
 import frc4990.robot.commands.LimelightDetection;
 import frc4990.robot.commands.PIDTurretTurn;
+import frc4990.robot.commands.RunCargo;
 import frc4990.robot.commands.TeleopDriveTrainController;
 import frc4990.robot.commands.TeleopDriveTrainController.StickShapingMode;
 import frc4990.robot.commands.manualIntakeSequence;
@@ -72,12 +73,12 @@ public class OI{
 	public static Button manualIntakeSequence = RobotMap.opGamepad.getButton(Buttons.leftBumper);
 	public static Button manualOutakeSequence = RobotMap.opGamepad.getButton(Buttons.rightBumper);
 
-	public static JoystickAnalogButton hatchToggle = RobotMap.opGamepad.getAxis(Axis.leftTrigger);
-	public static JoystickAnalogButton limelightOutakeToggle = RobotMap.opGamepad.getAxis(Axis.rightTrigger);
+	public static JoystickAnalogButton cargoIn = RobotMap.opGamepad.getAxis(Axis.leftTrigger);
+	public static JoystickAnalogButton cargoOut = RobotMap.opGamepad.getAxis(Axis.rightTrigger);
 
 	public static Button limelightPiPMode = RobotMap.opGamepad.getPOVButton(POV.west);
-	public static POVButton limelightToggle1 = RobotMap.opGamepad.getPOVButton(POV.north);
-	public static POVButton limelightToggle2 = RobotMap.opGamepad.getPOVButton(POV.south);
+	public static POVButton limelightToggle = RobotMap.opGamepad.getPOVButton(POV.north);
+	public static POVButton hatchToggle = RobotMap.opGamepad.getPOVButton(POV.south);
 
 	public static Button opControllerCheck = RobotMap.opGamepad.getButton(Buttons.back);
 	
@@ -145,11 +146,12 @@ public class OI{
     
 		//Hatch
 		turretPneumatic.whenPressed(RobotMap.turretPneumatic.toggleCommand());
-
-		limelightToggle1.toggleWhenPressed(ld);
-		limelightToggle2.toggleWhenPressed(ld);
-
+		limelightToggle.toggleWhenPressed(ld);
 		hatchToggle.whenPressed(new InstantCommand(() -> RobotMap.hatchPneumatic.toggle()));
+
+		//Cargo
+		cargoIn.whileHeld(new RunCargo(() -> cargoIn.getRawAxis()));
+		cargoOut.whileHeld(new RunCargo(() -> -cargoOut.getRawAxis()));
 
 		//Pneumatics
 		frontPneumatics.whenPressed(RobotMap.frontSolenoid.toggleCommand());
@@ -160,7 +162,7 @@ public class OI{
 		manualIntakeSequence.toggleWhenPressed(new manualIntakeSequence());
 		manualOutakeSequence.toggleWhenPressed(new manualOutakeSequence());
 
-		limelightOutakeToggle.toggleWhenPressed(new InstantCommand(() -> CLimelight.detectionMode = DetectionMode.Outake));
+		//limelightOutakeToggle.toggleWhenPressed(new InstantCommand(() -> CLimelight.detectionMode = DetectionMode.Outake));
 		//limelightIntakeToggle.toggleWhenPressed(new InstantCommand(() -> CLimelight.detectionMode = DetectionMode.Intake));
 
 		climbingSequence.toggleWhenPressed(new ClimbingSequence());
