@@ -125,6 +125,7 @@ public class RobotMap {
 		camera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
 		camera.setResolution(176, 144);
 		camera.setFPS(20);
+		//camera.setConnectVerbose(0);
 		driveGamepad = new F310Gamepad(0);
 		opGamepad = new F310Gamepad(1);
 
