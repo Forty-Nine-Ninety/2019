@@ -271,7 +271,7 @@
       }
     },
     {
-      "title": "Tab 4",
+      "title": "Testing",
       "autoPopulate": false,
       "autoPopulatePrefix": "",
       "widgetPane": {
@@ -279,34 +279,14 @@
         "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
-        "tiles": {
-          "3,0": {
-            "size": [
-              6,
-              5
-            ],
-            "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://USB Camera 0",
-              "_title": "USB Camera 0",
-              "Crosshair/Show crosshair": true,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
-            }
-          }
-        }
+        "tiles": {}
       }
     }
   ],
   "windowGeometry": {
-    "x": -6.0,
-    "y": 1.0,
-    "width": 1612.0,
-    "height": 865.0
+    "x": -8.0,
+    "y": -8.0,
+    "width": 1616.0,
+    "height": 876.0
   }
 }
