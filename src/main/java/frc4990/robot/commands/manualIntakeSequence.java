@@ -27,9 +27,6 @@ public class manualIntakeSequence extends CommandGroup {
     addSequential(new InstantCommand(() -> {
 			RobotMap.turret.controlDisabled = false;
         RobotMap.driveTrain.controlDisabled = false;
-    }));
-    addSequential(new InstantCommand(() -> {
-      OI.ld.end();
-    }));
+		}));
   }
 }
