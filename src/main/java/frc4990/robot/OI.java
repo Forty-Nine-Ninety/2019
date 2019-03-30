@@ -9,6 +9,7 @@ package frc4990.robot;
 
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.POVButton;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc4990.robot.commands.ClimbingSequence;
@@ -65,6 +66,7 @@ public class OI{
 	public static Button turretBack = RobotMap.opGamepad.getButton(Buttons.a);
 	public static Button turretSafe = RobotMap.opGamepad.getButton(Buttons.start);
 	public static Button turretReset = RobotMap.opGamepad.getPOVButton(POV.east);
+	public static Button turretCancel = RobotMap.opGamepad.getButton(Buttons.leftJoystickButton);
 
 
 	public static JoystickAnalogButton turretPneumatic = RobotMap.opGamepad.getAxis(Axis.rightJoystickY);
@@ -142,11 +144,20 @@ public class OI{
 		turretSafe.whenActive(new PIDTurretTurn(TurretPoint.Safe));
 		//turretReset.whenPressed(new InstantCommandRunDisabled(() -> RobotMap.turret.resetPosition()));
 		opControllerCheck.whenPressed(new InstantCommandRunDisabled(() -> RobotMap.turret.resetPosition()));
-    
+	
+		turretCancel.whenPressed(new Command("turretCancel", RobotMap.turret) {
+
+			@Override
+			protected boolean isFinished() {
+				return true;
+			}
+
+		});
+
 		//Hatch
 		turretPneumatic.whenPressed(RobotMap.turretPneumatic.toggleCommand());
-		limelightToggle.toggleWhenPressed(new InstantCommand(() -> {
-			if (ld.isRunning()) ld.interrupted();
+		limelightToggle.whenPressed(new InstantCommand(() -> {
+			if (ld.isRunning()) ld.cancel();
 			else ld.start();
 		}));
 		hatchToggle.whenPressed(new InstantCommand(() -> RobotMap.hatchPneumatic.toggle()));
