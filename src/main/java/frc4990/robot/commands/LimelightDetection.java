@@ -3,6 +3,7 @@ package frc4990.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc4990.robot.OI;
 import frc4990.robot.RobotMap;
 import frc4990.robot.components.CLimelight;
 import frc4990.robot.components.CLimelight.Pipeline;
@@ -20,6 +21,7 @@ public class LimelightDetection extends Command {
 	}
 
 	public void execute() {
+		if (Math.abs(OI.turretTurn.getRawAxis()) > 0.05) return;
 		if (! CLimelight.hasValidTarget()) {//If no target found
 			System.out.println("[Debug] No valid target in frame.");
 			RobotMap.turret.controlDisabled = false;

@@ -136,12 +136,12 @@ public class OI{
 
 		//turret
 		//turretTurn is used in default command for Turret subsystem.
-		turretForward.toggleWhenActive(new PIDTurretTurn(TurretPoint.Forward));
-		turretLeft.toggleWhenActive(new PIDTurretTurn(TurretPoint.Left));
-		turretRight.toggleWhenActive(new PIDTurretTurn(TurretPoint.Right));
-		turretBack.toggleWhenActive(new PIDTurretTurn(TurretPoint.Back));
-		turretSafe.toggleWhenActive(new PIDTurretTurn(TurretPoint.Safe));
-		turretReset.whenPressed(new InstantCommandRunDisabled(() -> RobotMap.turret.resetPosition()));
+		turretForward.whenActive(new PIDTurretTurn(TurretPoint.Forward));
+		turretLeft.whenActive(new PIDTurretTurn(TurretPoint.Left));
+		turretRight.whenActive(new PIDTurretTurn(TurretPoint.Right));
+		turretBack.whenActive(new PIDTurretTurn(TurretPoint.Back));
+		turretSafe.whenActive(new PIDTurretTurn(TurretPoint.Safe));
+		//turretReset.whenPressed(new InstantCommandRunDisabled(() -> RobotMap.turret.resetPosition()));
 		opControllerCheck.whenPressed(new InstantCommandRunDisabled(() -> RobotMap.turret.resetPosition()));
     
 		//Hatch
