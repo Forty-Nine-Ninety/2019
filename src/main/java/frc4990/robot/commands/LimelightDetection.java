@@ -19,7 +19,7 @@ public class LimelightDetection extends Command {
 		CLimelight.setPipeline(Pipeline.Vision);
 		CLimelight.setLedMode(0);
 	}
-
+	
 	public void execute() {
 		if (Math.abs(OI.turretTurn.getRawAxis()) > 0.05) return;
 		if (! CLimelight.hasValidTarget()) {//If no target found

@@ -29,6 +29,7 @@ public class manualOutakeSequence extends CommandGroup {
     }));
     addSequential(new InstantCommand(() -> {
       OI.ld.end();
+      OI.isLimelightOn = false;
     }));
     //only move hatch grabber up if facing forward or back 
     //addSequential(RobotMap.hatchPneumatic.retract());
