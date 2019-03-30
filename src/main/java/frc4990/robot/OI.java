@@ -145,7 +145,10 @@ public class OI{
     
 		//Hatch
 		turretPneumatic.whenPressed(RobotMap.turretPneumatic.toggleCommand());
-		limelightToggle.toggleWhenPressed(ld);
+		limelightToggle.toggleWhenPressed(new InstantCommand(() -> {
+			if (ld.isRunning()) ld.interrupted();
+			else ld.start();
+		}));
 		hatchToggle.whenPressed(new InstantCommand(() -> RobotMap.hatchPneumatic.toggle()));
 
 		//Cargo

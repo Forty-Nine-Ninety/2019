@@ -21,7 +21,7 @@ public class PIDTurretTurn extends Command {
 	public void initialize() {
 		System.out.println("Initalizing PIDTurretTurn with target " + point.toString() + " (" + target + ") , at: " + RobotMap.turretTalon.getPosition());
 		RobotMap.turretTalon.set(ControlMode.MotionMagic, target);
-		OI.ld.end();
+		OI.ld.interrupted();
 	}
 
 	public void execute() {}

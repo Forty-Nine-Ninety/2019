@@ -28,7 +28,7 @@ public class manualOutakeSequence extends CommandGroup {
         RobotMap.driveTrain.controlDisabled = false;
     }));
     addSequential(new InstantCommand(() -> {
-      OI.ld.end();
+      OI.ld.interrupted();
     }));
     //only move hatch grabber up if facing forward or back 
     //addSequential(RobotMap.hatchPneumatic.retract());

@@ -21,7 +21,10 @@ public class LimelightDetection extends Command {
 	}
 
 	public void execute() {
-		if (Math.abs(OI.turretTurn.getRawAxis()) > 0.05) return;
+		if (Math.abs(OI.turretTurn.getRawAxis()) > 0.05) {
+			System.out.println("[Debug] Operator has control of turret.");
+			return;
+		}
 		if (! CLimelight.hasValidTarget()) {//If no target found
 			System.out.println("[Debug] No valid target in frame.");
 			RobotMap.turret.controlDisabled = false;
