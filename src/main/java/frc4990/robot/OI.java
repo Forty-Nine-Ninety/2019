@@ -25,7 +25,6 @@ import frc4990.robot.components.F310Gamepad.POV;
 import frc4990.robot.components.CLimelight;
 import frc4990.robot.components.InstantCommandRunDisabled;
 import frc4990.robot.components.JoystickAnalogButton;
-import frc4990.robot.components.CLimelight.DetectionMode;
 import frc4990.robot.subsystems.Dashboard;
 import frc4990.robot.subsystems.Turret.TurretPoint;
 
@@ -51,8 +50,8 @@ public class OI{
 	public static Button driveSpeedToggle = RobotMap.driveGamepad.getButton(Buttons.x);
 	public static Button turnSpeedToggle = RobotMap.driveGamepad.getButton(Buttons.b);
 
-	public static JoystickAnalogButton shiftRight = RobotMap.driveGamepad.getAxis(Axis.rightTrigger);
-	public static JoystickAnalogButton shiftLeft = RobotMap.driveGamepad.getAxis(Axis.leftTrigger);
+	public static JoystickAnalogButton shiftRight = RobotMap.driveGamepad.getAxis(Axis.leftTrigger);
+	public static JoystickAnalogButton shiftLeft = RobotMap.driveGamepad.getAxis(Axis.rightTrigger);
 
 	public static Button stickShapingToggle = RobotMap.driveGamepad.getButton(Buttons.y);
 
@@ -143,6 +142,7 @@ public class OI{
 		turretBack.toggleWhenActive(new PIDTurretTurn(TurretPoint.Back));
 		turretSafe.toggleWhenActive(new PIDTurretTurn(TurretPoint.Safe));
 		turretReset.whenPressed(new InstantCommandRunDisabled(() -> RobotMap.turret.resetPosition()));
+		opControllerCheck.whenPressed(new InstantCommandRunDisabled(() -> RobotMap.turret.resetPosition()));
     
 		//Hatch
 		turretPneumatic.whenPressed(RobotMap.turretPneumatic.toggleCommand());
@@ -150,8 +150,8 @@ public class OI{
 		hatchToggle.whenPressed(new InstantCommand(() -> RobotMap.hatchPneumatic.toggle()));
 
 		//Cargo
-		cargoIn.whileHeld(new RunCargo(() -> cargoIn.getRawAxis()));
-		cargoOut.whileHeld(new RunCargo(() -> -cargoOut.getRawAxis()));
+		cargoIn.whileHeld(new RunCargo(() -> -cargoIn.getRawAxis())); //cargoOut.getRawAxis()
+		cargoOut.whileHeld(new RunCargo(() -> cargoOut.getRawAxis() > 0 ? 1: 0)); //-cargoOut.getRawAxis()
 
 		//Pneumatics
 		frontPneumatics.whenPressed(RobotMap.frontSolenoid.toggleCommand());
