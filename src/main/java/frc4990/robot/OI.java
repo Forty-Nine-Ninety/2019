@@ -80,9 +80,9 @@ public class OI{
 	public static POVButton hatchToggle = RobotMap.opGamepad.getPOVButton(POV.south);
 
 	public static Button opControllerCheck = RobotMap.opGamepad.getButton(Buttons.back);
-	
 
-	private static LimelightDetection ld = new LimelightDetection();
+	public static LimelightDetection ld = new LimelightDetection();
+	public static boolean isLimelightOn = false;
 	/* Controller Mapping:
 		Drive Train: (drive controller)
 		    Joysticks 1 and 2: forward/backward and turn left/right
@@ -146,7 +146,15 @@ public class OI{
     
 		//Hatch
 		turretPneumatic.whenPressed(RobotMap.turretPneumatic.toggleCommand());
-		limelightToggle.toggleWhenPressed(ld);
+		limelightToggle.whenPressed(new InstantCommand(() -> {
+			if (isLimelightOn) {
+				ld.end();
+			}
+			else {
+				ld.start();
+			}
+			isLimelightOn = ! isLimelightOn;
+		}));
 		hatchToggle.whenPressed(new InstantCommand(() -> RobotMap.hatchPneumatic.toggle()));
 
 		//Cargo
