@@ -28,6 +28,7 @@ public class PIDTurretTurn extends Command {
 	
 	public void end() {
 		RobotMap.turretTalon.set(ControlMode.PercentOutput, 0);
+		OI.ld.cancel();
 	}
 	
 	public void interrupted() {
