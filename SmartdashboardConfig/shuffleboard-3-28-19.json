@@ -282,7 +282,7 @@
         "tiles": {
           "0,0": {
             "size": [
-              10,
+              6,
               5
             ],
             "content": {
@@ -297,6 +297,17 @@
               "fps": -1,
               "imageWidth": -1,
               "imageHeight": -1
+            }
+          },
+          "6,1": {
+            "size": [
+              5,
+              2
+            ],
+            "content": {
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///LiveWindow/Ungrouped/Scheduler",
+              "_title": "/LiveWindow/Ungrouped/Scheduler"
             }
           }
         }
