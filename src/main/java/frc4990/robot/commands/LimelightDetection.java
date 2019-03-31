@@ -15,31 +15,27 @@ public class LimelightDetection extends Command {
 	}
 
 	public void initialize() {
-		System.out.println("[Debug] Initializing.");
+		System.out.println("[Debug] Initializing Limelight.");
 		CLimelight.setPipeline(Pipeline.Vision);
 		CLimelight.setLedMode(0);
 	}
 
 	public void execute() {
 		if (Math.abs(OI.turretTurn.getRawAxis()) > 0.05) {
-			System.out.println("[Debug] Operator has control of turret.");
 			return;
 		}
 		if (! CLimelight.hasValidTarget()) {//If no target found
-			System.out.println("[Debug] No valid target in frame.");
 			RobotMap.turret.controlDisabled = false;
 			//RobotMap.driveTrain.controlDisabled = false;
 			return;
 		}
 		//This code will only run if there's a valid target.
-		System.out.println("[Debug] Seeking target.");
 
 		RobotMap.turret.controlDisabled = true;
 		double hError = CLimelight.getCrosshairHorizontalOffset();
 		if (Math.abs(hError) > RobotMap.LIMELIGHT_ACCURACY) {//Follow the target.
 			//horizontal (turret) error
 			RobotMap.turret.setSpeed(clamp(hError * RobotMap.LimelightCorrectionkPH, -1, 1));
-			System.out.println("[Debug] Correcting turret: " + hError);
 			//RobotMap.driveTrain.controlDisabled = false;
 		}
 		/*  Maybe enable this in the future but it doesn't work rn
@@ -55,16 +51,16 @@ public class LimelightDetection extends Command {
 	}
 	
 	public void end() {
-		System.out.println("[Debug] Done.");
 		CLimelight.setPipeline(Pipeline.Driver.get());
 		Scheduler.getInstance().add(new InstantCommand(() -> {
 			RobotMap.turret.controlDisabled = false;
         RobotMap.driveTrain.controlDisabled = false;
 		}));
+		System.out.println("[Debug] Turned off Limelight.");
 	}
 	
 	public void interrupted() {
-		System.out.println("[Debug] Interrupted.");
+		System.out.println("[Debug] Limelight Interrupted.");
 		end();
 	}
 	
