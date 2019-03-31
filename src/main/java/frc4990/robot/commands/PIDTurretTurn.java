@@ -21,14 +21,15 @@ public class PIDTurretTurn extends Command {
 	public void initialize() {
 		System.out.println("Initalizing PIDTurretTurn with target " + point.toString() + " (" + target + ") , at: " + RobotMap.turretTalon.getPosition());
 		RobotMap.turretTalon.set(ControlMode.MotionMagic, target);
-		OI.ld.cancel();
+		
 	}
 
-	public void execute() {}
+	public void execute() {
+		if (OI.ld.isRunning()) OI.ld.cancel();
+	}
 	
 	public void end() {
 		RobotMap.turretTalon.set(ControlMode.PercentOutput, 0);
-		OI.ld.cancel();
 	}
 	
 	public void interrupted() {
