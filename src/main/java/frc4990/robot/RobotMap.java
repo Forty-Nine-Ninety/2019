@@ -123,8 +123,8 @@ public class RobotMap {
 		ahrs = new AHRS(SPI.Port.kMXP);
 		camera = CameraServer.getInstance().startAutomaticCapture();
 		camera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
-		camera.setResolution(176, 144);
-		camera.setFPS(20);
+		camera.setResolution(160, 120);
+		camera.setFPS(15);
 		//camera.setConnectVerbose(0);
 		driveGamepad = new F310Gamepad(0);
 		opGamepad = new F310Gamepad(1);
