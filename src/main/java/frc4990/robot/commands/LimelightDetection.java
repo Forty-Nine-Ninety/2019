@@ -1,40 +1,64 @@
 package frc4990.robot.commands;
 
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import frc4990.robot.OI;
 import frc4990.robot.RobotMap;
 import frc4990.robot.components.CLimelight;
+import frc4990.robot.components.SendableObject;
 import frc4990.robot.components.CLimelight.Pipeline;
+import frc4990.robot.subsystems.Dashboard;
 
 public class LimelightDetection extends Command {
 
+	PIDController limelightDetectionPID = new PIDController(RobotMap.LimelightCorrectionkPH, 0, 0, 
+	new PIDSource(){
+		public void setPIDSourceType(PIDSourceType pidSource) {} 
+		public double pidGet() {return CLimelight.getCrosshairHorizontalOffset();} 
+		public PIDSourceType getPIDSourceType() { return PIDSourceType.kDisplacement;}
+	}, (PIDOutput) (double output) -> {});
+
 	public LimelightDetection() {
-		
+		limelightDetectionPID.setInputRange(-29.8, 29.8);
+		limelightDetectionPID.setOutputRange(-1, 1);
+		limelightDetectionPID.setSetpoint(0);
+		limelightDetectionPID.setAbsoluteTolerance(0.25);
+		limelightDetectionPID.enable();
+		limelightDetectionPID.setEnabled(true);
+		LiveWindow.add(limelightDetectionPID);
+		Dashboard.debugTab.add("limelightDetectionPID/output", new SendableObject(limelightDetectionPID::get));
+		Dashboard.debugTab.add("limelightDetectionPID/error", new SendableObject(limelightDetectionPID::getError));
 	}
 
 	public void initialize() {
-		System.out.println("[Debug] Initializing.");
+		System.out.println("[Debug] Initializing Limelight.");
 		CLimelight.setPipeline(Pipeline.Vision);
 		CLimelight.setLedMode(0);
 	}
 
 	public void execute() {
+		if (Math.abs(OI.turretTurn.getRawAxis()) > 0.05) {
+			return;
+		}
 		if (! CLimelight.hasValidTarget()) {//If no target found
-			System.out.println("[Debug] No valid target in frame.");
 			RobotMap.turret.controlDisabled = false;
 			//RobotMap.driveTrain.controlDisabled = false;
 			return;
 		}
 		//This code will only run if there's a valid target.
-		System.out.println("[Debug] Seeking target.");
 
 		RobotMap.turret.controlDisabled = true;
 		double hError = CLimelight.getCrosshairHorizontalOffset();
 		if (Math.abs(hError) > RobotMap.LIMELIGHT_ACCURACY) {//Follow the target.
 			//horizontal (turret) error
-			RobotMap.turret.setSpeed(clamp(hError * RobotMap.LimelightCorrectionkPH, -1, 1));
-			System.out.println("[Debug] Correcting turret: " + hError);
+			RobotMap.turret.setSpeed(clamp(hError * RobotMap.LimelightCorrectionkPH,-1,1));
+			//RobotMap.turret.setSpeed(limelightDetectionPID.get());
 			//RobotMap.driveTrain.controlDisabled = false;
 		}
 		/*  Maybe enable this in the future but it doesn't work rn
@@ -48,18 +72,18 @@ public class LimelightDetection extends Command {
 		}
 		*/
 	}
-	
+
 	public void end() {
-		System.out.println("[Debug] Done.");
 		CLimelight.setPipeline(Pipeline.Driver.get());
 		Scheduler.getInstance().add(new InstantCommand(() -> {
 			RobotMap.turret.controlDisabled = false;
         RobotMap.driveTrain.controlDisabled = false;
 		}));
+		System.out.println("[Debug] Turned off Limelight.");
 	}
 	
 	public void interrupted() {
-		System.out.println("[Debug] Interrupted.");
+		System.out.println("[Debug] Limelight Interrupted.");
 		end();
 	}
 	

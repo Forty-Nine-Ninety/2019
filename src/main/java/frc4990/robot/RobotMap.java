@@ -13,6 +13,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSource.ConnectionStrategy;
+import edu.wpi.first.cameraserver.*;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -74,6 +77,7 @@ public class RobotMap {
 	//Sensors
 	public static PowerDistributionPanel pdp;
 	public static AHRS ahrs;
+	public static UsbCamera camera;
 	public static Compressor compressor;
 	public static int pcmCANID;
 
@@ -100,6 +104,9 @@ public class RobotMap {
 	public static Pneumatic hatchPneumatic;
 	public static Pneumatic turretPneumatic;
 
+	//Cargo roller
+	public static WPI_TalonSRX cargoTalon;
+
 	//Subsystems
 	public static DriveTrain driveTrain;
 	public static Turret turret;
@@ -116,7 +123,11 @@ public class RobotMap {
     //all port bindings or empty constuctors that stay the same for the pratice & real robots.
 
 		ahrs = new AHRS(SPI.Port.kMXP);
-
+		camera = CameraServer.getInstance().startAutomaticCapture();
+		camera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+		camera.setResolution(160, 120);
+		camera.setFPS(15);
+		//camera.setConnectVerbose(0);
 		driveGamepad = new F310Gamepad(0);
 		opGamepad = new F310Gamepad(1);
 
@@ -136,6 +147,8 @@ public class RobotMap {
 			turretSensorA = new DigitalInput(0);
 			turretSensorB = new DigitalInput(1);
 
+			cargoTalon = new WPI_TalonSRX(36);
+
 		} else { //competition bot
 			System.out.println("I am the *COMP* bot.");
        //all port bindings that are only true for the competition robot. (PDP = 1, PCM = 11, Talons = 21 through 30)
@@ -151,6 +164,8 @@ public class RobotMap {
 			turretTalon = new TalonWithMagneticEncoder(25);
 			turretSensorA = new DigitalInput(0);
 			turretSensorB = new DigitalInput(1);
+
+			cargoTalon = new WPI_TalonSRX(26);
 		}
 
 		//all port bindings that are dependent on robot-specific port bindings.

@@ -271,7 +271,7 @@
       }
     },
     {
-      "title": "Tab 4",
+      "title": "Testing",
       "autoPopulate": false,
       "autoPopulatePrefix": "",
       "widgetPane": {
@@ -280,15 +280,56 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "5,1": {
+          "0,0": {
             "size": [
-              1,
+              6,
+              5
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://USB Camera 0",
+              "_title": "USB Camera 0",
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
+            }
+          },
+          "6,0": {
+            "size": [
+              5,
               1
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///limelight/stream",
-              "_title": "limelight/stream"
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///LiveWindow/Ungrouped/Scheduler",
+              "_title": "/LiveWindow/Ungrouped/Scheduler"
+            }
+          },
+          "6,1": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "PID Controller",
+              "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[1]",
+              "_title": "LiveWindow/Ungrouped/PIDController[1]"
+            }
+          },
+          "8,1": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///Shuffleboard/Debug/limelightDetectionPID",
+              "_title": "Shuffleboard/Debug/limelightDetectionPID"
             }
           }
         }

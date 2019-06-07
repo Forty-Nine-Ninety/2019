@@ -9,11 +9,13 @@ package frc4990.robot;
 
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.POVButton;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc4990.robot.commands.ClimbingSequence;
 import frc4990.robot.commands.LimelightDetection;
 import frc4990.robot.commands.PIDTurretTurn;
+import frc4990.robot.commands.RunCargo;
 import frc4990.robot.commands.TeleopDriveTrainController;
 import frc4990.robot.commands.TeleopDriveTrainController.StickShapingMode;
 import frc4990.robot.commands.manualIntakeSequence;
@@ -24,7 +26,6 @@ import frc4990.robot.components.F310Gamepad.POV;
 import frc4990.robot.components.CLimelight;
 import frc4990.robot.components.InstantCommandRunDisabled;
 import frc4990.robot.components.JoystickAnalogButton;
-import frc4990.robot.components.CLimelight.DetectionMode;
 import frc4990.robot.subsystems.Dashboard;
 import frc4990.robot.subsystems.Turret.TurretPoint;
 
@@ -50,8 +51,8 @@ public class OI{
 	public static Button driveSpeedToggle = RobotMap.driveGamepad.getButton(Buttons.x);
 	public static Button turnSpeedToggle = RobotMap.driveGamepad.getButton(Buttons.b);
 
-	public static JoystickAnalogButton shiftRight = RobotMap.driveGamepad.getAxis(Axis.rightTrigger);
-	public static JoystickAnalogButton shiftLeft = RobotMap.driveGamepad.getAxis(Axis.leftTrigger);
+	public static JoystickAnalogButton shiftRight = RobotMap.driveGamepad.getAxis(Axis.leftTrigger);
+	public static JoystickAnalogButton shiftLeft = RobotMap.driveGamepad.getAxis(Axis.rightTrigger);
 
 	public static Button stickShapingToggle = RobotMap.driveGamepad.getButton(Buttons.y);
 
@@ -65,6 +66,7 @@ public class OI{
 	public static Button turretBack = RobotMap.opGamepad.getButton(Buttons.a);
 	public static Button turretSafe = RobotMap.opGamepad.getButton(Buttons.start);
 	public static Button turretReset = RobotMap.opGamepad.getPOVButton(POV.east);
+	public static Button turretCancel = RobotMap.opGamepad.getButton(Buttons.leftJoystickButton);
 
 
 	public static JoystickAnalogButton turretPneumatic = RobotMap.opGamepad.getAxis(Axis.rightJoystickY);
@@ -72,17 +74,16 @@ public class OI{
 	public static Button manualIntakeSequence = RobotMap.opGamepad.getButton(Buttons.leftBumper);
 	public static Button manualOutakeSequence = RobotMap.opGamepad.getButton(Buttons.rightBumper);
 
-	public static JoystickAnalogButton hatchToggle = RobotMap.opGamepad.getAxis(Axis.leftTrigger);
-	public static JoystickAnalogButton limelightOutakeToggle = RobotMap.opGamepad.getAxis(Axis.rightTrigger);
+	public static JoystickAnalogButton cargoIn = RobotMap.opGamepad.getAxis(Axis.leftTrigger);
+	public static JoystickAnalogButton cargoOut = RobotMap.opGamepad.getAxis(Axis.rightTrigger);
 
 	public static Button limelightPiPMode = RobotMap.opGamepad.getPOVButton(POV.west);
-	public static POVButton limelightToggle1 = RobotMap.opGamepad.getPOVButton(POV.north);
-	public static POVButton limelightToggle2 = RobotMap.opGamepad.getPOVButton(POV.south);
+	public static POVButton limelightToggle = RobotMap.opGamepad.getPOVButton(POV.north);
+	public static POVButton hatchToggle = RobotMap.opGamepad.getPOVButton(POV.south);
 
 	public static Button opControllerCheck = RobotMap.opGamepad.getButton(Buttons.back);
-	
 
-	private static LimelightDetection ld = new LimelightDetection();
+	public static LimelightDetection ld = new LimelightDetection();
 	/* Controller Mapping:
 		Drive Train: (drive controller)
 		    Joysticks 1 and 2: forward/backward and turn left/right
@@ -136,20 +137,34 @@ public class OI{
 
 		//turret
 		//turretTurn is used in default command for Turret subsystem.
-		turretForward.toggleWhenActive(new PIDTurretTurn(TurretPoint.Forward));
-		turretLeft.toggleWhenActive(new PIDTurretTurn(TurretPoint.Left));
-		turretRight.toggleWhenActive(new PIDTurretTurn(TurretPoint.Right));
-		turretBack.toggleWhenActive(new PIDTurretTurn(TurretPoint.Back));
-		turretSafe.toggleWhenActive(new PIDTurretTurn(TurretPoint.Safe));
-		turretReset.whenPressed(new InstantCommandRunDisabled(() -> RobotMap.turret.resetPosition()));
-    
+		turretForward.whenActive(new PIDTurretTurn(TurretPoint.Forward));
+		turretLeft.whenActive(new PIDTurretTurn(TurretPoint.Left));
+		turretRight.whenActive(new PIDTurretTurn(TurretPoint.Right));
+		turretBack.whenActive(new PIDTurretTurn(TurretPoint.Back));
+		turretSafe.whenActive(new PIDTurretTurn(TurretPoint.Safe));
+		//turretReset.whenPressed(new InstantCommandRunDisabled(() -> RobotMap.turret.resetPosition()));
+		opControllerCheck.whenPressed(new InstantCommandRunDisabled(() -> RobotMap.turret.resetPosition()));
+	
+		turretCancel.whenPressed(new Command("turretCancel", RobotMap.turret) {
+
+			@Override
+			protected boolean isFinished() {
+				return true;
+			}
+
+		});
+
 		//Hatch
 		turretPneumatic.whenPressed(RobotMap.turretPneumatic.toggleCommand());
-
-		limelightToggle1.toggleWhenPressed(ld);
-		limelightToggle2.toggleWhenPressed(ld);
-
+		limelightToggle.whenPressed(new InstantCommand(() -> {
+			if (ld.isRunning()) ld.cancel();
+			else ld.start();
+		}));
 		hatchToggle.whenPressed(new InstantCommand(() -> RobotMap.hatchPneumatic.toggle()));
+
+		//Cargo
+		cargoIn.whileHeld(new RunCargo(() -> -cargoIn.getRawAxis())); //cargoOut.getRawAxis()
+		cargoOut.whileHeld(new RunCargo(() -> cargoOut.getRawAxis() > 0 ? 1: 0)); //-cargoOut.getRawAxis()
 
 		//Pneumatics
 		frontPneumatics.whenPressed(RobotMap.frontSolenoid.toggleCommand());
@@ -160,7 +175,7 @@ public class OI{
 		manualIntakeSequence.toggleWhenPressed(new manualIntakeSequence());
 		manualOutakeSequence.toggleWhenPressed(new manualOutakeSequence());
 
-		limelightOutakeToggle.toggleWhenPressed(new InstantCommand(() -> CLimelight.detectionMode = DetectionMode.Outake));
+		//limelightOutakeToggle.toggleWhenPressed(new InstantCommand(() -> CLimelight.detectionMode = DetectionMode.Outake));
 		//limelightIntakeToggle.toggleWhenPressed(new InstantCommand(() -> CLimelight.detectionMode = DetectionMode.Intake));
 
 		climbingSequence.toggleWhenPressed(new ClimbingSequence());
