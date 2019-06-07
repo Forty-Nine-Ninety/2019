@@ -15,6 +15,6 @@ public class wait extends TimedCommand {
 
 	@Override
 	public void initialize() {
-		System.out.println("wait(" + t + " sec)");
+		//System.out.println("wait(" + t + " sec)");
 	}
 }

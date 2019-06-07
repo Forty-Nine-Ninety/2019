@@ -1,6 +1,5 @@
 package frc4990.robot.commands;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import frc4990.robot.OI;
 import frc4990.robot.RobotMap;
@@ -38,7 +37,7 @@ public class TeleopDriveTrainController extends Command {
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public void execute() {
-
+		//if (RobotMap.driveTrain.controlDisabled) return;//If robot has control of drivetrain
 		switch (stickShapingMode) {
 			case SquaredThrottle://Another one that we tried.
 				throttle = getSquaredThrottle(OI.throttle.getRawAxis() * currentThrottleMultiplier);
@@ -149,7 +148,7 @@ public class TeleopDriveTrainController extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return !DriverStation.getInstance().isOperatorControl();
+		return false;//!DriverStation.getInstance().isOperatorControl() && !DriverStation.getInstance().isAutonomous();
 	}
 	
 	@Override

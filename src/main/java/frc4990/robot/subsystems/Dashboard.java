@@ -91,7 +91,7 @@ public class Dashboard extends Subsystem{
 
 			//Climbing Pneumatics
 			debugTab.add("Pneumatics/FrontSolenoid", RobotMap.frontSolenoid);
-			//debugTab.add("Pneumatics/RearSolenoid", RobotMap.rearSolenoid);
+			debugTab.add("Pneumatics/RearSolenoid", RobotMap.rearSolenoid);
 
 			//Hatch manipulator
 			debugTab.add("Pneumatics/HatchPneumatic", RobotMap.hatchPneumatic);
@@ -112,10 +112,13 @@ public class Dashboard extends Subsystem{
 			driveTab.add("Turret Position", new SendableObject((FunctionalInterface) () -> RobotMap.turretTalon.getPosition()));
 			
 			driveTab.add("Target Not Visible", new SendableObject((BooleanSupplier) () -> (boolean) !CLimelight.hasValidTarget())).withWidget(BuiltInWidgets.kBooleanBox).withSize(3, 1);
-			driveTab.add("Target Visible, Not In Range", new SendableObject((BooleanSupplier) () -> (boolean) CLimelight.hasValidTarget() && !CLimelight.inRange())).withWidget(BuiltInWidgets.kBooleanBox).withSize(3, 1);
+			driveTab.add("Target Visible, too FAR", new SendableObject((BooleanSupplier) () -> (boolean) CLimelight.hasValidTarget() && CLimelight.tooFar())).withWidget(BuiltInWidgets.kBooleanBox).withSize(3, 1);
+			driveTab.add("Target Visible, too CLOSE", new SendableObject((BooleanSupplier) () -> (boolean) CLimelight.hasValidTarget() && !CLimelight.tooFar())).withWidget(BuiltInWidgets.kBooleanBox).withSize(3, 1);
 			driveTab.add("Target In Range", new SendableObject((BooleanSupplier) () -> (boolean) CLimelight.inRange())).withWidget(BuiltInWidgets.kBooleanBox).withSize(3, 1);
 			driveTab.add("Limelight Status", new SendableObject((FunctionalInterface) () -> CLimelight.getStatus()));
 
+			driveTab.add("TurretPneumatic", new SendableObject((FunctionalInterface) () -> RobotMap.turretPneumatic.solenoid.get() ? "I" : "O"));
+			driveTab.add("HatchPneumatic", new SendableObject((FunctionalInterface) () -> RobotMap.hatchPneumatic.solenoid.get() ? "D" : "U"));
 
 			//driveTab.add("DebugTabComponents", new SendableObject(() -> debugTab.getComponents().size()));
 

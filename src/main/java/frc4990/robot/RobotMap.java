@@ -13,6 +13,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSource.ConnectionStrategy;
+import edu.wpi.first.cameraserver.*;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -38,7 +41,7 @@ public class RobotMap {
 
 	//constants
 
-	public static final double LIMELIGHT_ACCURACY = 0.5;//change this
+	public static final double LIMELIGHT_ACCURACY = 0.25;//change this
 	public static final double DRIVETRAIN_WIDTH = (23d + 7d / 8d) / 12d;
 	public static final int TURRET_TURN_ACCURACY = 20;
 	public static final int TALON_TIMEOUT_MS = 5;
@@ -51,19 +54,19 @@ public class RobotMap {
 	public static final double driveStraight_PeakOutput = 1.0;
 	public static final int driveStraight_AllowableError = 0;
 
-	public static final double driveStraight_comp_leftCoeff = 1.0;
-	public static final double driveStraight_comp_rightCoeff = 0.85;
-	public static final double driveStraight_practice_leftCoeff = 0.88;
-	public static final double driveStraight_practice_rightCoeff = 1.0;
+	public static final double driveStraight_comp_rightCoeff = 1.0;
+	public static final double driveStraight_comp_leftCoeff = 0.85;
+	public static final double driveStraight_practice_rightCoeff = 0.88;
+	public static final double driveStraight_practice_leftCoeff = 1.0;
 
 	public static final double differentialDriveExpiration = 0.4;
 	public static final double rampDownTime = 0.1;
 
 	//tune these values
-	public static final double LimelightCorrectionkP = 0.01;
-	public static final double LimelightCorrectionkPD = 0.01;
-	public static final double LimelightCorrectionMin = 0.05;
-	public static final double LimelightCorrectionSpeed = 0.1;
+	public static final double LimelightCorrectionkP = 0.025;
+	public static final double LimelightCorrectionkPH = 0.03;
+	public static final double LimelightCorrectionMin = 0.03;
+	public static final double LimelightCorrectionSpeed = LimelightCorrectionMin;
 
 	//Driver Station Inputs
 	public static F310Gamepad driveGamepad = new F310Gamepad(0);
@@ -72,6 +75,7 @@ public class RobotMap {
 	//Sensors
 	public static PowerDistributionPanel pdp;
 	public static AHRS ahrs;
+	public static UsbCamera camera;
 	public static Compressor compressor;
 	public static int pcmCANID;
 
@@ -92,11 +96,14 @@ public class RobotMap {
 
 	//Climbing pneumatics
 	public static Pneumatic frontSolenoid;
-	//public static Pneumatic rearSolenoid;
+	public static Pneumatic rearSolenoid;
 
 	//HatchClaw
 	public static Pneumatic hatchPneumatic;
 	public static Pneumatic turretPneumatic;
+
+	//Cargo roller
+	public static WPI_TalonSRX cargoTalon;
 
 	//Subsystems
 	public static DriveTrain driveTrain;
@@ -114,7 +121,11 @@ public class RobotMap {
     //all port bindings or empty constuctors that stay the same for the pratice & real robots.
 
 		ahrs = new AHRS(SPI.Port.kMXP);
-
+		camera = CameraServer.getInstance().startAutomaticCapture();
+		camera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+		camera.setResolution(160, 120);
+		camera.setFPS(15);
+		//camera.setConnectVerbose(0);
 		driveGamepad = new F310Gamepad(0);
 		opGamepad = new F310Gamepad(1);
 
@@ -134,27 +145,33 @@ public class RobotMap {
 			turretSensorA = new DigitalInput(0);
 			turretSensorB = new DigitalInput(1);
 
+			cargoTalon = new WPI_TalonSRX(36);
+
 		} else { //competition bot
 			System.out.println("I am the *COMP* bot.");
        //all port bindings that are only true for the competition robot. (PDP = 1, PCM = 11, Talons = 21 through 30)
 			
-			pcmCANID = 11;
+			pcmCANID = 12;
 			pdp = new PowerDistributionPanel(1);
 
-			leftFrontDriveTalon = new TalonWithMagneticEncoder(21);
-			leftRearDriveTalon = new WPI_TalonSRX(22);
-			rightFrontDriveTalon = new TalonWithMagneticEncoder(23);
-			rightRearDriveTalon = new WPI_TalonSRX(24);
+			leftFrontDriveTalon = new TalonWithMagneticEncoder(23, SensorMode.Relative);
+			leftRearDriveTalon = new WPI_TalonSRX(24);
+			rightFrontDriveTalon = new TalonWithMagneticEncoder(21, SensorMode.Relative);
+			rightRearDriveTalon = new WPI_TalonSRX(22);
 
 			turretTalon = new TalonWithMagneticEncoder(25);
+			turretSensorA = new DigitalInput(0);
+			turretSensorB = new DigitalInput(1);
+
+			cargoTalon = new WPI_TalonSRX(26);
 		}
 
 		//all port bindings that are dependent on robot-specific port bindings.
     
-		frontSolenoid = new Pneumatic(pcmCANID, 0);
-		//rearSolenoid = new Pneumatic(pcmCANID, 1);
-		turretPneumatic = new Pneumatic(pcmCANID, 2);
-		hatchPneumatic = new Pneumatic(pcmCANID, 1);//was 3
+		frontSolenoid = new Pneumatic(pcmCANID, 2);
+		rearSolenoid = new Pneumatic(pcmCANID, 1);
+		turretPneumatic = new Pneumatic(pcmCANID, 0);
+		hatchPneumatic = new Pneumatic(pcmCANID, 3);//was 3
 		compressor = new Compressor(pcmCANID);
 
 		leftMotorGroup = new TalonSRXGroup(ControlMode.PercentOutput, leftFrontDriveTalon); 

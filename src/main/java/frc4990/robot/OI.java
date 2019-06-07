@@ -9,12 +9,13 @@ package frc4990.robot;
 
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.POVButton;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc4990.robot.commands.ClimbingSequence;
-import frc4990.robot.commands.GrabHatchLimelight;
+import frc4990.robot.commands.LimelightDetection;
 import frc4990.robot.commands.PIDTurretTurn;
-import frc4990.robot.commands.PlaceHatchLimelight;
+import frc4990.robot.commands.RunCargo;
 import frc4990.robot.commands.TeleopDriveTrainController;
 import frc4990.robot.commands.TeleopDriveTrainController.StickShapingMode;
 import frc4990.robot.commands.manualIntakeSequence;
@@ -50,8 +51,8 @@ public class OI{
 	public static Button driveSpeedToggle = RobotMap.driveGamepad.getButton(Buttons.x);
 	public static Button turnSpeedToggle = RobotMap.driveGamepad.getButton(Buttons.b);
 
-	public static JoystickAnalogButton shiftRight = RobotMap.driveGamepad.getAxis(Axis.rightTrigger);
-	public static JoystickAnalogButton shiftLeft = RobotMap.driveGamepad.getAxis(Axis.leftTrigger);
+	public static JoystickAnalogButton shiftRight = RobotMap.driveGamepad.getAxis(Axis.leftTrigger);
+	public static JoystickAnalogButton shiftLeft = RobotMap.driveGamepad.getAxis(Axis.rightTrigger);
 
 	public static Button stickShapingToggle = RobotMap.driveGamepad.getButton(Buttons.y);
 
@@ -65,22 +66,24 @@ public class OI{
 	public static Button turretBack = RobotMap.opGamepad.getButton(Buttons.a);
 	public static Button turretSafe = RobotMap.opGamepad.getButton(Buttons.start);
 	public static Button turretReset = RobotMap.opGamepad.getPOVButton(POV.east);
+	public static Button turretCancel = RobotMap.opGamepad.getButton(Buttons.leftJoystickButton);
 
 
 	public static JoystickAnalogButton turretPneumatic = RobotMap.opGamepad.getAxis(Axis.rightJoystickY);
-	public static POVButton hatchToggle = RobotMap.opGamepad.getPOVButton(POV.south);
 
 	public static Button manualIntakeSequence = RobotMap.opGamepad.getButton(Buttons.leftBumper);
 	public static Button manualOutakeSequence = RobotMap.opGamepad.getButton(Buttons.rightBumper);
 
-	public static JoystickAnalogButton limelightIntakeSequence = RobotMap.opGamepad.getAxis(Axis.leftTrigger);
-	public static JoystickAnalogButton limelightOutakeSequence = RobotMap.opGamepad.getAxis(Axis.rightTrigger);
+	public static JoystickAnalogButton cargoIn = RobotMap.opGamepad.getAxis(Axis.leftTrigger);
+	public static JoystickAnalogButton cargoOut = RobotMap.opGamepad.getAxis(Axis.rightTrigger);
 
-	public static Button limelightLight = RobotMap.opGamepad.getPOVButton(POV.west);
+	public static Button limelightPiPMode = RobotMap.opGamepad.getPOVButton(POV.west);
 	public static POVButton limelightToggle = RobotMap.opGamepad.getPOVButton(POV.north);
+	public static POVButton hatchToggle = RobotMap.opGamepad.getPOVButton(POV.south);
 
 	public static Button opControllerCheck = RobotMap.opGamepad.getButton(Buttons.back);
-	
+
+	public static LimelightDetection ld = new LimelightDetection();
 	/* Controller Mapping:
 		Drive Train: (drive controller)
 		    Joysticks 1 and 2: forward/backward and turn left/right
@@ -126,7 +129,7 @@ public class OI{
 		}));*/
 
 		//Limelight
-		limelightLight.whenActive(new InstantCommand(() -> CLimelight.toggleLedMode()));
+		limelightPiPMode.whenActive(new InstantCommand(() -> CLimelight.togglePiPMode()));
 
 		//controller check (not needed, but useful)
 		driveControllerCheck.toggleWhenPressed(new PrintCommand("START pressed on Drive Gamepad."));
@@ -134,29 +137,46 @@ public class OI{
 
 		//turret
 		//turretTurn is used in default command for Turret subsystem.
-		turretForward.toggleWhenActive(new PIDTurretTurn(TurretPoint.Forward));
-		turretLeft.toggleWhenActive(new PIDTurretTurn(TurretPoint.Left));
-		turretRight.toggleWhenActive(new PIDTurretTurn(TurretPoint.Right));
-		turretBack.toggleWhenActive(new PIDTurretTurn(TurretPoint.Back));
-		turretSafe.toggleWhenActive(new PIDTurretTurn(TurretPoint.Safe));
-		turretReset.whenPressed(new InstantCommandRunDisabled(() -> RobotMap.turret.resetPosition()));
-    
+		turretForward.whenActive(new PIDTurretTurn(TurretPoint.Forward));
+		turretLeft.whenActive(new PIDTurretTurn(TurretPoint.Left));
+		turretRight.whenActive(new PIDTurretTurn(TurretPoint.Right));
+		turretBack.whenActive(new PIDTurretTurn(TurretPoint.Back));
+		turretSafe.whenActive(new PIDTurretTurn(TurretPoint.Safe));
+		//turretReset.whenPressed(new InstantCommandRunDisabled(() -> RobotMap.turret.resetPosition()));
+		opControllerCheck.whenPressed(new InstantCommandRunDisabled(() -> RobotMap.turret.resetPosition()));
+	
+		turretCancel.whenPressed(new Command("turretCancel", RobotMap.turret) {
+
+			@Override
+			protected boolean isFinished() {
+				return true;
+			}
+
+		});
+
 		//Hatch
 		turretPneumatic.whenPressed(RobotMap.turretPneumatic.toggleCommand());
-		limelightToggle.whenPressed(CLimelight.toggleMode());
+		limelightToggle.whenPressed(new InstantCommand(() -> {
+			if (ld.isRunning()) ld.cancel();
+			else ld.start();
+		}));
 		hatchToggle.whenPressed(new InstantCommand(() -> RobotMap.hatchPneumatic.toggle()));
+
+		//Cargo
+		cargoIn.whileHeld(new RunCargo(() -> -cargoIn.getRawAxis())); //cargoOut.getRawAxis()
+		cargoOut.whileHeld(new RunCargo(() -> cargoOut.getRawAxis() > 0 ? 1: 0)); //-cargoOut.getRawAxis()
 
 		//Pneumatics
 		frontPneumatics.whenPressed(RobotMap.frontSolenoid.toggleCommand());
-		//rearPneumatics.whenPressed(RobotMap.rearSolenoid.toggleCommand());
+		rearPneumatics.whenPressed(RobotMap.rearSolenoid.toggleCommand());
 		compressorToggle.whenPressed(compressorToggle());
 
 		//routines/sequences
 		manualIntakeSequence.toggleWhenPressed(new manualIntakeSequence());
 		manualOutakeSequence.toggleWhenPressed(new manualOutakeSequence());
 
-		limelightOutakeSequence.toggleWhenPressed(new PlaceHatchLimelight());
-		limelightOutakeSequence.toggleWhenPressed(new GrabHatchLimelight());
+		//limelightOutakeToggle.toggleWhenPressed(new InstantCommand(() -> CLimelight.detectionMode = DetectionMode.Outake));
+		//limelightIntakeToggle.toggleWhenPressed(new InstantCommand(() -> CLimelight.detectionMode = DetectionMode.Intake));
 
 		climbingSequence.toggleWhenPressed(new ClimbingSequence());
 	}
@@ -173,9 +193,9 @@ public class OI{
 	public static InstantCommand driveSpeedToggle() {
 		return new InstantCommand("DriveSpeedToggle", (Runnable) () -> {
 			TeleopDriveTrainController.currentThrottleMultiplier = TeleopDriveTrainController.currentThrottleMultiplier == 
-				Dashboard.getConst("DriveDpiToggle/lowThrottleMultiplier", 0.5) ? 
+				0.3 ? 
 				TeleopDriveTrainController.currentThrottleMultiplier = Dashboard.getConst("DriveDpiToggle/defaultThrottleMultiplier", 1.0) : 
-				Dashboard.getConst("DriveDpiToggle/lowThrottleMultiplier", 0.5);
+				0.3;
 			System.out.println("Throttle Speed: " + TeleopDriveTrainController.currentThrottleMultiplier + "x");
 		});
 	}
@@ -183,8 +203,7 @@ public class OI{
 	public static InstantCommand turnSpeedToggle() {
 		return new InstantCommand("TurnSpeedToggle", (Runnable) () -> {
 			TeleopDriveTrainController.currentTurnSteepnessMultiplier = TeleopDriveTrainController.currentTurnSteepnessMultiplier == 
-				Dashboard.getConst("TurnSpeedToggle/lowTurnMultiplier", 0.6) ? Dashboard.getConst("DriveDpiToggle/defaultTurnSpeedMultiplier", 1.0) : 
-				Dashboard.getConst("TurnSpeedToggle/lowTurnMultiplier", 0.6);
+				0.3 ? 0.6 : 0.3;
 			System.out.println("Turn Speed: " + TeleopDriveTrainController.currentTurnSteepnessMultiplier + "x");
 		});
 	}

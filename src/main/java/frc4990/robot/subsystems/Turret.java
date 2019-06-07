@@ -21,8 +21,9 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 	public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
 
 	public Double setSpeed = 0.0;
+	public boolean controlDisabled;
 	
-	public enum TurretPoint { Forward(22100), Left(13400), Right(-4500), Back(4600), Safe(0); 
+	public enum TurretPoint { Back(22000), Right(13500), Left(-4500), Forward(4500), Safe(0); 
 
 		private int value;
     
@@ -38,17 +39,18 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
     super("Turret");
 		RobotMap.turretTalon.resetEncoder();
 		initalizeTurretPID();
+		controlDisabled = false;
 	}
 
 	@Override
 	public void periodic() {
 		double currentPosition = RobotMap.turretTalon.getPosition();
-		if (currentPosition > 22200 && setSpeed != 0) {
+		if (currentPosition > 22500 && setSpeed != 0) {
 			RobotMap.turretTalon.set(ControlMode.PercentOutput, -Math.abs(setSpeed)); //all motion should go counter-clockwise
-			System.out.println("[Turret] motion in danger zone, past FORWARD point, at " + currentPosition);
+			System.out.println("[Turret] motion in danger zone, past BACK point, at " + currentPosition);
 		} else if (currentPosition < -6700 && setSpeed != 0) {
 			RobotMap.turretTalon.set(ControlMode.PercentOutput, Math.abs(setSpeed)); //all motion should go clockwise
-			System.out.println("[Turret] motion in danger zone, past RIGHT point, at " + currentPosition);
+			System.out.println("[Turret] motion in danger zone, past LEFT point, at " + currentPosition);
 		} else if (RobotMap.turretTalon.getControlMode() != ControlMode.MotionMagic) {
 			RobotMap.turretTalon.set(ControlMode.PercentOutput, setSpeed);
 		}
@@ -79,7 +81,8 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		return new Command("setTurretSpeed", this) {
 			protected void execute() {
 				//Add code here
-				setSpeed = Math.pow(axis.getRawAxis(), 3.0) * 1 / 4;
+				//if (controlDisabled) return;//because the computer now has control
+				setSpeed = Math.pow(axis.getRawAxis(), 3.0) * 1 / 6;
 			}
 
 			@Override
@@ -157,7 +160,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		talon.configNominalOutputReverse(0, 5);
 		talon.configPeakOutputForward(1, 5);
 		talon.configPeakOutputReverse(-1, 5);
-		talon.configContinuousCurrentLimit(1);
+		talon.configContinuousCurrentLimit(2);
 		talon.configPeakCurrentLimit(0);
 		talon.enableCurrentLimit(true);
 			
@@ -169,7 +172,7 @@ public class Turret extends Subsystem implements PIDSource, PIDOutput {
 		talon.config_kD(0, 4, 5);
 
 		/* Set acceleration and vcruise velocity - see documentation */
-		talon.configMotionCruiseVelocity(1600, 5);
+		talon.configMotionCruiseVelocity(1800, 5); //was 1600
 		talon.configMotionAcceleration(1800, 5);
 		talon.configMotionSCurveStrength(4);
 

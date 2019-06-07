@@ -2,7 +2,6 @@ package frc4990.robot.components;
 
 import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.SendableBase;
-import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
@@ -25,6 +24,26 @@ public class CLimelight extends SendableBase {
         }
     }
 
+    public enum PIPMode {
+        SideBySide(0), Vision(1), Driver(2);
+        private int value;
+
+        PIPMode(int value) {
+            this.value = value;
+        }
+
+        public int get() {
+            return value;
+        }
+    }
+
+    public enum DetectionMode {
+        Intake,
+        Outake
+    }
+
+    public static DetectionMode detectionMode = DetectionMode.Intake;
+
     public CLimelight() {}
     
     public static String getStatus() {
@@ -44,17 +63,17 @@ public class CLimelight extends SendableBase {
     }
 
     public static boolean inRange() {
-        return getCrosshairVerticalOffset() < 0; //Add real value
+        return !tooFar() && !tooClose();
     }
 
-    /**
-     * Toggles between two target and driver LimelightModes.
-     */
-
-    public static InstantCommand toggleMode() {
-        return new InstantCommand(() -> setPipeline(
-                (getPipeline() == Pipeline.Driver.get()) ? Pipeline.Vision : Pipeline.Driver));
+    public static boolean tooFar() {
+        return getCrosshairVerticalOffset() > 0; 
     }
+
+    public static boolean tooClose() {
+        return getCrosshairVerticalOffset() < -1; //todo set too close value
+    }
+
     /**
      * Gets valid target
      * 
@@ -161,6 +180,14 @@ public class CLimelight extends SendableBase {
         }
     }
 
+    public static void togglePiPMode() {
+        if (getPiPMode() == PIPMode.Driver.get()) {
+            setPiPMode(PIPMode.Vision.get());
+        } else {
+            setPiPMode(PIPMode.Driver.get());
+        }
+    }
+
     /**
      * Sets the Limelight's Picture-in-picture state.
      * 
@@ -183,21 +210,12 @@ public class CLimelight extends SendableBase {
     }
 
     /**
-     * Toggles the Limelight's PiP Mode. 0 => 1, 1 => 2, 2 => 0 (0 = default side by
-     * side, 1 = PiP Main, 2 = PiP Secondary)
-     */
-
-    public static void togglePiPMode() {
-        setNetworkTableEntry("stream", (getPiPMode() + 1) % 3);
-    }
-
-    /**
      * Sets the Limelight's pipeline.
      * 
      * @param pipeline Pipeline enum.
      */
 
-    private static void setPipeline(Pipeline pipeline) {
+    public static void setPipeline(Pipeline pipeline) {
         setPipeline(pipeline.get());
     }
 

@@ -1,0 +1,292 @@
+{
+  "tabPane": [
+    {
+      "title": "Drive",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "9,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Large Text",
+              "_source0": "network_table:///Shuffleboard/Drive/Turret Position/value",
+              "_title": "Shuffleboard/Drive/Turret Position/value"
+            }
+          },
+          "7,1": {
+            "size": [
+              4,
+              1
+            ],
+            "content": {
+              "_type": "Large Text",
+              "_source0": "network_table:///Shuffleboard/Drive/Limelight Status/value",
+              "_title": "Shuffleboard/Drive/Limelight Status/value"
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Drive/Turret Sensor A/value",
+              "_title": "Shuffleboard/Drive/Turret Sensor A/value",
+              "Colors/Color when true": "#FFFFFFFF",
+              "Colors/Color when false": "#B3661AFF"
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Drive/Turret Sensor B/value",
+              "_title": "Shuffleboard/Drive/Turret Sensor B/value",
+              "Colors/Color when true": "#FFFFFFFF",
+              "Colors/Color when false": "#B34D1AFF"
+            }
+          },
+          "0,0": {
+            "size": [
+              6,
+              5
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://limelight",
+              "_title": "limelight",
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": false,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Large Text",
+              "_source0": "network_table:///Shuffleboard/Drive/HatchPneumatic/value",
+              "_title": "Shuffleboard/Drive/HatchPneumatic/value"
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Large Text",
+              "_source0": "network_table:///Shuffleboard/Drive/TurretPneumatic/value",
+              "_title": "Shuffleboard/Drive/Turret Position/value"
+            }
+          },
+          "6,2": {
+            "size": [
+              5,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Drive/Target Not Visible/value",
+              "_title": "Shuffleboard/Drive/Target Not Visible/value",
+              "Colors/Color when true": "#800000FF",
+              "Colors/Color when false": "#FFFFFFFF"
+            }
+          },
+          "6,4": {
+            "size": [
+              5,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Drive/Target In Range/value",
+              "_title": "Shuffleboard/Drive/Target In Range/value",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#FFFFFFFF"
+            }
+          },
+          "6,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Drive/Target Visible, too CLOSE/value",
+              "_title": "Shuffleboard/Drive/Target Visible, too CLOSE/value",
+              "Colors/Color when true": "#0000FFFF",
+              "Colors/Color when false": "#FFFFFFFF"
+            }
+          },
+          "9,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Drive/Target Visible, too FAR/value",
+              "_title": "Shuffleboard/Drive/Target Visible, too FAR/value",
+              "Colors/Color when true": "#E6804DFF",
+              "Colors/Color when false": "#FFFFFFFF"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Debug",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "0,0": {
+            "size": [
+              3,
+              5
+            ],
+            "content": {
+              "_type": "Robot Preferences",
+              "_source0": "network_table:///Preferences",
+              "_title": "Robot Preferences",
+              "Miscellaneous/Show search box": true
+            }
+          },
+          "3,0": {
+            "size": [
+              2,
+              5
+            ],
+            "content": {
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///Shuffleboard/Debug/Base",
+              "_title": "/Shuffleboard/Debug/Base"
+            }
+          },
+          "5,0": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Differential Drivebase",
+              "_source0": "network_table:///Shuffleboard/Debug/DifferentialDrive",
+              "_title": "/Shuffleboard/Debug/DifferentialDrive",
+              "Wheels/Number of wheels": 4,
+              "Wheels/Wheel diameter": 80.0,
+              "Visuals/Show velocity vectors": true
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///Shuffleboard/Debug/DriveAdjust",
+              "_title": "/Shuffleboard/Debug/DriveAdjust"
+            }
+          },
+          "9,0": {
+            "size": [
+              2,
+              5
+            ],
+            "content": {
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///Shuffleboard/Debug/DriveTrain",
+              "_title": "/Shuffleboard/Debug/DriveTrain"
+            }
+          },
+          "5,2": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///Shuffleboard/Debug/Turret",
+              "_title": "/Shuffleboard/Debug/Turret"
+            }
+          },
+          "5,4": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Basic FMS Info",
+              "_source0": "network_table:///FMSInfo",
+              "_title": "Basic FMS Info"
+            }
+          },
+          "8,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///Shuffleboard/Drive/initDebugDashboard",
+              "_title": "Shuffleboard/Drive/initDebugDashboard"
+            }
+          },
+          "7,2": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///Shuffleboard/Debug/Pneumatics",
+              "_title": "/Shuffleboard/Debug/Pneumatics"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Tab 4",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {}
+      }
+    }
+  ],
+  "windowGeometry": {
+    "x": -7.0,
+    "y": 2.0,
+    "width": 1612.0,
+    "height": 865.0
+  }
+}

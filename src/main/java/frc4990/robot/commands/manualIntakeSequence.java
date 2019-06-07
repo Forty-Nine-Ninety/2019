@@ -8,6 +8,8 @@
 package frc4990.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.InstantCommand;
+import frc4990.robot.OI;
 import frc4990.robot.RobotMap;
 
 public class manualIntakeSequence extends CommandGroup {
@@ -21,6 +23,13 @@ public class manualIntakeSequence extends CommandGroup {
     addSequential(new wait(0.2));
     addSequential(RobotMap.hatchPneumatic.retract());
     addSequential(new wait(0.3));
-		addSequential(RobotMap.turretPneumatic.retract());
+    addSequential(RobotMap.turretPneumatic.retract());
+    addSequential(new InstantCommand(() -> {
+			RobotMap.turret.controlDisabled = false;
+        RobotMap.driveTrain.controlDisabled = false;
+    }));
+    addSequential(new InstantCommand(() -> {
+      OI.ld.cancel();
+    }));
   }
 }
