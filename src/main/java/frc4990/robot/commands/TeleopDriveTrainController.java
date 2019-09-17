@@ -20,7 +20,7 @@ public class TeleopDriveTrainController extends Command {
 
 	public static double currentThrottleMultiplier = 1.0;
 
-	public static double currentTurnSteepnessMultiplier = 1.0;
+	public static double currentTurnSteepnessMultiplier = 0.3;
 
 	private double throttle, turnSteepness;
 
@@ -40,8 +40,8 @@ public class TeleopDriveTrainController extends Command {
 		//if (RobotMap.driveTrain.controlDisabled) return;//If robot has control of drivetrain
 		switch (stickShapingMode) {
 			case SquaredThrottle://Another one that we tried.
-				throttle = getSquaredThrottle(OI.throttle.getRawAxis() * currentThrottleMultiplier);
-				turnSteepness = getSquaredThrottle(OI.turnSteepness.getRawAxis());
+				throttle = getCubedThrottle(OI.throttle.getRawAxis() * currentThrottleMultiplier);
+				turnSteepness = getCubedThrottle(OI.turnSteepness.getRawAxis());
 
 				if (throttle != 0 && turnSteepness != 0) { //arc turn
 					driveMode = DriveMode.ARC;
@@ -85,6 +85,15 @@ public class TeleopDriveTrainController extends Command {
 	 */
 	public double getSquaredThrottle(double throttleInput) {
 		return throttleInput * throttleInput * Math.signum(throttleInput);
+	}
+
+		/**
+	 * Cubes the number provided and keeps sign (+ or -)
+	 * @param throttleInput number to cube and keeps sign
+	 * @return cube number provided with same sign
+	 */
+	public double getCubedThrottle(double throttleInput) {
+		return throttleInput * throttleInput * throttleInput * Math.signum(throttleInput);
 	}
 
 	/**
