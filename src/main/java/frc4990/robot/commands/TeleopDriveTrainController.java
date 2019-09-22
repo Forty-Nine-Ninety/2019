@@ -70,8 +70,8 @@ public class TeleopDriveTrainController extends Command {
 				break;
 			case DifferentialDrive: //New for 2019
 				DriveTrain.curvatureDrive(
-					OI.throttle.getRawAxis() * currentThrottleMultiplier, 
-					OI.turnSteepness.getRawAxis() * currentTurnSteepnessMultiplier, true);
+					getCubedThrottle(OI.throttle.getRawAxis() * currentThrottleMultiplier), 
+					getCubedThrottle(OI.turnSteepness.getRawAxis() * currentTurnSteepnessMultiplier), false);
 				break;
 			default:
 				break;
