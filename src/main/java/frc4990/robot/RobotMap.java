@@ -57,12 +57,12 @@ public class RobotMap {
 	public static final int driveStraight_AllowableError = 0;
 
 	public static final double driveStraight_comp_rightCoeff = 1.0;
-	public static final double driveStraight_comp_leftCoeff = 0.85;
+	public static final double driveStraight_comp_leftCoeff = 0.89;
 	public static final double driveStraight_practice_rightCoeff = 0.88;
 	public static final double driveStraight_practice_leftCoeff = 1.0;
 
 	public static final double differentialDriveExpiration = 0.4;
-	public static final double rampDownTime = 0.1;
+	public static final double rampDownTime = 0.04;
 
 	//tune these values
 	public static final double LimelightCorrectionkP = 0.025;
